@@ -8,13 +8,13 @@ spring:
     password: admin123
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     properties:
       hibernate:
     show-sql: false
     open-in-view: false
 logging:
   level:
-    root: WARN
-    #root: INFO
+    root: INFO
+    #root: WARN
     pedroMGuerra: DEBUG

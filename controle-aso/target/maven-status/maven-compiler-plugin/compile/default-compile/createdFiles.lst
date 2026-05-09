@@ -1,1 +1,15 @@
+PedroM_Guerra\controle_aso\data\dto\FuncionarioDTO.class
+PedroM_Guerra\controle_aso\enums\GeneroFuncionario.class
+PedroM_Guerra\controle_aso\exception\ResourceNotFoundException.class
+PedroM_Guerra\controle_aso\services\FuncionarioServices.class
+PedroM_Guerra\controle_aso\exception\ExceptionResponse.class
+PedroM_Guerra\controle_aso\controllers\TestLogController.class
+PedroM_Guerra\controle_aso\enums\SetorFuncionario.class
+PedroM_Guerra\controle_aso\mapper\ObjectMapper.class
 PedroM_Guerra\controle_aso\Startup.class
+PedroM_Guerra\controle_aso\enums\CargoFuncionario.class
+PedroM_Guerra\controle_aso\model\Funcionario.class
+PedroM_Guerra\controle_aso\repository\FuncionarioRepository.class
+PedroM_Guerra\controle_aso\exception\handler\RequiredObjectIsNullException.class
+PedroM_Guerra\controle_aso\exception\handler\CustomEntityResponseHandler.class
+PedroM_Guerra\controle_aso\controllers\FuncionarioController.class
