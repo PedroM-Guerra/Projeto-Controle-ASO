@@ -1,5 +1,8 @@
 package PedroM_Guerra.controle_aso.model;
 
+import PedroM_Guerra.controle_aso.enums.CargoFuncionario;
+import PedroM_Guerra.controle_aso.enums.GeneroFuncionario;
+import PedroM_Guerra.controle_aso.enums.SetorFuncionario;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -22,9 +25,9 @@ public class Funcionario implements Serializable {
     @Column(name = "cpf", nullable = false, unique = true, length = 11)
     private String cpf;
 
-    //mudar sexo para usar enum futuramente
-    @Column(name = "genero_biologico", nullable = false, length = 9)
-    private String genero;
+    @Column(name = "genero_biologico", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private GeneroFuncionario genero;
 
     @Column(name = "data_nascimento", nullable = false)
     private LocalDate dataNascimento;
@@ -32,13 +35,13 @@ public class Funcionario implements Serializable {
     @Column(name = "matricula", nullable = false, unique = true, length = 10)
     private String matricula;
 
-    //mudar setor para usar enum futuramente
-    @Column(name = "setor", nullable = false, length = 50)
-    private String setor;
+    @Column(name = "setor", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private SetorFuncionario setor;
 
-    //mudar cargo para usar enum futuramente
-    @Column(name = "cargo", nullable = false, length = 50)
-    private String cargo;
+    @Column(name = "cargo", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private CargoFuncionario cargo;
 
     @Column(name = "data_admissao", nullable = false)
     private LocalDate dataAdmissao;
@@ -74,11 +77,11 @@ public class Funcionario implements Serializable {
         this.cpf = cpf;
     }
 
-    public String getGenero() {
+    public GeneroFuncionario getGenero() {
         return genero;
     }
 
-    public void setGenero(String genero) {
+    public void setGenero(GeneroFuncionario genero) {
         this.genero = genero;
     }
 
@@ -98,19 +101,19 @@ public class Funcionario implements Serializable {
         this.matricula = matricula;
     }
 
-    public String getSetor() {
+    public SetorFuncionario getSetor() {
         return setor;
     }
 
-    public void setSetor(String setor) {
+    public void setSetor(SetorFuncionario setor) {
         this.setor = setor;
     }
 
-    public String getCargo() {
+    public CargoFuncionario getCargo() {
         return cargo;
     }
 
-    public void setCargo(String cargo) {
+    public void setCargo(CargoFuncionario cargo) {
         this.cargo = cargo;
     }
 
@@ -133,7 +136,7 @@ public class Funcionario implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Funcionario that)) return false;
-        return Objects.equals(getId(), that.getId()) && Objects.equals(getNome(), that.getNome()) && Objects.equals(getCpf(), that.getCpf()) && Objects.equals(getGenero(), that.getGenero()) && Objects.equals(getDataNascimento(), that.getDataNascimento()) && Objects.equals(getMatricula(), that.getMatricula()) && Objects.equals(getSetor(), that.getSetor()) && Objects.equals(getCargo(), that.getCargo()) && Objects.equals(getDataAdmissao(), that.getDataAdmissao()) && Objects.equals(getDataDemissao(), that.getDataDemissao());
+        return Objects.equals(getId(), that.getId()) && Objects.equals(getNome(), that.getNome()) && Objects.equals(getCpf(), that.getCpf()) && getGenero() == that.getGenero() && Objects.equals(getDataNascimento(), that.getDataNascimento()) && Objects.equals(getMatricula(), that.getMatricula()) && getSetor() == that.getSetor() && Objects.equals(getCargo(), that.getCargo()) && Objects.equals(getDataAdmissao(), that.getDataAdmissao()) && Objects.equals(getDataDemissao(), that.getDataDemissao());
     }
 
     @Override

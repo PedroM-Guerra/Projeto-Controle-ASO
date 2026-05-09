@@ -1,6 +1,9 @@
 package PedroM_Guerra.controle_aso.services;
 
+import PedroM_Guerra.controle_aso.data.dto.FuncionarioDTO;
 import PedroM_Guerra.controle_aso.exception.ResourceNotFoundException;
+import static PedroM_Guerra.controle_aso.mapper.ObjectMapper.parseListObjects;
+import static PedroM_Guerra.controle_aso.mapper.ObjectMapper.parseObject;
 import PedroM_Guerra.controle_aso.model.Funcionario;
 import PedroM_Guerra.controle_aso.repository.FuncionarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,26 +22,30 @@ public class FuncionarioServices {
     @Autowired
     FuncionarioRepository repository;
 
-    public List<Funcionario> findAll(){
+    public List<FuncionarioDTO> findAll(){
         logger.info("Finding all Funcionários");
 
-        return repository.findAll();
+        return parseListObjects(repository.findAll(), FuncionarioDTO.class);
     }
 
-    public Funcionario findById(Long id){
+    public FuncionarioDTO findById(Long id){
         logger.info("Finding one Funcionário");
 
-        return repository.findById(id)
+        var entity = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID"));
+
+        return parseObject(entity, FuncionarioDTO.class);
     }
 
-    public Funcionario create(Funcionario funcionario){
+    public FuncionarioDTO create(FuncionarioDTO funcionario){
         logger.info("Creating one Funcionário");
 
-        return repository.save(funcionario);
+        var entity = parseObject(funcionario, Funcionario.class);
+
+        return parseObject(repository.save(entity), FuncionarioDTO.class);
     }
 
-    public Funcionario update(Funcionario funcionario){
+    public FuncionarioDTO update(FuncionarioDTO funcionario){
         logger.info("Updating one Funcionário");
 
         Funcionario entity = repository.findById(funcionario.getId())
@@ -54,10 +61,10 @@ public class FuncionarioServices {
         entity.setDataAdmissao(funcionario.getDataAdmissao());
         entity.setDataDemissao(funcionario.getDataDemissao());
 
-        return repository.save(entity);
+        return parseObject(repository.save(entity), FuncionarioDTO.class);
     }
 
-    public void  delete(Long id){
+    public void delete(Long id){
         logger.info("Deleting one Funcionário");
 
         Funcionario entity = repository.findById(id)

@@ -1,5 +1,8 @@
 package PedroM_Guerra.controle_aso.data.dto;
 
+import PedroM_Guerra.controle_aso.enums.CargoFuncionario;
+import PedroM_Guerra.controle_aso.enums.GeneroFuncionario;
+import PedroM_Guerra.controle_aso.enums.SetorFuncionario;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -14,14 +17,11 @@ public class FuncionarioDTO implements Serializable {
     private Long id;
     private String nome;
     private String cpf;
-    //mudar sexo para usar enum futuramente
-    private String genero;
+    private GeneroFuncionario genero;
     private LocalDate dataNascimento;
     private String matricula;
-    //mudar setor para usar enum futuramente
-    private String setor;
-    //mudar cargo para usar enum futuramente
-    private String cargo;
+    private SetorFuncionario setor;
+    private CargoFuncionario cargo;
     private LocalDate dataAdmissao;
     private LocalDate dataDemissao;
 
@@ -53,11 +53,11 @@ public class FuncionarioDTO implements Serializable {
         this.cpf = cpf;
     }
 
-    public String getGenero() {
+    public GeneroFuncionario getGenero() {
         return genero;
     }
 
-    public void setGenero(String genero) {
+    public void setGenero(GeneroFuncionario genero) {
         this.genero = genero;
     }
 
@@ -77,19 +77,19 @@ public class FuncionarioDTO implements Serializable {
         this.matricula = matricula;
     }
 
-    public String getSetor() {
+    public SetorFuncionario getSetor() {
         return setor;
     }
 
-    public void setSetor(String setor) {
+    public void setSetor(SetorFuncionario setor) {
         this.setor = setor;
     }
 
-    public String getCargo() {
+    public CargoFuncionario getCargo() {
         return cargo;
     }
 
-    public void setCargo(String cargo) {
+    public void setCargo(CargoFuncionario cargo) {
         this.cargo = cargo;
     }
 
@@ -112,7 +112,7 @@ public class FuncionarioDTO implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof FuncionarioDTO that)) return false;
-        return Objects.equals(getId(), that.getId()) && Objects.equals(getNome(), that.getNome()) && Objects.equals(getCpf(), that.getCpf()) && Objects.equals(getGenero(), that.getGenero()) && Objects.equals(getDataNascimento(), that.getDataNascimento()) && Objects.equals(getMatricula(), that.getMatricula()) && Objects.equals(getSetor(), that.getSetor()) && Objects.equals(getCargo(), that.getCargo()) && Objects.equals(getDataAdmissao(), that.getDataAdmissao()) && Objects.equals(getDataDemissao(), that.getDataDemissao());
+        return Objects.equals(getId(), that.getId()) && Objects.equals(getNome(), that.getNome()) && Objects.equals(getCpf(), that.getCpf()) && getGenero() == that.getGenero() && Objects.equals(getDataNascimento(), that.getDataNascimento()) && Objects.equals(getMatricula(), that.getMatricula()) && getSetor() == that.getSetor() && Objects.equals(getCargo(), that.getCargo()) && Objects.equals(getDataAdmissao(), that.getDataAdmissao()) && Objects.equals(getDataDemissao(), that.getDataDemissao());
     }
 
     @Override
