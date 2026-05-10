@@ -1,4 +1,4 @@
-package PedroM_Guerra.controle_aso.exception.handler;
+package PedroM_Guerra.controle_aso.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
