@@ -50,6 +50,7 @@ public class AsoServices {
     }
 
     public AsoDTO create(AsoDTO aso){
+
         if (aso == null) throw new RequiredObjectIsNullException();
 
         logger.info("Creating one ASO");

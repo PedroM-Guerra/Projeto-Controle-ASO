@@ -2,6 +2,7 @@ package PedroM_Guerra.controle_aso.unittests;
 import static PedroM_Guerra.controle_aso.mapper.ObjectMapper.parseListObjects;
 import static PedroM_Guerra.controle_aso.mapper.ObjectMapper.parseObject;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -37,9 +38,10 @@ public class ObjectMapperTests {
         assertEquals(CargoFuncionario.ESTAGIARIO, output.getCargo());
         assertEquals(SetorFuncionario.RECURSOS_HUMANOS, output.getSetor());
 
-        assertEquals(LocalDate.of(2000, 7, 1), output.getDataNascimento());
-        assertEquals(LocalDate.of(2025, 4, 1), output.getDataAdmissao());
-        assertEquals(LocalDate.of(2026, 3, 1), output.getDataDemissao());
+        assertEquals(LocalDate.of(1980, 1, 1), output.getDataNascimento());
+        assertEquals(LocalDate.of(1981, 1, 1), output.getDataAdmissao());
+        assertEquals(LocalDate.of(1981, 2, 1), output.getDataDemissao());
+
     }
 
 
@@ -57,9 +59,9 @@ public class ObjectMapperTests {
         assertEquals(SetorFuncionario.RECURSOS_HUMANOS, outputZero.getSetor());
         assertEquals(CargoFuncionario.ESTAGIARIO, outputZero.getCargo());
 
-        assertEquals(LocalDate.of(2000, 7, 1), outputZero.getDataNascimento());
-        assertEquals(LocalDate.of(2025, 4, 1), outputZero.getDataAdmissao());
-        assertEquals(LocalDate.of(2026, 3, 1), outputZero.getDataDemissao());
+        assertEquals(LocalDate.of(1980, 1, 1), outputZero.getDataNascimento());
+        assertEquals(LocalDate.of(1981, 1, 1), outputZero.getDataAdmissao());
+        assertEquals(LocalDate.of(1981, 2, 1), outputZero.getDataDemissao());
 
         FuncionarioDTO outputSeven = outputList.get(7);
 
@@ -72,9 +74,9 @@ public class ObjectMapperTests {
         assertEquals(CargoFuncionario.OPERARIO, outputSeven.getCargo());
         assertEquals(SetorFuncionario.SAUDE_TRABALHO, outputSeven.getSetor());
 
-        assertEquals(LocalDate.of(2000, 7, 8), outputSeven.getDataNascimento());
-        assertEquals(LocalDate.of(2025, 4, 8), outputSeven.getDataAdmissao());
-        assertEquals(LocalDate.of(2026, 3, 8), outputSeven.getDataDemissao());
+        assertEquals(LocalDate.of(1987, 8, 8), outputSeven.getDataNascimento());
+        assertEquals(LocalDate.of(1989, 3, 8), outputSeven.getDataAdmissao());
+        assertNull(outputSeven.getDataDemissao());
 
         FuncionarioDTO outputTwelve = outputList.get(12);
 
@@ -87,9 +89,9 @@ public class ObjectMapperTests {
         assertEquals(CargoFuncionario.DIRETOR, outputTwelve.getCargo());
         assertEquals(SetorFuncionario.ARQUITETURA, outputTwelve.getSetor());
 
-        assertEquals(LocalDate.of(2000, 7, 13), outputTwelve.getDataNascimento());
-        assertEquals(LocalDate.of(2025, 4, 13), outputTwelve.getDataAdmissao());
-        assertEquals(LocalDate.of(2026, 3, 13), outputTwelve.getDataDemissao());
+        assertEquals(LocalDate.of(1992, 1, 13), outputTwelve.getDataNascimento());
+        assertEquals(LocalDate.of(1993, 1, 13), outputTwelve.getDataAdmissao());
+        assertEquals(LocalDate.of(1993, 2, 13), outputTwelve.getDataDemissao());
     }
 
     @Test
@@ -105,9 +107,9 @@ public class ObjectMapperTests {
         assertEquals(SetorFuncionario.RECURSOS_HUMANOS, output.getSetor());
 
 
-        assertEquals(LocalDate.of(2000, 7, 1), output.getDataNascimento());
-        assertEquals(LocalDate.of(2025, 4, 1), output.getDataAdmissao());
-        assertEquals(LocalDate.of(2026, 3, 1), output.getDataDemissao());
+        assertEquals(LocalDate.of(1980, 1, 1), output.getDataNascimento());
+        assertEquals(LocalDate.of(1981, 1, 1), output.getDataAdmissao());
+        assertEquals(LocalDate.of(1981, 2, 1), output.getDataDemissao());
     }
 
     @Test
@@ -124,9 +126,9 @@ public class ObjectMapperTests {
         assertEquals(SetorFuncionario.RECURSOS_HUMANOS, outputZero.getSetor());
         assertEquals(CargoFuncionario.ESTAGIARIO, outputZero.getCargo());
 
-        assertEquals(LocalDate.of(2000, 7, 1), outputZero.getDataNascimento());
-        assertEquals(LocalDate.of(2025, 4, 1), outputZero.getDataAdmissao());
-        assertEquals(LocalDate.of(2026, 3, 1), outputZero.getDataDemissao());
+        assertEquals(LocalDate.of(1980, 1, 1), outputZero.getDataNascimento());
+        assertEquals(LocalDate.of(1981, 1, 1), outputZero.getDataAdmissao());
+        assertEquals(LocalDate.of(1981, 2, 1), outputZero.getDataDemissao());
 
         Funcionario outputSeven = outputList.get(7);
 
@@ -139,9 +141,9 @@ public class ObjectMapperTests {
         assertEquals(CargoFuncionario.OPERARIO, outputSeven.getCargo());
         assertEquals(SetorFuncionario.SAUDE_TRABALHO, outputSeven.getSetor());
 
-        assertEquals(LocalDate.of(2000, 7, 8), outputSeven.getDataNascimento());
-        assertEquals(LocalDate.of(2025, 4, 8), outputSeven.getDataAdmissao());
-        assertEquals(LocalDate.of(2026, 3, 8), outputSeven.getDataDemissao());
+        assertEquals(LocalDate.of(1987, 8, 8), outputSeven.getDataNascimento());
+        assertEquals(LocalDate.of(1989, 3, 8), outputSeven.getDataAdmissao());
+        assertNull(outputSeven.getDataDemissao());
 
         Funcionario outputTwelve = outputList.get(12);
 
@@ -154,8 +156,8 @@ public class ObjectMapperTests {
         assertEquals(CargoFuncionario.DIRETOR, outputTwelve.getCargo());
         assertEquals(SetorFuncionario.ARQUITETURA, outputTwelve.getSetor());
 
-        assertEquals(LocalDate.of(2000, 7, 13), outputTwelve.getDataNascimento());
-        assertEquals(LocalDate.of(2025, 4, 13), outputTwelve.getDataAdmissao());
-        assertEquals(LocalDate.of(2026, 3, 13), outputTwelve.getDataDemissao());
+        assertEquals(LocalDate.of(1992, 1, 13), outputTwelve.getDataNascimento());
+        assertEquals(LocalDate.of(1993, 1, 13), outputTwelve.getDataAdmissao());
+        assertEquals(LocalDate.of(1993, 2, 13), outputTwelve.getDataDemissao());
     }
 }

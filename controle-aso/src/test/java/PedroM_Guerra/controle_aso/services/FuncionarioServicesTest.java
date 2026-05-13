@@ -91,9 +91,9 @@ class FuncionarioServicesTest {
         assertEquals(CargoFuncionario.SUPERVISOR, result.getCargo());
         assertEquals(SetorFuncionario.LIMPEZA, result.getSetor());
 
-        assertEquals(LocalDate.of(2000, 7, 2), result.getDataNascimento());
-        assertEquals(LocalDate.of(2025, 4, 2), result.getDataAdmissao());
-        assertEquals(LocalDate.of(2026, 3, 2), result.getDataDemissao());
+        assertEquals(LocalDate.of(1981, 2, 2), result.getDataNascimento());
+        assertEquals(LocalDate.of(1982, 3, 2), result.getDataAdmissao());
+        assertNull(result.getDataDemissao());
     }
 
     @Test
@@ -150,9 +150,9 @@ class FuncionarioServicesTest {
         assertEquals(CargoFuncionario.SUPERVISOR, result.getCargo());
         assertEquals(SetorFuncionario.LIMPEZA, result.getSetor());
 
-        assertEquals(LocalDate.of(2000, 7, 2), result.getDataNascimento());
-        assertEquals(LocalDate.of(2025, 4, 2), result.getDataAdmissao());
-        assertEquals(LocalDate.of(2026, 3, 2), result.getDataDemissao());
+        assertEquals(LocalDate.of(1981, 2, 2), result.getDataNascimento());
+        assertEquals(LocalDate.of(1982, 3, 2), result.getDataAdmissao());
+        assertNull(result.getDataDemissao());
     }
 
     @Test
@@ -223,9 +223,9 @@ class FuncionarioServicesTest {
         assertEquals(CargoFuncionario.SUPERVISOR, result.getCargo());
         assertEquals(SetorFuncionario.LIMPEZA, result.getSetor());
 
-        assertEquals(LocalDate.of(2000, 7, 2), result.getDataNascimento());
-        assertEquals(LocalDate.of(2025, 4, 2), result.getDataAdmissao());
-        assertEquals(LocalDate.of(2026, 3, 2), result.getDataDemissao());
+        assertEquals(LocalDate.of(1981, 2, 2), result.getDataNascimento());
+        assertEquals(LocalDate.of(1982, 3, 2), result.getDataAdmissao());
+        assertNull(result.getDataDemissao());
     }
 
     @Test
@@ -306,9 +306,9 @@ class FuncionarioServicesTest {
         assertEquals(CargoFuncionario.SUPERVISOR, funcionarioOne.getCargo());
         assertEquals(SetorFuncionario.LIMPEZA, funcionarioOne.getSetor());
 
-        assertEquals(LocalDate.of(2000, 7, 2), funcionarioOne.getDataNascimento());
-        assertEquals(LocalDate.of(2025, 4, 2), funcionarioOne.getDataAdmissao());
-        assertEquals(LocalDate.of(2026, 3, 2), funcionarioOne.getDataDemissao());
+        assertEquals(LocalDate.of(1981, 2, 2), funcionarioOne.getDataNascimento());
+        assertEquals(LocalDate.of(1982, 3, 2), funcionarioOne.getDataAdmissao());
+        assertNull(funcionarioOne.getDataDemissao());
 
         var funcionarioFour = funcionarios.get(4);
 
@@ -354,9 +354,9 @@ class FuncionarioServicesTest {
         assertEquals(CargoFuncionario.TECNICO, funcionarioFour.getCargo());
         assertEquals(SetorFuncionario.ARQUITETURA, funcionarioFour.getSetor());
 
-        assertEquals(LocalDate.of(2000, 7, 5), funcionarioFour.getDataNascimento());
-        assertEquals(LocalDate.of(2025, 4, 5), funcionarioFour.getDataAdmissao());
-        assertEquals(LocalDate.of(2026, 3, 5), funcionarioFour.getDataDemissao());
+        assertEquals(LocalDate.of(1984, 5, 5), funcionarioFour.getDataNascimento());
+        assertEquals(LocalDate.of(1985, 9, 5), funcionarioFour.getDataAdmissao());
+        assertEquals(LocalDate.of(1985, 10, 5), funcionarioFour.getDataDemissao());
 
         var funcionarioSeven = funcionarios.get(7);
 
@@ -402,9 +402,8 @@ class FuncionarioServicesTest {
         assertEquals(CargoFuncionario.OPERARIO, funcionarioSeven.getCargo());
         assertEquals(SetorFuncionario.SAUDE_TRABALHO, funcionarioSeven.getSetor());
 
-        assertEquals(LocalDate.of(2000, 7, 8), funcionarioSeven.getDataNascimento());
-        assertEquals(LocalDate.of(2025, 4, 8), funcionarioSeven.getDataAdmissao());
-        assertEquals(LocalDate.of(2026, 3, 8), funcionarioSeven.getDataDemissao());
-
+        assertEquals(LocalDate.of(1987, 8, 8), funcionarioSeven.getDataNascimento());
+        assertEquals(LocalDate.of(1989, 3, 8), funcionarioSeven.getDataAdmissao());
+        assertNull(funcionarioSeven.getDataDemissao());
     }
 }

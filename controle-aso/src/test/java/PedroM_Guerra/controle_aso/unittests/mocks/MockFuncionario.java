@@ -47,12 +47,18 @@ public class MockFuncionario {
         funcionario.setNome("Name Test" + number);
         funcionario.setCpf("CPF Test" + number);
         funcionario.setMatricula("Matricula Test" + number);
+
         funcionario.setGenero(((number % 2)==0) ? GeneroFuncionario.MASCULINO : GeneroFuncionario.FEMININO);
-        funcionario.setDataNascimento(LocalDate.of(2000, 7, 1 + number));
         funcionario.setSetor(setores[number % setores.length]);
         funcionario.setCargo(cargos[number % cargos.length]);
-        funcionario.setDataAdmissao(LocalDate.of(2025, 4, 1 + number));
-        funcionario.setDataDemissao(LocalDate.of(2026, 3, 1 + number));
+
+        funcionario.setDataNascimento(LocalDate.of(1980 + (number % 20), (number % 12) + 1, (number % 28) + 1));
+        funcionario.setDataAdmissao(funcionario.getDataNascimento().plusYears(1).plusMonths(number % 12));
+        if (number % 2 == 0) {
+            funcionario.setDataDemissao(funcionario.getDataAdmissao().plusMonths(1));
+        } else {
+            funcionario.setDataDemissao(null);
+        }
 
         return funcionario;
     }
@@ -66,12 +72,18 @@ public class MockFuncionario {
         funcionario.setNome("Name Test" + number);
         funcionario.setCpf("CPF Test" + number);
         funcionario.setMatricula("Matricula Test" + number);
+
         funcionario.setGenero(((number % 2)==0) ? GeneroFuncionario.MASCULINO : GeneroFuncionario.FEMININO);
-        funcionario.setDataNascimento(LocalDate.of(2000, 7, 1 + number));
         funcionario.setSetor(setores[number % setores.length]);
         funcionario.setCargo(cargos[number % cargos.length]);
-        funcionario.setDataAdmissao(LocalDate.of(2025, 4, 1 + number));
-        funcionario.setDataDemissao(LocalDate.of(2026, 3, 1 + number));
+
+        funcionario.setDataNascimento(LocalDate.of(1980 + (number % 20), (number % 12) + 1, (number % 28) + 1));
+        funcionario.setDataAdmissao(funcionario.getDataNascimento().plusYears(1).plusMonths(number % 12));
+        if (number % 2 == 0) {
+            funcionario.setDataDemissao(funcionario.getDataAdmissao().plusMonths(1));
+        } else {
+            funcionario.setDataDemissao(null);
+        }
 
         return funcionario;
     }
