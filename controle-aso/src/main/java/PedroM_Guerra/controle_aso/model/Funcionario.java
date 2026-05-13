@@ -13,8 +13,6 @@ import java.util.Objects;
 @Table(name = "funcionario")
 public class Funcionario implements Serializable {
 
-    private static final long SerialVersionUID = 1L;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -49,9 +47,7 @@ public class Funcionario implements Serializable {
     @Column(name = "data_demissao")
     private LocalDate dataDemissao;
 
-//    private List<Aso> asos;
 //    private Usuario cadastradoPor;
-
 
     public Long getId() {
         return id;

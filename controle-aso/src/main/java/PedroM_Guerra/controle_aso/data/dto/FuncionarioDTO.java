@@ -24,7 +24,6 @@ public class FuncionarioDTO extends RepresentationModel<FuncionarioDTO> implemen
     private LocalDate dataAdmissao;
     private LocalDate dataDemissao;
 
-//    private List<Aso> asos;
 //    private Usuario cadastradoPor;
 
 

@@ -19,20 +19,16 @@ public enum CargoFuncionario {
     private final String codigo;
     private final String descricao;
 
-    private CargoFuncionario(String codigo, String descricao) {
+    CargoFuncionario(String codigo, String descricao) {
         this.codigo = codigo;
         this.descricao = descricao;
     }
-
-    public String getCodigo() { return codigo; }
-    public String getDescricao() { return descricao; }
 
     @JsonCreator
     public static CargoFuncionario getEnum(String valor) {
         if (valor == null) {
             return null;
         }
-
         return switch (valor.toUpperCase()) {
             case "EST" -> ESTAGIARIO;
             case "SUP" -> SUPERVISOR;
@@ -47,6 +43,11 @@ public enum CargoFuncionario {
             default -> throw new IllegalArgumentException("Cargo inválido: " + valor);
         };
     }
+    public String getCodigo() {
+        return codigo; }
+
+    public String getDescricao() {
+        return descricao; }
 }
 
 

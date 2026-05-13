@@ -14,10 +14,10 @@ public enum SetorFuncionario {
     ADMINISTRACAO("ADM","Administração"),
     SAUDE_TRABALHO("ST","Saúde do Trabalho");
 
-    private String codigo;
-    private String descricao;
+    private final String codigo;
+    private final String descricao;
 
-    private SetorFuncionario(String codigo, String descricao){
+    SetorFuncionario(String codigo, String descricao){
         this.codigo = codigo;
         this.descricao = descricao;
     }
@@ -27,7 +27,6 @@ public enum SetorFuncionario {
         if (codigo == null) {
             return null;
         }
-
         return switch (codigo.toUpperCase()) {
             case "RH" -> RECURSOS_HUMANOS;
             case "LMP" -> LIMPEZA;
