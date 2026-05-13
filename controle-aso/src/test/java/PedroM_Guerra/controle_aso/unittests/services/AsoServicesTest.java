@@ -1,4 +1,4 @@
-package PedroM_Guerra.controle_aso.services;
+package PedroM_Guerra.controle_aso.unittests.services;
 
 import PedroM_Guerra.controle_aso.data.dto.AsoDTO;
 import PedroM_Guerra.controle_aso.enums.ResultadoAso;
@@ -8,7 +8,8 @@ import PedroM_Guerra.controle_aso.model.Aso;
 import PedroM_Guerra.controle_aso.model.Funcionario;
 import PedroM_Guerra.controle_aso.repository.AsoRepository;
 import PedroM_Guerra.controle_aso.repository.FuncionarioRepository;
-import PedroM_Guerra.controle_aso.unittests.mocks.MockAso;
+import PedroM_Guerra.controle_aso.services.AsoServices;
+import PedroM_Guerra.controle_aso.unittests.mapper.mocks.MockAso;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;

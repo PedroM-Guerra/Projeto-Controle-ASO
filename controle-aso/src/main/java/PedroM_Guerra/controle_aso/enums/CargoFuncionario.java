@@ -2,8 +2,9 @@ package PedroM_Guerra.controle_aso.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonValue;
 
-@JsonFormat(shape = JsonFormat.Shape.OBJECT)
+//@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum CargoFuncionario {
     ESTAGIARIO("EST", "Estagiário"),
     SUPERVISOR("SUP", "Supervisor"),
@@ -43,6 +44,8 @@ public enum CargoFuncionario {
             default -> throw new IllegalArgumentException("Cargo inválido: " + valor);
         };
     }
+
+    @JsonValue
     public String getCodigo() {
         return codigo; }
 

@@ -2,8 +2,9 @@ package PedroM_Guerra.controle_aso.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonValue;
 
-@JsonFormat(shape = JsonFormat.Shape.OBJECT)
+//@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum GeneroFuncionario {
     MASCULINO("M", "Masculino"),
     FEMININO("F", "Feminino"),
@@ -30,6 +31,7 @@ public enum GeneroFuncionario {
         };
     }
 
+    @JsonValue
     public String getCodigo() {
         return codigo;
     }

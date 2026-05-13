@@ -57,7 +57,7 @@ public class AsoServices {
 
         var entity = parseObject(aso, Aso.class);
 
-        var funcionario = funcionarioRepository.findById(aso.getFuncionario().getId())
+        var funcionario = funcionarioRepository.findById(aso.getFuncionarioId())
                 .orElseThrow(() -> new ResourceNotFoundException("Funcionário não encontrado"));
 
         entity.setFuncionario(funcionario);
@@ -80,7 +80,11 @@ public class AsoServices {
         Aso entity = repository.findById(aso.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID"));
 
-        entity.setFuncionario(aso.getFuncionario());
+        // AJUSTE AQUI: Buscar o funcionário novo caso o ID tenha mudado no update
+        var funcionario = funcionarioRepository.findById(aso.getFuncionarioId())
+                .orElseThrow(() -> new ResourceNotFoundException("Funcionário não encontrado"));
+
+        entity.setFuncionario(funcionario);
         entity.setCrmMedico(aso.getCrmMedico());
         entity.setNomeMedico(aso.getNomeMedico());
         entity.setDescricaoExame(aso.getDescricaoExame());

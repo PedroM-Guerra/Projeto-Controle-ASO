@@ -1,4 +1,4 @@
-package PedroM_Guerra.controle_aso.unittests.mocks;
+package PedroM_Guerra.controle_aso.unittests.mapper.mocks;
 
 import PedroM_Guerra.controle_aso.data.dto.AsoDTO;
 import PedroM_Guerra.controle_aso.enums.*;

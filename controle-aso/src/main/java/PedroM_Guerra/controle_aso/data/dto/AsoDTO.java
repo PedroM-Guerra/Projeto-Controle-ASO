@@ -3,6 +3,7 @@ package PedroM_Guerra.controle_aso.data.dto;
 import PedroM_Guerra.controle_aso.enums.ResultadoAso;
 import PedroM_Guerra.controle_aso.enums.TipoAso;
 import PedroM_Guerra.controle_aso.model.Funcionario;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import org.springframework.hateoas.RepresentationModel;
 
@@ -12,8 +13,12 @@ import java.util.Objects;
 
 public class AsoDTO extends RepresentationModel<AsoDTO> implements Serializable {
 
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private Long id;
-    private Funcionario funcionario;
+
+    private Long funcionarioId;
+    //private Funcionario funcionario;
+
     private String crmMedico;
     private String nomeMedico;
     private String descricaoExame;
@@ -32,12 +37,12 @@ public class AsoDTO extends RepresentationModel<AsoDTO> implements Serializable 
         this.id = id;
     }
 
-    public Funcionario getFuncionario() {
-        return funcionario;
+    public Long getFuncionarioId() {
+        return funcionarioId;
     }
 
-    public void setFuncionario(Funcionario funcionario) {
-        this.funcionario = funcionario;
+    public void setFuncionarioId(Long funcionarioId) {
+        this.funcionarioId = funcionarioId;
     }
 
     public String getCrmMedico() {
@@ -106,12 +111,13 @@ public class AsoDTO extends RepresentationModel<AsoDTO> implements Serializable 
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof AsoDTO aso)) return false;
-        return Objects.equals(getId(), aso.getId()) && Objects.equals(getFuncionario(), aso.getFuncionario()) && Objects.equals(getCrmMedico(), aso.getCrmMedico()) && Objects.equals(getNomeMedico(), aso.getNomeMedico()) && Objects.equals(getDescricaoExame(), aso.getDescricaoExame()) && Objects.equals(getUrlDocumentoScan(), aso.getUrlDocumentoScan()) && Objects.equals(getDataEmissao(), aso.getDataEmissao()) && Objects.equals(getDataValidade(), aso.getDataValidade()) && getTipoAso() == aso.getTipoAso() && getResultadoAso() == aso.getResultadoAso();
+        if (!(o instanceof AsoDTO asoDTO)) return false;
+        if (!super.equals(o)) return false;
+        return Objects.equals(getId(), asoDTO.getId()) && Objects.equals(getFuncionarioId(), asoDTO.getFuncionarioId()) && Objects.equals(getCrmMedico(), asoDTO.getCrmMedico()) && Objects.equals(getNomeMedico(), asoDTO.getNomeMedico()) && Objects.equals(getDescricaoExame(), asoDTO.getDescricaoExame()) && Objects.equals(getUrlDocumentoScan(), asoDTO.getUrlDocumentoScan()) && Objects.equals(getDataEmissao(), asoDTO.getDataEmissao()) && Objects.equals(getDataValidade(), asoDTO.getDataValidade()) && getTipoAso() == asoDTO.getTipoAso() && getResultadoAso() == asoDTO.getResultadoAso();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getFuncionario(), getCrmMedico(), getNomeMedico(), getDescricaoExame(), getUrlDocumentoScan(), getDataEmissao(), getDataValidade(), getTipoAso(), getResultadoAso());
+        return Objects.hash(super.hashCode(), getId(), getFuncionarioId(), getCrmMedico(), getNomeMedico(), getDescricaoExame(), getUrlDocumentoScan(), getDataEmissao(), getDataValidade(), getTipoAso(), getResultadoAso());
     }
 }

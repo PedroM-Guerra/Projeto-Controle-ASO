@@ -1,3 +1,7 @@
-C:\TCC\Projeto Controle ASO\controle-aso\src\test\java\PedroM_Guerra\controle_aso\StartupTests.java
-C:\TCC\Projeto Controle ASO\controle-aso\src\test\java\PedroM_Guerra\controle_aso\unittests\mocks\MockFuncionario.java
-C:\TCC\Projeto Controle ASO\controle-aso\src\test\java\PedroM_Guerra\controle_aso\unittests\ObjectMapperTests.java
+C:\TCC\Projeto Controle ASO\controle-aso\src\test\java\PedroM_Guerra\controle_aso\config\TestConfigs.java
+C:\TCC\Projeto Controle ASO\controle-aso\src\test\java\PedroM_Guerra\controle_aso\integrationtests\swagger\SwaggerIntegrationTest.java
+C:\TCC\Projeto Controle ASO\controle-aso\src\test\java\PedroM_Guerra\controle_aso\unittests\mapper\mocks\MockAso.java
+C:\TCC\Projeto Controle ASO\controle-aso\src\test\java\PedroM_Guerra\controle_aso\unittests\mapper\mocks\MockFuncionario.java
+C:\TCC\Projeto Controle ASO\controle-aso\src\test\java\PedroM_Guerra\controle_aso\unittests\mapper\ObjectMapperTests.java
+C:\TCC\Projeto Controle ASO\controle-aso\src\test\java\PedroM_Guerra\controle_aso\unittests\services\AsoServicesTest.java
+C:\TCC\Projeto Controle ASO\controle-aso\src\test\java\PedroM_Guerra\controle_aso\unittests\services\FuncionarioServicesTest.java

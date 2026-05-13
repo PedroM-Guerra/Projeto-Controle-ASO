@@ -2,8 +2,9 @@ package PedroM_Guerra.controle_aso.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonValue;
 
-@JsonFormat(shape = JsonFormat.Shape.OBJECT)
+//@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum ResultadoAso {
     APTO("A", "Apto"),
     INAPTO("I", "Inapto");
@@ -27,6 +28,8 @@ public enum ResultadoAso {
             default -> throw new IllegalArgumentException("Tipo de ASO inválido: " + valor);
         };
     }
+
+    @JsonValue
     public String getCodigo() {
         return codigo; }
 

@@ -1,4 +1,4 @@
-package PedroM_Guerra.controle_aso.services;
+package PedroM_Guerra.controle_aso.unittests.services;
 
 import PedroM_Guerra.controle_aso.data.dto.FuncionarioDTO;
 import PedroM_Guerra.controle_aso.enums.CargoFuncionario;
@@ -7,7 +7,8 @@ import PedroM_Guerra.controle_aso.enums.SetorFuncionario;
 import PedroM_Guerra.controle_aso.exception.RequiredObjectIsNullException;
 import PedroM_Guerra.controle_aso.model.Funcionario;
 import PedroM_Guerra.controle_aso.repository.FuncionarioRepository;
-import PedroM_Guerra.controle_aso.unittests.mocks.MockFuncionario;
+import PedroM_Guerra.controle_aso.services.FuncionarioServices;
+import PedroM_Guerra.controle_aso.unittests.mapper.mocks.MockFuncionario;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;

@@ -1,4 +1,4 @@
-package PedroM_Guerra.controle_aso.unittests;
+package PedroM_Guerra.controle_aso.unittests.mapper;
 import static PedroM_Guerra.controle_aso.mapper.ObjectMapper.parseListObjects;
 import static PedroM_Guerra.controle_aso.mapper.ObjectMapper.parseObject;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -12,7 +12,7 @@ import PedroM_Guerra.controle_aso.enums.CargoFuncionario;
 import PedroM_Guerra.controle_aso.enums.GeneroFuncionario;
 import PedroM_Guerra.controle_aso.enums.SetorFuncionario;
 import PedroM_Guerra.controle_aso.model.Funcionario;
-import PedroM_Guerra.controle_aso.unittests.mocks.MockFuncionario;
+import PedroM_Guerra.controle_aso.unittests.mapper.mocks.MockFuncionario;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
