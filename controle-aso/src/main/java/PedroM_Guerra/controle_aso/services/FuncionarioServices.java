@@ -2,11 +2,13 @@ package PedroM_Guerra.controle_aso.services;
 
 import PedroM_Guerra.controle_aso.controllers.FuncionarioController;
 import PedroM_Guerra.controle_aso.data.dto.FuncionarioDTO;
+import PedroM_Guerra.controle_aso.exception.BadRequestException;
 import PedroM_Guerra.controle_aso.exception.RequiredObjectIsNullException;
 import PedroM_Guerra.controle_aso.exception.ResourceNotFoundException;
 import static PedroM_Guerra.controle_aso.mapper.ObjectMapper.parseListObjects;
 import static PedroM_Guerra.controle_aso.mapper.ObjectMapper.parseObject;
 import PedroM_Guerra.controle_aso.model.Funcionario;
+import PedroM_Guerra.controle_aso.repository.AsoRepository;
 import PedroM_Guerra.controle_aso.repository.FuncionarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -23,6 +25,9 @@ public class FuncionarioServices {
 
     @Autowired
     FuncionarioRepository repository;
+
+    @Autowired
+    AsoRepository asoRepository;
 
     public List<FuncionarioDTO> findAll(){
         logger.info("Finding all Funcionários");
@@ -86,6 +91,10 @@ public class FuncionarioServices {
 
         Funcionario entity = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID"));
+
+        if (asoRepository.existsByFuncionarioId(id)){
+            throw new BadRequestException("Não é possível deletar um funcionário que possui ASOs cadastrados.");
+        }
         repository.delete(entity);
     }
 

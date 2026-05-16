@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+//@CrossOrigin(origins = "http://localhost:8080")
 @RestController
 @RequestMapping("/api/funcionario/v1")
 @Tag(name = "Funcionarios", description = "Endpoints for Managing funcionarios")

@@ -1,5 +1,6 @@
 package PedroM_Guerra.controle_aso.exception.handler;
 
+import PedroM_Guerra.controle_aso.exception.BadRequestException;
 import PedroM_Guerra.controle_aso.exception.ExceptionResponse;
 import PedroM_Guerra.controle_aso.exception.RequiredObjectIsNullException;
 import PedroM_Guerra.controle_aso.exception.ResourceNotFoundException;
@@ -46,5 +47,14 @@ public class CustomEntityResponseHandler extends ResponseEntityExceptionHandler 
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(BadRequestException.class)
+    public final ResponseEntity<ExceptionResponse> handleBadRequestExceptions(BadRequestException ex, WebRequest request){
+        ExceptionResponse response = new ExceptionResponse(
+                new Date(),
+                ex.getMessage(),
+                request.getDescription(false));
+
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
 
 }

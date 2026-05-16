@@ -1,4 +1,7 @@
-PedroM_Guerra\controle_aso\unittests\mapper\mocks\MockFuncionario.class
-PedroM_Guerra\controle_aso\integrationtests\swagger\SwaggerIntegrationTest.class
 PedroM_Guerra\controle_aso\unittests\mapper\ObjectMapperTests.class
 PedroM_Guerra\controle_aso\config\TestConfigs.class
+PedroM_Guerra\controle_aso\unittests\mapper\mocks\MockFuncionario.class
+PedroM_Guerra\controle_aso\integrationtests\swagger\SwaggerIntegrationTest.class
+PedroM_Guerra\controle_aso\unittests\services\FuncionarioServicesTest.class
+PedroM_Guerra\controle_aso\unittests\services\AsoServicesTest.class
+PedroM_Guerra\controle_aso\unittests\mapper\mocks\MockAso.class

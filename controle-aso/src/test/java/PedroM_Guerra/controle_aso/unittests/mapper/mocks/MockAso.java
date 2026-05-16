@@ -64,7 +64,7 @@ public class MockAso {
         TipoAso[] tipoAsos = TipoAso.values();
 
         aso.setId(number.longValue());
-        aso.setFuncionario(mockFuncionario.mockEntity(number));
+        aso.setFuncionarioId(number.longValue());
 
         aso.setCrmMedico("CRM Test" + number);
         aso.setNomeMedico("Nome Medico Test" + number);

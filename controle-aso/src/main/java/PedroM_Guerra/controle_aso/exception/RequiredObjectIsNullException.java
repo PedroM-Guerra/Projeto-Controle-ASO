@@ -14,5 +14,4 @@ public class RequiredObjectIsNullException extends RuntimeException {
         super(message);
     }
 
-
 }

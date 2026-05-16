@@ -1,6 +1,7 @@
 package PedroM_Guerra.controle_aso.unittests.services;
 
 import PedroM_Guerra.controle_aso.data.dto.AsoDTO;
+import PedroM_Guerra.controle_aso.data.dto.FuncionarioDTO;
 import PedroM_Guerra.controle_aso.enums.ResultadoAso;
 import PedroM_Guerra.controle_aso.enums.TipoAso;
 import PedroM_Guerra.controle_aso.exception.RequiredObjectIsNullException;
@@ -89,7 +90,7 @@ class AsoServicesTest {
                 ));
 
         //assertNotNull(result.getFuncionario());
-        assertEquals(1L, result.getFuncionario().getId());
+        assertEquals(1L, result.getFuncionarioId());
 
         assertEquals("CRM Test1", result.getCrmMedico());
         assertEquals("Nome Medico Test1", result.getNomeMedico());
@@ -156,7 +157,7 @@ class AsoServicesTest {
                         && link.getType().equals("DELETE")
                 ));
 
-        assertEquals(1L, result.getFuncionario().getId());
+        assertEquals(1L, result.getFuncionarioId());
 
         assertEquals("CRM Test1", result.getCrmMedico());
         assertEquals("Nome Medico Test1", result.getNomeMedico());
@@ -190,8 +191,14 @@ class AsoServicesTest {
         persisted.setId(1L);
 
         AsoDTO dto = input.mockDTO(1);
+        dto.setId(1L);
+        dto.setFuncionarioId(1L);
+
+        Funcionario funcionarioMock = new Funcionario();
+        funcionarioMock.setId(1L);
 
         when(repository.findById(1L)).thenReturn(Optional.of(aso));
+        when(funcionarioRepository.findById(1L)).thenReturn(Optional.of(funcionarioMock));
         when(repository.save(aso)).thenReturn(persisted);
 
         var result = service.update(dto);
@@ -230,7 +237,7 @@ class AsoServicesTest {
                         && link.getType().equals("DELETE")
                 ));
 
-        assertEquals(1L, result.getFuncionario().getId());
+        assertEquals(1L, result.getFuncionarioId());
 
         assertEquals("CRM Test1", result.getCrmMedico());
         assertEquals("Nome Medico Test1", result.getNomeMedico());
@@ -314,7 +321,7 @@ class AsoServicesTest {
                         && link.getType().equals("DELETE")
                 ));
 
-        assertEquals(1L, asoOne.getFuncionario().getId());
+        assertEquals(1L, asoOne.getFuncionarioId());
 
         assertEquals("CRM Test1", asoOne.getCrmMedico());
         assertEquals("Nome Medico Test1", asoOne.getNomeMedico());
@@ -363,7 +370,7 @@ class AsoServicesTest {
                         && link.getType().equals("DELETE")
                 ));
 
-        assertEquals(4L, asoFour.getFuncionario().getId());
+        assertEquals(4L, asoFour.getFuncionarioId());
 
         assertEquals("CRM Test4", asoFour.getCrmMedico());
         assertEquals("Nome Medico Test4", asoFour.getNomeMedico());
@@ -412,7 +419,7 @@ class AsoServicesTest {
                         && link.getType().equals("DELETE")
                 ));
 
-        assertEquals(7L, asoSeven.getFuncionario().getId());
+        assertEquals(7L, asoSeven.getFuncionarioId());
 
         assertEquals("CRM Test7", asoSeven.getCrmMedico());
         assertEquals("Nome Medico Test7", asoSeven.getNomeMedico());
