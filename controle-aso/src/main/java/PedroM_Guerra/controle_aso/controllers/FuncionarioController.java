@@ -46,6 +46,13 @@ public class FuncionarioController implements FuncionarioControllerDocs {
         return service.update(funcionario);
     }
 
+    @PatchMapping(value = "/{id}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Override
+    public FuncionarioDTO disableFuncionario(@PathVariable("id") Long id) {
+        return service.disablePerson(id);
+    }
+
     @DeleteMapping(value = "/{id}")
     @Override
     public ResponseEntity<?> delete(@PathVariable("id") Long id){

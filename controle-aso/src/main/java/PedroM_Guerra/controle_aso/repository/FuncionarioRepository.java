@@ -2,6 +2,13 @@ package PedroM_Guerra.controle_aso.repository;
 
 import PedroM_Guerra.controle_aso.model.Funcionario;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface FuncionarioRepository extends JpaRepository<Funcionario, Long> {
+
+    @Modifying(clearAutomatically = true)
+    @Query("UPDATE Funcionario f SET f.enabled = false WHERE f.id =:id")
+    void disableFuncionario(@Param("id") Long id);
 }

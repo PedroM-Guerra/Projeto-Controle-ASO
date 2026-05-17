@@ -1,4 +1,4 @@
-package PedroM_Guerra.controle_aso.integrationtests.controllers;
+package PedroM_Guerra.controle_aso.integrationtests.controllers.cors;
 
 import PedroM_Guerra.controle_aso.config.TestConfigs;
 import PedroM_Guerra.controle_aso.enums.CargoFuncionario;
@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class FuncionarioControllerTest{
+class FuncionarioControllerCorsTest {
 
     private static RequestSpecification specification;
     private static ObjectMapper objectMapper;
@@ -90,6 +90,7 @@ class FuncionarioControllerTest{
         assertEquals(CargoFuncionario.SUPERVISOR, createdFuncionario.getCargo());
         assertEquals(LocalDate.of(2001, 5, 7), createdFuncionario.getDataAdmissao());
         assertEquals(LocalDate.of(2025, 11, 2), createdFuncionario.getDataDemissao());
+        assertTrue(createdFuncionario.getEnabled());
     }
 
     @Test
@@ -166,6 +167,7 @@ class FuncionarioControllerTest{
         assertEquals(CargoFuncionario.SUPERVISOR, createdFuncionario.getCargo());
         assertEquals(LocalDate.of(2001, 5, 7), createdFuncionario.getDataAdmissao());
         assertEquals(LocalDate.of(2025, 11, 2), createdFuncionario.getDataDemissao());
+        assertTrue(createdFuncionario.getEnabled());
     }
 
     @Test
@@ -221,5 +223,6 @@ class FuncionarioControllerTest{
         funcionario.setCargo(CargoFuncionario.SUPERVISOR);
         funcionario.setDataAdmissao(LocalDate.of(2001, 5, 7));
         funcionario.setDataDemissao(LocalDate.of(2025, 11, 2));
+        funcionario.setEnabled(true);
     }
 }

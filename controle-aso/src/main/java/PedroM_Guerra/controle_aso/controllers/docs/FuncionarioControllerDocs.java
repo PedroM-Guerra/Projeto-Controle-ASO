@@ -83,6 +83,23 @@ public interface FuncionarioControllerDocs {
             })
     FuncionarioDTO update(@RequestBody FuncionarioDTO funcionario);
 
+    @Operation(summary = "Disable a Funcionario",
+            description = "Disable a Funcionario by their ID.",
+            tags = {"Funcionarios"},
+            responses = {
+                    @ApiResponse(
+                            description = "Success",
+                            responseCode = "200",
+                            content = @Content(schema = @Schema(implementation = FuncionarioDTO.class))
+                    ),
+                    @ApiResponse(description = "No content", responseCode = "204", content = @Content),
+                    @ApiResponse(description = "Bad request", responseCode = "400", content = @Content),
+                    @ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
+                    @ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
+                    @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content)
+            })
+    FuncionarioDTO disableFuncionario(@PathVariable("id") Long id);
+
     @Operation(summary = "Deletes a Funcionario",
             description = "Delete a Funcionario by their ID.",
             tags = {"Funcionarios"},

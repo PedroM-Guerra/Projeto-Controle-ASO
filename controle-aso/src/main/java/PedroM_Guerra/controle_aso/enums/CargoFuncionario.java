@@ -38,7 +38,7 @@ public enum CargoFuncionario {
             case "ARQ" -> ARQUITETO;
             case "TI"  -> TECNICO;
             case "MED" -> MEDICO;
-            case "OP"  -> OPERARIO;
+            case "OPR"  -> OPERARIO;
             case "SEC" -> SECRETARIO;
             case "AUX" -> AUXILIAR;
             default -> throw new IllegalArgumentException("Cargo inválido: " + valor);

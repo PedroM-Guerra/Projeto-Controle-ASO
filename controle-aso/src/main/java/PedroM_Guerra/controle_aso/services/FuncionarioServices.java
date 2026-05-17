@@ -10,6 +10,7 @@ import static PedroM_Guerra.controle_aso.mapper.ObjectMapper.parseObject;
 import PedroM_Guerra.controle_aso.model.Funcionario;
 import PedroM_Guerra.controle_aso.repository.AsoRepository;
 import PedroM_Guerra.controle_aso.repository.FuncionarioRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -86,6 +87,20 @@ public class FuncionarioServices {
         return dto;
     }
 
+    @Transactional
+    public FuncionarioDTO disablePerson(Long id){
+        logger.info("Disabling one Funcionário");
+
+        repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID"));
+        repository.disableFuncionario(id);
+
+        var entity = repository.findById(id).get();
+        var dto = parseObject(entity, FuncionarioDTO.class);
+        addHateoasLinks(dto);
+        return dto;
+    }
+
     public void delete(Long id){
         logger.info("Deleting one Funcionário");
 
@@ -103,6 +118,7 @@ public class FuncionarioServices {
         dto.add(linkTo(methodOn(FuncionarioController.class).findAll()).withRel("findAll").withType("GET"));
         dto.add(linkTo(methodOn(FuncionarioController.class).create(dto)).withRel("create").withType("POST"));
         dto.add(linkTo(methodOn(FuncionarioController.class).update(dto)).withRel("update").withType("PUT"));
+        dto.add(linkTo(methodOn(FuncionarioController.class).disableFuncionario(dto.getId())).withRel("disable").withType("PATCH"));
         dto.add(linkTo(methodOn(FuncionarioController.class).delete(dto.getId())).withRel("delete").withType("DELETE"));
     }
 }
