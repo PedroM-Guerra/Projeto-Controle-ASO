@@ -1,25 +1,23 @@
-package PedroM_Guerra.controle_aso.data.dto;
+package PedroM_Guerra.controle_aso.integrationtests.dto;
 
 import PedroM_Guerra.controle_aso.enums.CargoFuncionario;
 import PedroM_Guerra.controle_aso.enums.GeneroFuncionario;
 import PedroM_Guerra.controle_aso.enums.SetorFuncionario;
 import io.swagger.v3.oas.annotations.media.Schema;
-import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
-
-public class FuncionarioDTO extends RepresentationModel<FuncionarioDTO> implements Serializable {
+public class FuncionarioDTO implements Serializable {
 
     @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private Long id;
     private String nome;
     private String cpf;
-    private String matricula;
-    private LocalDate dataNascimento;
     private GeneroFuncionario genero;
+    private LocalDate dataNascimento;
+    private String matricula;
     private SetorFuncionario setor;
     private CargoFuncionario cargo;
     private LocalDate dataAdmissao;

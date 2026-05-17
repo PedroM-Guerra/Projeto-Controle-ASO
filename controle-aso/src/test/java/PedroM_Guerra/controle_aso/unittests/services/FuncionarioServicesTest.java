@@ -6,6 +6,7 @@ import PedroM_Guerra.controle_aso.enums.GeneroFuncionario;
 import PedroM_Guerra.controle_aso.enums.SetorFuncionario;
 import PedroM_Guerra.controle_aso.exception.RequiredObjectIsNullException;
 import PedroM_Guerra.controle_aso.model.Funcionario;
+import PedroM_Guerra.controle_aso.repository.AsoRepository;
 import PedroM_Guerra.controle_aso.repository.FuncionarioRepository;
 import PedroM_Guerra.controle_aso.services.FuncionarioServices;
 import PedroM_Guerra.controle_aso.unittests.mapper.mocks.MockFuncionario;
@@ -17,6 +18,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -36,6 +38,9 @@ class FuncionarioServicesTest {
 
     @Mock
     FuncionarioRepository repository;
+
+    @Mock
+    AsoRepository asoRepository;
 
     @BeforeEach
     void setUp() {
@@ -246,12 +251,18 @@ class FuncionarioServicesTest {
     void delete() {
         Funcionario funcionario = input.mockEntity(1);
         funcionario.setId(1L);
+
         when(repository.findById(1L)).thenReturn(Optional.of(funcionario));
+        when(asoRepository.existsByFuncionarioId(1L)).thenReturn(false);
 
         service.delete(1L);
+
         verify(repository, times(1)).findById(anyLong());
+        verify(asoRepository, times(1)).existsByFuncionarioId(1L);
         verify(repository, times(1)).delete(any(Funcionario.class));
+
         verifyNoMoreInteractions(repository);
+        verifyNoMoreInteractions(asoRepository);
     }
 
     @Test
