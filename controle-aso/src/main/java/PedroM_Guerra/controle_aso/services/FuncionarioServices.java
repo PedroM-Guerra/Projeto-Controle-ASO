@@ -5,7 +5,6 @@ import PedroM_Guerra.controle_aso.data.dto.FuncionarioDTO;
 import PedroM_Guerra.controle_aso.exception.BadRequestException;
 import PedroM_Guerra.controle_aso.exception.RequiredObjectIsNullException;
 import PedroM_Guerra.controle_aso.exception.ResourceNotFoundException;
-import static PedroM_Guerra.controle_aso.mapper.ObjectMapper.parseListObjects;
 import static PedroM_Guerra.controle_aso.mapper.ObjectMapper.parseObject;
 import PedroM_Guerra.controle_aso.model.Funcionario;
 import PedroM_Guerra.controle_aso.repository.AsoRepository;
@@ -15,8 +14,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.PagedModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Service;
-import java.util.List;
+
 import java.util.logging.Logger;
 
 @Service
@@ -30,12 +35,47 @@ public class FuncionarioServices {
     @Autowired
     AsoRepository asoRepository;
 
-    public List<FuncionarioDTO> findAll(){
+    @Autowired
+    PagedResourcesAssembler<FuncionarioDTO> assembler;
+
+    public PagedModel<EntityModel<FuncionarioDTO>> findAll(Pageable pageable){
         logger.info("Finding all Funcionários");
 
-        var funcionarios =  parseListObjects(repository.findAll(), FuncionarioDTO.class);
-        funcionarios.forEach(this::addHateoasLinks);
-        return funcionarios;
+        var funcionarios = repository.findAll(pageable);
+
+        var funcionariosWithLinks = funcionarios.map(funcionario -> {
+            var dto = parseObject(funcionario, FuncionarioDTO.class);
+            addHateoasLinks(dto);
+            return dto;
+        });
+        Link findAllLink = WebMvcLinkBuilder.linkTo(
+                WebMvcLinkBuilder.methodOn(FuncionarioController.class)
+                        .findAll(
+                                pageable.getPageNumber(),
+                                pageable.getPageSize(),
+                                String.valueOf(pageable.getSort())))
+                .withSelfRel();
+        return assembler.toModel(funcionariosWithLinks, findAllLink);
+    }
+
+public PagedModel<EntityModel<FuncionarioDTO>> findByName(String nome, Pageable pageable){
+        logger.info("Finding Funcionários by Name!");
+
+        var funcionarios = repository.FindFuncionariosByName(nome, pageable);
+
+        var funcionariosWithLinks = funcionarios.map(funcionario -> {
+            var dto = parseObject(funcionario, FuncionarioDTO.class);
+            addHateoasLinks(dto);
+            return dto;
+        });
+        Link findAllLink = WebMvcLinkBuilder.linkTo(
+                WebMvcLinkBuilder.methodOn(FuncionarioController.class)
+                        .findAll(
+                                pageable.getPageNumber(),
+                                pageable.getPageSize(),
+                                String.valueOf(pageable.getSort())))
+                .withSelfRel();
+        return assembler.toModel(funcionariosWithLinks, findAllLink);
     }
 
     public FuncionarioDTO findById(Long id){
@@ -88,7 +128,7 @@ public class FuncionarioServices {
     }
 
     @Transactional
-    public FuncionarioDTO disablePerson(Long id){
+    public FuncionarioDTO disableFuncionario(Long id){
         logger.info("Disabling one Funcionário");
 
         repository.findById(id)
@@ -115,7 +155,7 @@ public class FuncionarioServices {
 
     private void addHateoasLinks(FuncionarioDTO dto) {
         dto.add(linkTo(methodOn(FuncionarioController.class).findById(dto.getId())).withSelfRel().withType("GET"));
-        dto.add(linkTo(methodOn(FuncionarioController.class).findAll()).withRel("findAll").withType("GET"));
+        dto.add(linkTo(methodOn(FuncionarioController.class).findAll(1, 12, "asc")).withRel("findAll").withType("GET"));
         dto.add(linkTo(methodOn(FuncionarioController.class).create(dto)).withRel("create").withType("POST"));
         dto.add(linkTo(methodOn(FuncionarioController.class).update(dto)).withRel("update").withType("PUT"));
         dto.add(linkTo(methodOn(FuncionarioController.class).disableFuncionario(dto.getId())).withRel("disable").withType("PATCH"));

@@ -5,11 +5,16 @@ import PedroM_Guerra.controle_aso.data.dto.FuncionarioDTO;
 import PedroM_Guerra.controle_aso.services.FuncionarioServices;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/funcionario/v1")
@@ -21,8 +26,28 @@ public class FuncionarioController implements FuncionarioControllerDocs {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @Override
-    public List<FuncionarioDTO> findAll(){
-        return service.findAll();
+    public ResponseEntity<PagedModel<EntityModel<FuncionarioDTO>>> findAll(
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "size", defaultValue = "12") Integer size,
+            @RequestParam(value = "direction", defaultValue = "asc") String direction
+    ){
+        var sortDirection = "desc".equalsIgnoreCase(direction) ? Direction.DESC: Direction.ASC;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, "nome"));
+        return ResponseEntity.ok(service.findAll(pageable));
+    }
+
+    @GetMapping(value = "/findFuncionarioByName/{nome}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Override
+    public ResponseEntity<PagedModel<EntityModel<FuncionarioDTO>>> findByName(
+            @PathVariable("nome") String nome,
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "size", defaultValue = "12") Integer size,
+            @RequestParam(value = "direction", defaultValue = "asc") String direction
+    ){
+        var sortDirection = "desc".equalsIgnoreCase(direction) ? Direction.DESC: Direction.ASC;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, "nome"));
+        return ResponseEntity.ok(service.findByName(nome, pageable));
     }
 
     @GetMapping(value = "/{id}",
@@ -50,7 +75,7 @@ public class FuncionarioController implements FuncionarioControllerDocs {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Override
     public FuncionarioDTO disableFuncionario(@PathVariable("id") Long id) {
-        return service.disablePerson(id);
+        return service.disableFuncionario(id);
     }
 
     @DeleteMapping(value = "/{id}")

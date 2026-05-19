@@ -5,12 +5,13 @@ import PedroM_Guerra.controle_aso.enums.GeneroFuncionario;
 import PedroM_Guerra.controle_aso.enums.SetorFuncionario;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
-
+@Relation(collectionRelation = "funcionarios")
 public class FuncionarioDTO extends RepresentationModel<FuncionarioDTO> implements Serializable {
 
     @Schema(accessMode = Schema.AccessMode.READ_ONLY)

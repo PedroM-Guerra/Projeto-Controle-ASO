@@ -8,6 +8,12 @@ import PedroM_Guerra.controle_aso.model.Aso;
 import PedroM_Guerra.controle_aso.repository.AsoRepository;
 import PedroM_Guerra.controle_aso.repository.FuncionarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.PagedModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,12 +35,49 @@ public class AsoServices {
     @Autowired
     FuncionarioRepository funcionarioRepository;
 
-    public List<AsoDTO> findAll(){
+    @Autowired
+    PagedResourcesAssembler<AsoDTO> assembler;
+
+    public PagedModel<EntityModel<AsoDTO>> findAll(Pageable pageable){
         logger.info("Finding all ASOs");
 
-        var asos =  parseListObjects(repository.findAll(), AsoDTO.class);
-        asos.forEach(this::addHateoasLinks);
-        return asos;
+        var asos = repository.findAll(pageable);
+
+        var asosWithLinks = asos.map(aso -> {
+            var dto = parseObject(aso, AsoDTO.class);
+            addHateoasLinks(dto);
+            return dto;
+        });
+
+        Link findAllLink = WebMvcLinkBuilder.linkTo(
+                        WebMvcLinkBuilder.methodOn(AsoController.class)
+                                .findAll(
+                                        pageable.getPageNumber(),
+                                        pageable.getPageSize(),
+                                        String.valueOf(pageable.getSort())))
+                .withSelfRel();
+        return assembler.toModel(asosWithLinks, findAllLink);
+    }
+
+    public PagedModel<EntityModel<AsoDTO>> findAsosByFuncionarioId(Long funcionarioId, Pageable pageable){
+        logger.info("Finding ASOs by Funcionario Id");
+
+        var asos = repository.findAsosByFuncionarioId(funcionarioId, pageable);
+
+        var asosWithLinks = asos.map(aso -> {
+            var dto = parseObject(aso, AsoDTO.class);
+            addHateoasLinks(dto);
+            return dto;
+        });
+
+        Link findAllLink = WebMvcLinkBuilder.linkTo(
+                        WebMvcLinkBuilder.methodOn(AsoController.class)
+                                .findAll(
+                                        pageable.getPageNumber(),
+                                        pageable.getPageSize(),
+                                        String.valueOf(pageable.getSort())))
+                .withSelfRel();
+        return assembler.toModel(asosWithLinks, findAllLink);
     }
 
     public AsoDTO findById(Long id){
@@ -109,7 +152,7 @@ public class AsoServices {
 
     private void addHateoasLinks(AsoDTO dto) {
         dto.add(linkTo(methodOn(AsoController.class).findById(dto.getId())).withSelfRel().withType("GET"));
-        dto.add(linkTo(methodOn(AsoController.class).findAll()).withRel("findAll").withType("GET"));
+        dto.add(linkTo(methodOn(AsoController.class).findAll(1, 12, "asc")).withRel("findAll").withType("GET"));
         dto.add(linkTo(methodOn(AsoController.class).create(dto)).withRel("create").withType("POST"));
         dto.add(linkTo(methodOn(AsoController.class).update(dto)).withRel("update").withType("PUT"));
         dto.add(linkTo(methodOn(AsoController.class).delete(dto.getId())).withRel("delete").withType("DELETE"));

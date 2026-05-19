@@ -6,11 +6,13 @@ import PedroM_Guerra.controle_aso.model.Funcionario;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
+@Relation(collectionRelation = "asos")
 public class AsoDTO extends RepresentationModel<AsoDTO> implements Serializable {
 
     @Schema(accessMode = Schema.AccessMode.READ_ONLY)

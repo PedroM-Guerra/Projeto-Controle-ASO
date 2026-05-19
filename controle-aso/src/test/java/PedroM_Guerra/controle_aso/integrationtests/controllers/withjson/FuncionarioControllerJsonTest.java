@@ -252,24 +252,6 @@ class FuncionarioControllerJsonTest {
         assertTrue(funcionarioFour.getEnabled());
     }
 
-//    @AfterAll
-//    static void tearDown() {
-//        if (funcionario != null && funcionario.getId() != null) {
-//            specification = new RequestSpecBuilder()
-//                    .addHeader(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_FRONT)
-//                    .setBasePath("/api/funcionario/v1")
-//                    .setPort(TestConfigs.SERVER_PORT)
-//                    .build();
-//
-//            given(specification)
-//                    .pathParam("id", funcionario.getId())
-//                    .when()
-//                    .delete("{id}")
-//                    .then()
-//                    .statusCode(204);
-//        }
-//    }
-
     private void mockFuncionario() {
         funcionario.setNome("Marcielly Gislayne");
         funcionario.setCpf("12212312987");
