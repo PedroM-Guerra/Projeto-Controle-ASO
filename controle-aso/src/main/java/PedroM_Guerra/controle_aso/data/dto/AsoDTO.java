@@ -15,12 +15,11 @@ import java.util.Objects;
 @Relation(collectionRelation = "asos")
 public class AsoDTO extends RepresentationModel<AsoDTO> implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private Long id;
-
     private Long funcionarioId;
-    //private Funcionario funcionario;
-
     private String crmMedico;
     private String nomeMedico;
     private String descricaoExame;
@@ -30,6 +29,9 @@ public class AsoDTO extends RepresentationModel<AsoDTO> implements Serializable 
     private TipoAso tipoAso;
     private ResultadoAso resultadoAso;
     //criar cadastradoPor usuario futuramente
+
+    public AsoDTO(){
+    }
     
     public Long getId() {
         return id;

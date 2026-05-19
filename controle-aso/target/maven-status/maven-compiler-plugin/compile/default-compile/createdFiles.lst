@@ -7,6 +7,7 @@ PedroM_Guerra\controle_aso\mapper\ObjectMapper.class
 PedroM_Guerra\controle_aso\enums\ResultadoAso.class
 PedroM_Guerra\controle_aso\mapper\ObjectMapper$1.class
 PedroM_Guerra\controle_aso\exception\handler\CustomEntityResponseHandler.class
+PedroM_Guerra\controle_aso\config\WebConfig.class
 PedroM_Guerra\controle_aso\enums\TipoAso.class
 PedroM_Guerra\controle_aso\config\OpenApiConfig.class
 PedroM_Guerra\controle_aso\services\AsoServices.class
@@ -23,4 +24,5 @@ PedroM_Guerra\controle_aso\repository\AsoRepository.class
 PedroM_Guerra\controle_aso\data\dto\AsoDTO.class
 PedroM_Guerra\controle_aso\model\Aso.class
 PedroM_Guerra\controle_aso\controllers\FuncionarioController.class
+PedroM_Guerra\controle_aso\exception\BadRequestException.class
 PedroM_Guerra\controle_aso\exception\RequiredObjectIsNullException.class

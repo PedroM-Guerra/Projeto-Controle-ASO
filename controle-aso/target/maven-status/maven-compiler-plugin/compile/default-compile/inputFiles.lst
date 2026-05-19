@@ -1,4 +1,5 @@
 C:\TCC\Projeto Controle ASO\controle-aso\src\main\java\PedroM_Guerra\controle_aso\config\OpenApiConfig.java
+C:\TCC\Projeto Controle ASO\controle-aso\src\main\java\PedroM_Guerra\controle_aso\config\WebConfig.java
 C:\TCC\Projeto Controle ASO\controle-aso\src\main\java\PedroM_Guerra\controle_aso\controllers\AsoController.java
 C:\TCC\Projeto Controle ASO\controle-aso\src\main\java\PedroM_Guerra\controle_aso\controllers\docs\AsoControllerDocs.java
 C:\TCC\Projeto Controle ASO\controle-aso\src\main\java\PedroM_Guerra\controle_aso\controllers\docs\FuncionarioControllerDocs.java
@@ -11,6 +12,7 @@ C:\TCC\Projeto Controle ASO\controle-aso\src\main\java\PedroM_Guerra\controle_as
 C:\TCC\Projeto Controle ASO\controle-aso\src\main\java\PedroM_Guerra\controle_aso\enums\ResultadoAso.java
 C:\TCC\Projeto Controle ASO\controle-aso\src\main\java\PedroM_Guerra\controle_aso\enums\SetorFuncionario.java
 C:\TCC\Projeto Controle ASO\controle-aso\src\main\java\PedroM_Guerra\controle_aso\enums\TipoAso.java
+C:\TCC\Projeto Controle ASO\controle-aso\src\main\java\PedroM_Guerra\controle_aso\exception\BadRequestException.java
 C:\TCC\Projeto Controle ASO\controle-aso\src\main\java\PedroM_Guerra\controle_aso\exception\ExceptionResponse.java
 C:\TCC\Projeto Controle ASO\controle-aso\src\main\java\PedroM_Guerra\controle_aso\exception\handler\CustomEntityResponseHandler.java
 C:\TCC\Projeto Controle ASO\controle-aso\src\main\java\PedroM_Guerra\controle_aso\exception\RequiredObjectIsNullException.java

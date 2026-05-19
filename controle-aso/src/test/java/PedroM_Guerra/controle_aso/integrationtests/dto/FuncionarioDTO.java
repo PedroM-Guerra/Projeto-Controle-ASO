@@ -11,6 +11,8 @@ import java.util.Objects;
 
 public class FuncionarioDTO implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private Long id;
     private String nome;
@@ -26,6 +28,8 @@ public class FuncionarioDTO implements Serializable {
 
 //    private Usuario cadastradoPor;
 
+    public FuncionarioDTO() {
+    }
 
     public Long getId() {
         return id;

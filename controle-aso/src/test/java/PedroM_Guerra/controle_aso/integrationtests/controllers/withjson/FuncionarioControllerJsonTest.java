@@ -5,6 +5,7 @@ import PedroM_Guerra.controle_aso.enums.CargoFuncionario;
 import PedroM_Guerra.controle_aso.enums.GeneroFuncionario;
 import PedroM_Guerra.controle_aso.enums.SetorFuncionario;
 import PedroM_Guerra.controle_aso.integrationtests.dto.FuncionarioDTO;
+import PedroM_Guerra.controle_aso.integrationtests.dto.wrappers.WrapperFuncionarioDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -208,6 +209,7 @@ class FuncionarioControllerJsonTest {
 
         var content = given(specification)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
+                .queryParams("page", 3, "size", 12, "direction", "asc")
                 .when()
                 .get()
                 .then()
@@ -217,39 +219,93 @@ class FuncionarioControllerJsonTest {
                 .body()
                 .asString();
 
-        List<FuncionarioDTO> funcionarios = objectMapper.readValue(content, new TypeReference<List<FuncionarioDTO>>() {});
+        WrapperFuncionarioDTO wrapper = objectMapper.readValue(content, WrapperFuncionarioDTO.class);
+        List<FuncionarioDTO> funcionarios = wrapper.getEmbeded().getFuncionarios();
 
         FuncionarioDTO funcionarioOne = funcionarios.get(0);
 
         assertNotNull(funcionarioOne.getId());
         assertTrue(funcionarioOne.getId() > 0);
 
-        assertEquals("Carlos Fagundes", funcionarioOne.getNome());
-        assertEquals("1234561377", funcionarioOne.getCpf());
-        assertEquals("15541", funcionarioOne.getMatricula());
-        assertEquals(LocalDate.of(2002, 10, 6), funcionarioOne.getDataNascimento());
+        assertEquals("Alys Ryles", funcionarioOne.getNome());
+        assertEquals("00000285084", funcionarioOne.getCpf());
+        assertEquals("85084", funcionarioOne.getMatricula());
+        assertEquals(LocalDate.of(2008, 10, 14), funcionarioOne.getDataNascimento());
         assertEquals(GeneroFuncionario.MASCULINO, funcionarioOne.getGenero());
-        assertEquals(SetorFuncionario.TECNOLOGIA_INFORMACAO, funcionarioOne.getSetor());
+        assertEquals(SetorFuncionario.OPERACIONAL, funcionarioOne.getSetor());
         assertEquals(CargoFuncionario.ESTAGIARIO, funcionarioOne.getCargo());
-        assertEquals(LocalDate.of(2025, 3, 11), funcionarioOne.getDataAdmissao());
-        assertNull(funcionarioOne.getDataDemissao());
-        assertTrue(funcionarioOne.getEnabled());
+        assertEquals(LocalDate.of(2022, 4, 17), funcionarioOne.getDataAdmissao());
+        assertEquals(LocalDate.of(2025, 3, 3), funcionarioOne.getDataDemissao());
+        assertFalse(funcionarioOne.getEnabled());
 
         FuncionarioDTO funcionarioFour = funcionarios.get(4);
 
         assertNotNull(funcionarioFour.getId());
         assertTrue(funcionarioFour.getId() > 0);
 
-        assertEquals("Carlos Eduardo", funcionarioFour.getNome());
-        assertEquals("1234561381", funcionarioFour.getCpf());
-        assertEquals("15545", funcionarioFour.getMatricula());
-        assertEquals(LocalDate.of(1992, 11, 2), funcionarioFour.getDataNascimento());
+        assertEquals("Amandi O'Fallowne", funcionarioFour.getNome());
+        assertEquals("00000443464", funcionarioFour.getCpf());
+        assertEquals("43464", funcionarioFour.getMatricula());
+        assertEquals(LocalDate.of(2007, 4, 9), funcionarioFour.getDataNascimento());
         assertEquals(GeneroFuncionario.MASCULINO, funcionarioFour.getGenero());
-        assertEquals(SetorFuncionario.ENGENHARIA, funcionarioFour.getSetor());
-        assertEquals(CargoFuncionario.ENGENHEIRO, funcionarioFour.getCargo());
-        assertEquals(LocalDate.of(2022, 6, 10), funcionarioFour.getDataAdmissao());
-        assertEquals(LocalDate.of(2026, 4, 3), funcionarioFour.getDataDemissao());
-        assertTrue(funcionarioFour.getEnabled());
+        assertEquals(SetorFuncionario.RECURSOS_HUMANOS, funcionarioFour.getSetor());
+        assertEquals(CargoFuncionario.DIRETOR, funcionarioFour.getCargo());
+        assertEquals(LocalDate.of(2004, 9, 16), funcionarioFour.getDataAdmissao());
+        assertEquals(LocalDate.of(2026, 3, 28), funcionarioFour.getDataDemissao());
+        assertFalse(funcionarioFour.getEnabled());
+    }
+
+    @Test
+    @Order(7)
+    void findByNameTest() throws JsonProcessingException {
+        //{{baseUrl}}/api/funcionario/v1/findFuncionarioByName/and?page=0&size=12&direction=asc
+        var content = given(specification)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .pathParam("nome", "and")
+                .queryParams("page", 0, "size", 12, "direction", "asc")
+                .when()
+                .get("findFuncionarioByName/{nome}")
+                .then()
+                .statusCode(200)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .extract()
+                .body()
+                .asString();
+
+        WrapperFuncionarioDTO wrapper = objectMapper.readValue(content, WrapperFuncionarioDTO.class);
+        List<FuncionarioDTO> funcionarios = wrapper.getEmbeded().getFuncionarios();
+
+        FuncionarioDTO funcionarioOne = funcionarios.get(0);
+
+        assertNotNull(funcionarioOne.getId());
+        assertTrue(funcionarioOne.getId() > 0);
+
+        assertEquals("Aldo Mandel", funcionarioOne.getNome());
+        assertEquals("00005527462", funcionarioOne.getCpf());
+        assertEquals("27462", funcionarioOne.getMatricula());
+        assertEquals(LocalDate.of(1951, 3, 25), funcionarioOne.getDataNascimento());
+        assertEquals(GeneroFuncionario.FEMININO, funcionarioOne.getGenero());
+        assertEquals(SetorFuncionario.TECNOLOGIA_INFORMACAO, funcionarioOne.getSetor());
+        assertEquals(CargoFuncionario.SECRETARIO, funcionarioOne.getCargo());
+        assertEquals(LocalDate.of(2018, 7, 16), funcionarioOne.getDataAdmissao());
+        assertEquals(LocalDate.of(2026, 3, 23), funcionarioOne.getDataDemissao());
+        assertFalse(funcionarioOne.getEnabled());
+
+        FuncionarioDTO funcionarioFour = funcionarios.get(4);
+
+        assertNotNull(funcionarioFour.getId());
+        assertTrue(funcionarioFour.getId() > 0);
+
+        assertEquals("Amandi O'Fallowne", funcionarioFour.getNome());
+        assertEquals("00000443464", funcionarioFour.getCpf());
+        assertEquals("43464", funcionarioFour.getMatricula());
+        assertEquals(LocalDate.of(2007, 4, 9), funcionarioFour.getDataNascimento());
+        assertEquals(GeneroFuncionario.MASCULINO, funcionarioFour.getGenero());
+        assertEquals(SetorFuncionario.RECURSOS_HUMANOS, funcionarioFour.getSetor());
+        assertEquals(CargoFuncionario.DIRETOR, funcionarioFour.getCargo());
+        assertEquals(LocalDate.of(2004, 9, 16), funcionarioFour.getDataAdmissao());
+        assertEquals(LocalDate.of(2026, 3, 28), funcionarioFour.getDataDemissao());
+        assertFalse(funcionarioFour.getEnabled());
     }
 
     private void mockFuncionario() {

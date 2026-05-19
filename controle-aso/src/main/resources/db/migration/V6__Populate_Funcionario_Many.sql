@@ -997,4 +997,5 @@ insert into funcionario (nome, enabled, cpf, matricula, data_nascimento, genero_
 ('Barron Beynke', b'1', '00007895243', '95243', '1958-12-09', 'FEMININO', 'LIMPEZA', 'ARQUITETO', '1982-04-15', '2025-08-15'),
 ('Amity Jados', b'0', '00007903162', '03162', '2005-04-01', 'FEMININO', 'LIMPEZA', 'SUPERVISOR', '1983-08-26', NULL),
 ('Bernadene Comino', b'1', '00007911081', '11081', '1972-12-12', 'MASCULINO', 'ADMINISTRACAO', 'ESTAGIARIO', '1986-10-11', '2025-03-12'),
-('Mellie Tennewell', b'0', '00007919000', '19000', '2009-01-22', 'MASCULINO', 'RECURSOS_HUMANOS', 'ENGENHEIRO', '2003-09-15', NULL);
+('Mellie Tennewell', b'0', '00007919000', '19000', '2009-01-22', 'MASCULINO', 'RECURSOS_HUMANOS', 'ENGENHEIRO', '2003-09-15', NULL),
+('Larissa Santos', b'1', '1236661385', '15649', '1982-06-07', 'FEMININO', 'ARQUITETURA', 'ARQUITETO', '2009-12-05', '2026-03-11');
