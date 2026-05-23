@@ -1,0 +1,27 @@
+# --- Backend (Java/Spring Boot) ---
+backend/target/
+backend/.gradle/
+backend/.classpath
+backend/.project
+backend/.settings/
+backend/*.log
+
+# --- Frontend (Node.js/React) ---
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.npm/
+frontend/.parcel-cache/
+frontend/.eslintcache
+frontend/*.log
+
+# --- IDEs e Editores ---
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
+
+# --- Sistema Operacional ---
+.DS_Store
+Thumbs.db

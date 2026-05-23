@@ -1,0 +1,16 @@
+C:\TCC\Projeto Controle ASO\controle-aso\src\test\java\PedroM_Guerra\controle_aso\config\TestConfigs.java
+C:\TCC\Projeto Controle ASO\controle-aso\src\test\java\PedroM_Guerra\controle_aso\integrationtests\controllers\cors\FuncionarioControllerCorsTest.java
+C:\TCC\Projeto Controle ASO\controle-aso\src\test\java\PedroM_Guerra\controle_aso\integrationtests\controllers\withjson\AsoControllerJsonTest.java
+C:\TCC\Projeto Controle ASO\controle-aso\src\test\java\PedroM_Guerra\controle_aso\integrationtests\controllers\withjson\FuncionarioControllerJsonTest.java
+C:\TCC\Projeto Controle ASO\controle-aso\src\test\java\PedroM_Guerra\controle_aso\integrationtests\dto\AsoDTO.java
+C:\TCC\Projeto Controle ASO\controle-aso\src\test\java\PedroM_Guerra\controle_aso\integrationtests\dto\FuncionarioDTO.java
+C:\TCC\Projeto Controle ASO\controle-aso\src\test\java\PedroM_Guerra\controle_aso\integrationtests\dto\wrappers\AsoEmbeddedDTO.java
+C:\TCC\Projeto Controle ASO\controle-aso\src\test\java\PedroM_Guerra\controle_aso\integrationtests\dto\wrappers\FuncionarioEmbeddedDTO.java
+C:\TCC\Projeto Controle ASO\controle-aso\src\test\java\PedroM_Guerra\controle_aso\integrationtests\dto\wrappers\WrapperAsoDTO.java
+C:\TCC\Projeto Controle ASO\controle-aso\src\test\java\PedroM_Guerra\controle_aso\integrationtests\dto\wrappers\WrapperFuncionarioDTO.java
+C:\TCC\Projeto Controle ASO\controle-aso\src\test\java\PedroM_Guerra\controle_aso\integrationtests\swagger\SwaggerIntegrationTest.java
+C:\TCC\Projeto Controle ASO\controle-aso\src\test\java\PedroM_Guerra\controle_aso\unittests\mapper\mocks\MockAso.java
+C:\TCC\Projeto Controle ASO\controle-aso\src\test\java\PedroM_Guerra\controle_aso\unittests\mapper\mocks\MockFuncionario.java
+C:\TCC\Projeto Controle ASO\controle-aso\src\test\java\PedroM_Guerra\controle_aso\unittests\mapper\ObjectMapperTests.java
+C:\TCC\Projeto Controle ASO\controle-aso\src\test\java\PedroM_Guerra\controle_aso\unittests\services\AsoServicesTest.java
+C:\TCC\Projeto Controle ASO\controle-aso\src\test\java\PedroM_Guerra\controle_aso\unittests\services\FuncionarioServicesTest.java
