@@ -20,7 +20,7 @@ public class Funcionario implements Serializable {
     @Column(name = "nome", nullable = false, length = 255)
     private String nome;
 
-    @Column(name = "enabled", nullable = false)
+    @Column(name = "enabled", nullable = false, columnDefinition = "BIT(1) DEFAULT 1")
     private Boolean enabled;
 
     @Column(name = "cpf", nullable = false, unique = true, length = 11)

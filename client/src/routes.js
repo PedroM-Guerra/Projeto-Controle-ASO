@@ -8,8 +8,8 @@ export default function AppRoutes(){
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<Funcionarios/>}></Route>
-                <Route path="/funcionario/new" element={<NewFuncionario/>}></Route>
+                <Route path="/funcionarios" element={<Funcionarios/>}></Route>
+                <Route path="/funcionario/new/:funcionarioId" element={<NewFuncionario/>}></Route>
             </Routes>
         </BrowserRouter>
     )

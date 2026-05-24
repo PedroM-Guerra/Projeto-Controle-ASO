@@ -7,6 +7,25 @@
     box-sizing: border-box;
 }
 
+.button {
+    display: inline-block;
+    height: 50px;
+    padding: 0 24px;
+    background: #251fc5;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: 700;
+    text-decoration: none; /* Remove o sublinhado do link */
+    font-size: 16px;
+    line-height: 50px; /* Centraliza o texto verticalmente */
+    transition: filter 0.2s;
+    margin-top: 20px;
+}
+
+.button:hover {
+    filter: brightness(80%); /* Efeito de escurecer ao passar o mouse */
+}
+
 body{
     font: 400 14px Roboto, sans-serif;
     background: #f0f0f0;
