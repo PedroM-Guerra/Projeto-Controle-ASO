@@ -14,7 +14,8 @@ public interface FuncionarioRepository extends JpaRepository<Funcionario, Long> 
     @Query("UPDATE Funcionario f SET f.enabled = false WHERE f.id =:id")
     void disableFuncionario(@Param("id") Long id);
 
-    @Query("SELECT f FROM Funcionario f WHERE f.nome LIKE LOWER(CONCAT ('%',:nome,'%')) AND f.enabled = true")
+    @Query("SELECT f FROM Funcionario f WHERE LOWER(f.nome) LIKE LOWER(CONCAT('%', :nome, '%')) AND f.enabled = true " +
+            "ORDER BY LOCATE(LOWER(:nome), LOWER(f.nome)) ASC, f.nome ASC")
     Page<Funcionario> FindFuncionariosByName(@Param("nome") String nome, Pageable pageable);
 
     Page<Funcionario> findByEnabledTrue(Pageable pageable);

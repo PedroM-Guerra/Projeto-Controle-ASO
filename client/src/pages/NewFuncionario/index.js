@@ -56,7 +56,7 @@ export default function NewFuncionario(){
         }else loadFuncionario();
     }, [funcionarioId])    
 
-    // Carrega todas as listas de Enums ao iniciar o componente
+// Carrega todas as listas de Enums ao iniciar o componente
     useEffect(() => {
         api.get('api/funcionario/v1/generos').then(response => {
             setGeneros(response.data);
@@ -181,7 +181,19 @@ export default function NewFuncionario(){
                         )}
                     </div>
 
-                    <h1>{funcionarioId === '0' ? "Cadastrar" : "Atualizar dados do "} Funcionário</h1>
+                    <div className="title-container">
+                        <h1>{funcionarioId === '0' ? "Cadastrar" : "Atualizar dados do "} Funcionário</h1>
+                        
+                        {/* Só exibe o estado se for uma edição e se os dados já tiverem carregado */}
+                        {funcionarioId !== '0' && id && (
+                            !dataDemissao ? (
+                                <span className="status-badge-edit ativo">Contratado</span>
+                            ) : (
+                                <span className="status-badge-edit inativo">Demitido</span>
+                            )
+                        )}
+                    </div>
+                    
                     <p>Preencha as informações do funcionário{funcionarioId === '0' ? "." : `: # ${funcionarioId}`}</p>
                 </section>
 

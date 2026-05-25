@@ -108,7 +108,6 @@ public class AsoServices {
         if (entity.getDataEmissao() != null) {
             entity.setDataValidade(entity.getDataEmissao().plusYears(1));
         }
-
         var dto = parseObject(repository.save(entity), AsoDTO.class);
         addHateoasLinks(dto);
         return dto;

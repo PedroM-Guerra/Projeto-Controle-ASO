@@ -109,7 +109,7 @@
     text-decoration: none;
     transition: all 0.2s;
     gap: 8px; /* Espaço entre o ícone e o texto */
-    margin-bottom: 30px
+    margin-bottom: 10px
 }
 
 .button-voltar:hover {
@@ -179,9 +179,48 @@
     height: 50px;   
     text-decoration: none;
     gap: 8px; /* Espaço entre o ícone e o texto */
-    margin-bottom: 30px
+    margin-bottom: 10px
 }
 
 .button-delete-top:hover {
     filter: brightness(0.9);
+}
+
+/* Alinha o título e o indicador de estado na mesma linha */
+.title-container {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 30px;
+    margin-bottom: 8px;
+}
+
+/* Remove a margem antiga do h1 para herdar do container pai */
+.new-funcionario-container .content section h1 {
+    margin: 0;
+    font-size: 32px;
+    width: auto; 
+    white-space: nowrap; 
+    display: block;
+}
+
+/* Estilização dos badges de estado no topo do formulário */
+.status-badge-edit {
+    font-size: 14px;
+    font-weight: bold;
+    padding: 6px 16px;
+    border-radius: 20px;
+    user-select: none;
+}
+
+.status-badge-edit.ativo {
+    background: #e6f4ea;
+    color: #137333;
+    border: 1px solid #34a853;
+}
+
+.status-badge-edit.inativo {
+    background: #fce8e6;
+    color: #c5221f;
+    border: 1px solid #ea4335;
 }

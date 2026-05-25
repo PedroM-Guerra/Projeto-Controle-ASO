@@ -1,0 +1,127 @@
+.aso-container {
+    width: 100%;
+    max-width: 1180px;
+    padding: 0 30px;
+    margin: 32px auto;
+    color: #000;
+}
+
+.aso-container header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.aso-container header img {
+    height: 64px;
+}
+
+.button-voltar-list {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #251fc5;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.list-header-aso {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin: 40px 0 24px 0;
+    border-bottom: 1px solid #dcdce6;
+    padding-bottom: 16px;
+}
+
+.list-header-aso h1 {
+    font-size: 28px;
+    margin-bottom: 4px;
+}
+
+.list-header-aso h2 {
+    font-size: 16px;
+    color: #737380;
+    font-weight: normal;
+}
+
+.list-header-aso h2 strong {
+    color: #251fc5;
+}
+
+.button-add-aso {
+    background: #251fc5;
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 4px;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: filter 0.2s;
+}
+
+.button-add-aso:hover {
+    filter: brightness(0.9);
+}
+
+.empty-message {
+    color: #737380;
+    font-size: 16px;
+    text-align: center;
+    margin-top: 40px;
+}
+
+/* Estilização da Tabela de Dados */
+.aso-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.aso-table th, .aso-table td {
+    padding: 16px 24px;
+    text-align: left;
+}
+
+.aso-table th {
+    background: #f0f0f5;
+    color: #41414d;
+    font-weight: bold;
+}
+
+.aso-table tr {
+    border-bottom: 1px solid #e6e6f0;
+}
+
+.aso-table tbody tr:hover {
+    background: #fbfbfe;
+}
+
+.aso-table td button {
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+}
+
+/* Status Apto / Inapto */
+.aso-status {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.aso-status.apto {
+    background: #e6f4ea;
+    color: #137333;
+}
+
+.aso-status.inapto {
+    background: #fce8e6;
+    color: #c5221f;
+}

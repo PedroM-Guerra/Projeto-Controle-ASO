@@ -1,0 +1,8 @@
+@import '../../pages/NewFuncionario/styles.css';
+
+/* Customizações adicionais caso queira cores específicas para os resultados do ASO */
+.status-badge-edit.inatvo {
+    background: #fce8e6;
+    color: #c5221f;
+    border: 1px solid #ea4335;
+}

@@ -2,9 +2,7 @@ package PedroM_Guerra.controle_aso.data.dto;
 
 import PedroM_Guerra.controle_aso.enums.ResultadoAso;
 import PedroM_Guerra.controle_aso.enums.TipoAso;
-import PedroM_Guerra.controle_aso.model.Funcionario;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.*;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
 
