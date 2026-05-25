@@ -42,7 +42,7 @@ public class FuncionarioController implements FuncionarioControllerDocs {
     ){
         var sortDirection = "desc".equalsIgnoreCase(direction) ? Direction.DESC: Direction.ASC;
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, "nome"));
-        return ResponseEntity.ok(service.findAll(pageable));
+        return ResponseEntity.ok(service.findByEnabledTrue(pageable));
     }
 
     @GetMapping(value = "/findFuncionarioByName/{nome}",

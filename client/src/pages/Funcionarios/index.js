@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { FiPower, FiEdit, FiTrash2 } from "react-icons/fi";
+import { FiPower, FiEdit, FiSearch } from "react-icons/fi";
 
 import api from "../../services/api";
 
@@ -11,6 +11,7 @@ export default function Funcionario(){
 
     const [funcionarios, setFuncionarios] = useState([]);
     const [page, setPage] = useState(0);
+    const [searchTerm, setSearchTerm] = useState('');
 
     const navigate = useNavigate();
 
@@ -22,21 +23,49 @@ export default function Funcionario(){
         }
     }
 
-    async function fetchMoreFuncionarios() {
-        const response = await api.get('/api/funcionario/v1', {
-            params: {
-                page: page,
-                limit: 4,
-                direction: 'asc'
+    async function fetchFuncionarios(searchPage = 0, isNewSearch = false) {
+        try {
+            let response;
+            
+            if (searchTerm.trim() !== '') {
+                response = await api.get(`/api/funcionario/v1/findFuncionarioByName/${searchTerm}`, {
+                params: {
+                    page: searchPage,
+                    limit: 4,
+                    direction: 'asc'
+                }
+                });
+            } else {
+                response = await api.get('/api/funcionario/v1', {
+                    params: {
+                        page: searchPage,
+                        limit: 4,
+                        direction: 'asc'
+                    }
+                });
             }
-        })
 
-        setFuncionarios([ ...funcionarios, ...response.data._embedded.funcionarios]);
-        setPage(page + 1);
+            const data = response.data._embedded?.funcionarios || [];
+
+            if (isNewSearch) {
+                setFuncionarios(data);
+                setPage(1);
+            } else {
+                setFuncionarios([ ...funcionarios, ...data]);
+                setPage(searchPage + 1);
+            }
+        } catch (error) {
+            alert("Erro ao buscar funcionários.");
+        }
     }
-    
+
+    function handleSearch(e) {
+        e.preventDefault();
+        fetchFuncionarios(0, true);
+    }
+
     useEffect(() => {
-        fetchMoreFuncionarios();
+        fetchFuncionarios(0, true);
     }, []);
 
     return (
@@ -50,10 +79,25 @@ export default function Funcionario(){
                 </button>
             </header>
 
-            <h1>Listagem de Funcionários</h1>
+            <div className="list-header">
+                <h1>Listagem de Funcionários</h1>
+                
+                <form onSubmit={handleSearch} className="search-form">
+                    <input 
+                        type="text" 
+                        placeholder="Pesquisar por nome..." 
+                        value={searchTerm}
+                        onChange={e => setSearchTerm(e.target.value)}
+                    />
+                    <button type="submit">
+                        <FiSearch size={16} />
+                    </button>
+                </form>
+            </div>
+
             <ul>
                 {funcionarios.map(funcionario =>(
-                    <li>
+                    <li key={funcionario.id}>
                         <strong>{funcionario.nome}</strong>
                         <p>{funcionario.cpf}</p>
 
@@ -64,8 +108,8 @@ export default function Funcionario(){
                 ))}
             </ul>
 
-            <button className="button" onClick={fetchMoreFuncionarios} type="button">Carregar Mais </button>
+            {/* CORREÇÃO AQUI: Passando explicitamente o estado da página atual */}
+            <button className="button" onClick={() => fetchFuncionarios(page, false)} type="button">Carregar Mais</button>
         </div>
-    )
-
+    );
 }

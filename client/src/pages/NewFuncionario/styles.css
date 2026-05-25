@@ -14,18 +14,18 @@
     border-radius: 8px;
     
     display: flex;
-    flex-direction: column; /* Título em cima, formulário em baixo */
-    gap: 8px; /* Espaço entre o título e o formulário */
+    flex-direction: column; 
+    gap: 8px; 
 }
 
 .new-funcionario-container .content section {
     width: 100%;
-    max-width: 100%; /* Agora ele pode ocupar a largura total */
+    max-width: 100%; 
 }
 
 .new-funcionario-container section.form{
     width: 100%;
-    max-width: 350px;
+    max-width: 3500px;
     margin-right: 30px;
 }
 
@@ -138,4 +138,50 @@
 .input-group select:focus {
     border-color: #251fc5;
     outline: none;
+}
+
+/* Container para alinhar os elementos do topo */
+.header-actions {
+    display: flex;
+    justify-content: row;
+    
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+
+    top: 0;
+    left: 0;
+    width: 100%;
+
+    flex-direction: row !important;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Estilo do novo botão de desativar no topo */
+.button-delete-top {
+
+    background: #de3b3b;
+    color: #fff;
+    border: 0;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    transition: filter 0.2s;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 15px; /* Ajuste o padding para controlar o tamanho */
+    width: auto;
+    max-width: 120px;   /* Define um limite máximo, se necessário */
+    height: 50px;   
+    text-decoration: none;
+    gap: 8px; /* Espaço entre o ícone e o texto */
+    margin-bottom: 30px
+}
+
+.button-delete-top:hover {
+    filter: brightness(0.9);
 }

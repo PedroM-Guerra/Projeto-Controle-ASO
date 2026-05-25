@@ -105,21 +105,87 @@ export default function NewFuncionario(){
         }
     }
 
+    async function handleDelete() {
+
+        const mensagem = 
+        "ATENÇÃO!\n\n" +
+        "Você está prestes a apagar este funcionário do sistema.\n" +
+        "Esta ação impedirá o acesso e registros ativos para este perfil.\n\n" +
+        "Deseja continuar com a desativação?";
+
+        const confirmacao = window.confirm(mensagem);
+    
+        if (!confirmacao) return;
+
+        const data = {
+                id,
+                nome,
+                cpf,
+                matricula,
+                dataNascimento,
+                genero,
+                setor,
+                cargo,
+                dataAdmissao,
+                dataDemissao,
+                enabled: false // Mudança para exclusão lógica
+            }
+
+            try {
+                await api.post('api/funcionario/v1', data);
+                navigate('/funcionarios');
+            } catch (err) {
+                alert('Erro ao desativar funcionário, tente novamente.');
+            }
+    }
+
+    function handleFormKeyDown(e) {
+        if (e.key === 'Enter') {
+            // Bloqueia o submit automático do formulário
+            e.preventDefault();
+
+            // Lista de elementos onde o usuário digita ou seleciona algo
+            const elementosFocaveis = 'input, select, textarea, button[type="submit"]';
+            
+            // Pega todos os elementos interativos do formulário em formato de Array
+            const lista = Array.from(e.currentTarget.querySelectorAll(elementosFocaveis));
+            
+            // Descobre onde o usuário está agora
+            const indiceAtual = lista.indexOf(e.target);
+
+            // Se houver um próximo campo na lista, pula para ele
+            if (indiceAtual > -1 && indiceAtual < lista.length - 1) {
+                lista[indiceAtual + 1].focus();
+            }
+        }
+    }
 
     return(
         <div className="new-funcionario-container">
             <div className="content">
                 <section className="form">
-                    <Link className="button-voltar" to="/funcionarios">
-                        <FiArrowLeft size={16}/>
-                        Voltar
-                    </Link>
-                    
+                    <div className="header-actions">
+                        <Link className="button-voltar" to="/funcionarios">
+                            <FiArrowLeft size={16}/>
+                            Voltar
+                        </Link>
+                           
+                        {funcionarioId !== '0' && (
+                            <button 
+                                className="button-delete-top" 
+                                type="button" 
+                                onClick={handleDelete}
+                            >
+                                Apagar Funcionário
+                            </button>
+                        )}
+                    </div>
+
                     <h1>{funcionarioId === '0' ? "Cadastrar" : "Atualizar dados do "} Funcionário</h1>
-                    <p>Preencha as informações do funcionário{funcionarioId === '0' ? "." : `: # ${funcionarioId}`}</p>    
+                    <p>Preencha as informações do funcionário{funcionarioId === '0' ? "." : `: # ${funcionarioId}`}</p>
                 </section>
 
-                <form onSubmit={saveOrUpdate}>
+                <form onSubmit={saveOrUpdate} onKeyDown={handleFormKeyDown}>
                     <div className="form-grid">
                         <div className="input-group">
                             <label>Nome</label>

@@ -58,6 +58,28 @@ public class FuncionarioServices {
         return assembler.toModel(funcionariosWithLinks, findAllLink);
     }
 
+    public PagedModel<EntityModel<FuncionarioDTO>> findByEnabledTrue(Pageable pageable){
+        logger.info("Finding all active Funcionários (enabled = true)");
+
+        var funcionarios = repository.findByEnabledTrue(pageable);
+
+        var funcionariosWithLinks = funcionarios.map(funcionario -> {
+            var dto = parseObject(funcionario, FuncionarioDTO.class);
+            addHateoasLinks(dto);
+            return dto;
+        });
+
+        Link findAllLink = WebMvcLinkBuilder.linkTo(
+                        WebMvcLinkBuilder.methodOn(FuncionarioController.class)
+                                .findAll(
+                                        pageable.getPageNumber(),
+                                        pageable.getPageSize(),
+                                        String.valueOf(pageable.getSort())))
+                .withSelfRel();
+
+        return assembler.toModel(funcionariosWithLinks, findAllLink);
+    }
+
 public PagedModel<EntityModel<FuncionarioDTO>> findByName(String nome, Pageable pageable){
         logger.info("Finding Funcionários by Name!");
 
