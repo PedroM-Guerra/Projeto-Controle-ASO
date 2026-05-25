@@ -21,6 +21,10 @@ export default function NewFuncionario(){
     const [dataAdmissao, setDataAdmissao] = useState('');
     const [dataDemissao, setDataDemissao] = useState('');
 
+    const [generos, setGeneros] = useState([]);
+    const [setores, setSetores] = useState([]);
+    const [cargos, setCargos] = useState([]);
+
     const {funcionarioId} = useParams();
 
     const navigate = useNavigate();
@@ -34,7 +38,7 @@ export default function NewFuncionario(){
             setCpf(response.data.cpf);
             setMatricula(response.data.matricula);
             setDataNascimento(response.data.dataNascimento);
-            setGenero(response.data.genero);
+            setGenero(response.data.genero);            
             setSetor(response.data.setor);
             setCargo(response.data.cargo);
             setDataAdmissao(response.data.dataAdmissao);
@@ -51,6 +55,22 @@ export default function NewFuncionario(){
             return;
         }else loadFuncionario();
     }, [funcionarioId])    
+
+    // Carrega todas as listas de Enums ao iniciar o componente
+    useEffect(() => {
+        api.get('api/funcionario/v1/generos').then(response => {
+            setGeneros(response.data);
+        }).catch(err => console.error("Erro ao carregar gêneros", err));
+
+        api.get('api/funcionario/v1/setores').then(response => {
+            setSetores(response.data);
+        }).catch(err => console.error("Erro ao carregar setores", err));
+
+        api.get('api/funcionario/v1/cargos').then(response => {
+            setCargos(response.data);
+        }).catch(err => console.error("Erro ao carregar cargos", err));
+
+    }, []);
 
     async function saveOrUpdate(e) {
         e.preventDefault();
@@ -85,71 +105,112 @@ export default function NewFuncionario(){
         }
     }
 
+
     return(
         <div className="new-funcionario-container">
             <div className="content">
                 <section className="form">
-                    <Link className="back-link" to="/funcionarios">
-                        <FiArrowLeft size={16} color="#251fc5"/>
+                    <Link className="button-voltar" to="/funcionarios">
+                        <FiArrowLeft size={16}/>
                         Voltar
                     </Link>
                     
-                    <h1>{funcionarioId === '0' ? "Cadastrar" : "Atualziar dados do Funcionário"} Funcionário</h1>
-                    <p>Preencha as informações do funcionário. # {funcionarioId}</p>
-                    
+                    <h1>{funcionarioId === '0' ? "Cadastrar" : "Atualizar dados do "} Funcionário</h1>
+                    <p>Preencha as informações do funcionário{funcionarioId === '0' ? "." : `: # ${funcionarioId}`}</p>    
                 </section>
-                <form onSubmit={saveOrUpdate}>
-                    <label htmlFor="nome">Nome</label>
-                    <input
-                        placeholder="Nome"
-                        value={nome}
-                        onChange={e => setNome(e.target.value)}
-                    />
-                    <input
-                        placeholder="CPF"
-                        value={cpf}
-                        onChange={e => setCpf(e.target.value)}
-                    />
-                    <input
-                        placeholder="Matrícula"
-                        value={matricula}
-                        onChange={e => setMatricula(e.target.value)}
-                    />
-                    <input
-                        placeholder="Gênero Biológico"
-                        value={genero}
-                        onChange={e => setGenero(e.target.value)}
-                    />
-                    <input
-                        type="date"
-                        placeholder="Data de Nascimento"
-                        value={dataNascimento}
-                        onChange={e => setDataNascimento(e.target.value)}
-                    />
-                    <input
-                        type="date"
-                        placeholder="Data de Admissão"
-                        value={dataAdmissao}
-                        onChange={e => setDataAdmissao(e.target.value)}
-                    />
-                    <input
-                        type="date"
-                        placeholder="Data de Demissão"
-                        value={dataDemissao}
-                        onChange={e => setDataDemissao(e.target.value)}
-                    />
-                    <input
-                        placeholder="Setor"
-                        value={setor}
-                        onChange={e => setSetor(e.target.value)}
-                    />
-                    <input
-                        placeholder="Cargo"
-                        value={cargo}
-                        onChange={e => setCargo(e.target.value)}
-                    />
 
-                    <button className="button" type="submit">{funcionarioId === '0' ? 'Cadastrar' : 'Salvar'}</button>
+                <form onSubmit={saveOrUpdate}>
+                    <div className="form-grid">
+                        <div className="input-group">
+                            <label>Nome</label>
+                            <input value={nome} onChange={e => setNome(e.target.value)} />
+                        </div>
+                    <div className="input-group">
+                        <label>CPF</label>
+                        <input
+                            value={cpf}
+                            onChange={e => setCpf(e.target.value)}
+                        />
+                    </div>
+                    <div className="input-group">
+                        <label>Matrícula</label>
+                        <input
+                            value={matricula}
+                            onChange={e => setMatricula(e.target.value)}
+                        />
+                    </div>
+                    <div className="input-group">
+                    <label htmlFor="genero">Gênero</label>
+                    <select 
+                        id="genero" 
+                        value={genero} 
+                        onChange={e => setGenero(e.target.value)}
+                    >
+                        <option value="">Selecione o gênero</option>
+                        {generos.map(g => (
+                            <option key={g.codigo} value={g.codigo}>
+                                {g.descricao}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+                    <div className="input-group">
+                        <label>Data de Nascimento</label>
+                        <input
+                            type="date"
+                            value={dataNascimento}
+                            onChange={e => setDataNascimento(e.target.value)}
+                        />
+                    </div>
+                    <div className="input-group">
+                        <label>Data de Admissão</label>
+                        <input
+                            type="date"
+                            value={dataAdmissao}
+                            onChange={e => setDataAdmissao(e.target.value)}
+                        />
+                    </div>
+                    <div className="input-group">
+                        <label>Data de Demissão</label>
+                        <input
+                            type="date"
+                            value={dataDemissao}
+                            onChange={e => setDataDemissao(e.target.value)}
+                        />
+                    </div>
+                    <div className="input-group">
+                            <label htmlFor="setor">Setor</label>
+                            <select 
+                                id="setor" 
+                                value={setor} 
+                                onChange={e => setSetor(e.target.value)}
+                            >
+                                <option value="">Selecione o setor</option>
+                                {setores.map(s => (
+                                    <option key={s.codigo} value={s.codigo}>
+                                        {s.descricao}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    <div className="input-group">
+                            <label htmlFor="cargo">Cargo</label>
+                            <select 
+                                id="cargo" 
+                                value={cargo} 
+                                onChange={e => setCargo(e.target.value)}
+                            >
+                                <option value="">Selecione o cargo</option>
+                                {cargos.map(c => (
+                                    <option key={c.codigo} value={c.codigo}>
+                                        {c.descricao}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                </div>
+
+                <button className="button" type="submit">{funcionarioId === '0' ? 'Cadastrar' : 'Salvar'}</button>
                 </form>
             </div>
         </div>

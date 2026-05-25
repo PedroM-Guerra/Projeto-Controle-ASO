@@ -2,6 +2,9 @@ package PedroM_Guerra.controle_aso.controllers;
 
 import PedroM_Guerra.controle_aso.controllers.docs.FuncionarioControllerDocs;
 import PedroM_Guerra.controle_aso.data.dto.FuncionarioDTO;
+import PedroM_Guerra.controle_aso.enums.CargoFuncionario;
+import PedroM_Guerra.controle_aso.enums.GeneroFuncionario;
+import PedroM_Guerra.controle_aso.enums.SetorFuncionario;
 import PedroM_Guerra.controle_aso.services.FuncionarioServices;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,12 @@ import org.springframework.hateoas.PagedModel;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/funcionario/v1")
@@ -83,5 +92,35 @@ public class FuncionarioController implements FuncionarioControllerDocs {
     public ResponseEntity<?> delete(@PathVariable("id") Long id){
         service.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/generos")
+    public List<Map<String, String>> getGeneros() {
+        return Arrays.stream(GeneroFuncionario.values()).map(g -> {
+            Map<String, String> map = new HashMap<>();
+            map.put("codigo", g.getCodigo());          // M
+            map.put("descricao", g.getDescricao());  // Masculino
+            return map;
+        }).collect(Collectors.toList());
+    }
+
+    @GetMapping("/setores")
+    public List<Map<String, String>> getSetores() {
+        return Arrays.stream(SetorFuncionario.values()).map(s -> {
+            Map<String, String> map = new HashMap<>();
+            map.put("codigo", s.getCodigo()); // ex: "TI", "RH"
+            map.put("descricao", s.getDescricao());   // ex: "Tecnologia da Informação", "Recursos Humanos"
+            return map;
+        }).collect(Collectors.toList());
+    }
+
+    @GetMapping("/cargos")
+    public List<Map<String, String>> getCargos() {
+        return Arrays.stream(CargoFuncionario.values()).map(c -> {
+            Map<String, String> map = new HashMap<>();
+            map.put("codigo", c.getCodigo()); // ex: "DEV_JR", "GER_PROD"
+            map.put("descricao", c.getDescricao());   // ex: "Desenvolvedor Júnior", "Gerente de Produto"
+            return map;
+        }).collect(Collectors.toList());
     }
 }

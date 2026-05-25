@@ -1,29 +1,26 @@
 .new-funcionario-container {
     width: 100%;
     max-width: 1120px;
-    height: 100vh;
-    margin: 0 auto;
-
+    margin: 20px auto; /* Adicione margem em cima e embaixo */
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    justify-content: center; /* Centraliza a caixa no meio da tela */
 }
 
-.new-funcionario-container .content{
+.new-funcionario-container .content {
     width: 100%;
-    padding: 96px;
+    padding: 32px;
     background: #f0f0f5;
     box-shadow: 0 0 100px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
-
+    
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column; /* Título em cima, formulário em baixo */
+    gap: 8px; /* Espaço entre o título e o formulário */
 }
 
-.new-funcionario-container .content section{
+.new-funcionario-container .content section {
     width: 100%;
-    max-width:  380px;
+    max-width: 100%; /* Agora ele pode ocupar a largura total */
 }
 
 .new-funcionario-container section.form{
@@ -39,30 +36,47 @@
     display: block;
 }
 
-.new-funcionario-container .content section h1{
-    margin: 64px 0 32px;
+.new-funcionario-container .content section h1 {
+    margin: 0 0 8px 0;
     font-size: 32px;
+    width: 100%;       /* Garante que ele ocupe toda a linha */
+    white-space: nowrap; /* Evita que o texto quebre automaticamente */
+    display: block;
 }
 
 .new-funcionario-container .content section p{
+    margin: 0 0 22px 0;
     font-size: 18px;
     color: #737380;
     line-height: 32px;
+    white-space: nowrap;
 }
 
-.new-funcionario-container .content form{
+/* Garante que o form ocupe toda a largura */
+.new-funcionario-container .content form {
     width: 100%;
-    max-width: 450px;
+    max-width: 100%;
 }
 
-.new-funcionario-container .content form input{
+/* O segredo das duas colunas */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.button {
+    margin-top: 20px;
     width: 100%;
-    height: 60px;
-    color: #333;
+}
+
+.new-funcionario-container .content form input {
+    width: 100%;
+    height: 50px; /* Reduzi um pouco para ficar mais elegante */
+    margin-top: 0; /* REMOVA O MARGIN-TOP AQUI */
     border: 1px solid #dcdce6;
     border-radius: 8px;
-    padding: 0 24px;
-    margin-top: 8px;
+    padding: 0 16px;
 }
 
 .input-group {
@@ -77,4 +91,51 @@
     color: #41414d;
     margin-bottom: 5px;
     margin-left: 2px;
+}
+
+.button-voltar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 15px; /* Ajuste o padding para controlar o tamanho */
+    width: auto;
+    max-width: 120px;   /* Define um limite máximo, se necessário */
+    height: 50px;
+    background: transparent; /* Fundo transparente */
+    border: 2px solid #251fc5; /* Borda da cor do sistema */
+    border-radius: 8px;
+    color: #251fc5;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.2s;
+    gap: 8px; /* Espaço entre o ícone e o texto */
+    margin-bottom: 30px
+}
+
+.button-voltar:hover {
+    background: #251fc5;
+    color: #fff;
+}
+
+/* Isso garante que o select e o input tenham a mesma aparência */
+.input-group select {
+    width: 100%;
+    height: 50px; /* A mesma altura dos seus inputs */
+    padding: 0 16px;
+    border: 1px solid #dcdce6;
+    border-radius: 8px;
+    background-color: #fff; /* Fundo branco limpo */
+    color: #333;
+    font-size: 16px;
+    appearance: none; /* Remove a seta padrão do sistema em alguns navegadores */
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23737380%22%20d%3D%22M287%2069.4a17.4%2017.4%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px top 50%;
+    background-size: 12px auto;
+}
+
+/* Opcional: Efeito quando o usuário clica no campo */
+.input-group select:focus {
+    border-color: #251fc5;
+    outline: none;
 }
