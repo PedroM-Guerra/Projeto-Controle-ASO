@@ -16,19 +16,32 @@
     height: 64px;
 }
 
-.button-voltar-list {
-    display: inline-flex;
+.button-voltar {
+    display: flex;
     align-items: center;
-    gap: 8px;
+    justify-content: center;
+    padding: 10px 20px; 
+    height: 50px;
+    background: transparent; 
+    border: 2px solid #251fc5; 
+    border-radius: 8px;
     color: #251fc5;
-    font-weight: bold;
+    font-weight: 700;
     text-decoration: none;
+    transition: all 0.2s;
+    gap: 8px; 
+    margin-bottom: 10px;
+}
+
+.button-voltar:hover {
+    background: #251fc5;
+    color: #fff;
 }
 
 .list-header-aso {
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
+    align-items: flex-start;
     margin: 40px 0 24px 0;
     border-bottom: 1px solid #dcdce6;
     padding-bottom: 16px;
@@ -36,13 +49,14 @@
 
 .list-header-aso h1 {
     font-size: 28px;
-    margin-bottom: 4px;
+    margin-bottom: 8px;
 }
 
 .list-header-aso h2 {
     font-size: 16px;
     color: #737380;
     font-weight: normal;
+    margin-bottom: 4px;
 }
 
 .list-header-aso h2 strong {
@@ -124,4 +138,26 @@
 .aso-status.inapto {
     background: #fce8e6;
     color: #c5221f;
+}
+
+/* Linhas normais (ímpares) ganham um fundo totalmente branco */
+.aso-table tbody tr {
+    background: #fff;
+    border-bottom: 1px solid #e6e6f0;
+    transition: background 0.15s ease-in-out;
+}
+
+/* Linhas pares (alternadas) ganham um tom cinza bem suave */
+.aso-table tbody tr:nth-child(even) {
+    background: #f8f9fa; 
+}
+
+/* Remove a borda da última linha para manter o acabamento arredondado */
+.aso-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+/* O efeito de hover agora fica mais limpo, apenas destacando a linha atual */
+.aso-table tbody tr:hover {
+    background: #f1f3f9;
 }

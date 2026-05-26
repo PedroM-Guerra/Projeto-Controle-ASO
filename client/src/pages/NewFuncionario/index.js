@@ -29,6 +29,22 @@ export default function NewFuncionario(){
 
     const navigate = useNavigate();
 
+// Carrega todas as listas de Enums ao iniciar o componente
+    useEffect(() => {
+        api.get('api/funcionario/v1/generos').then(response => {
+            setGeneros(response.data);
+        }).catch(err => console.error("Erro ao carregar gêneros", err));
+
+        api.get('api/funcionario/v1/setores').then(response => {
+            setSetores(response.data);
+        }).catch(err => console.error("Erro ao carregar setores", err));
+
+        api.get('api/funcionario/v1/cargos').then(response => {
+            setCargos(response.data);
+        }).catch(err => console.error("Erro ao carregar cargos", err));
+
+    }, []);
+
     async function loadFuncionario() {
         try {
             const response = await api.get(`api/funcionario/v1/${funcionarioId}`)
@@ -56,23 +72,7 @@ export default function NewFuncionario(){
         }else loadFuncionario();
     }, [funcionarioId])    
 
-// Carrega todas as listas de Enums ao iniciar o componente
-    useEffect(() => {
-        api.get('api/funcionario/v1/generos').then(response => {
-            setGeneros(response.data);
-        }).catch(err => console.error("Erro ao carregar gêneros", err));
-
-        api.get('api/funcionario/v1/setores').then(response => {
-            setSetores(response.data);
-        }).catch(err => console.error("Erro ao carregar setores", err));
-
-        api.get('api/funcionario/v1/cargos').then(response => {
-            setCargos(response.data);
-        }).catch(err => console.error("Erro ao carregar cargos", err));
-
-    }, []);
-
-    async function saveOrUpdate(e) {
+    async function handleSaveOrUpdateFuncionario(e) {
         e.preventDefault();
 
         const data = {
@@ -88,14 +88,18 @@ export default function NewFuncionario(){
             enabled: true
         }
 
+        //console.log("DADOS QUE ESTÃO INDO PARA O BACK-END:", data);
+
         try {
             if (funcionarioId === '0') {
                 await api.post('api/funcionario/v1', data);
+                alert('Funcionário cadastrado com sucesso!');
                 navigate('/funcionarios');
 
             } else {
                 data.id = id;
-                await api.post('api/funcionario/v1', data);
+                await api.put('api/funcionario/v1', data);
+                alert('Funcionário atualizado com sucesso!');
                 navigate('/funcionarios')
 
             }
@@ -116,23 +120,10 @@ export default function NewFuncionario(){
         const confirmacao = window.confirm(mensagem);
     
         if (!confirmacao) return;
-
-        const data = {
-                id,
-                nome,
-                cpf,
-                matricula,
-                dataNascimento,
-                genero,
-                setor,
-                cargo,
-                dataAdmissao,
-                dataDemissao,
-                enabled: false // Mudança para exclusão lógica
-            }
-
+        
             try {
-                await api.post('api/funcionario/v1', data);
+                await api.patch(`api/funcionario/v1/${id}`);
+                alert('Funcionário desativado com sucesso!');
                 navigate('/funcionarios');
             } catch (err) {
                 alert('Erro ao desativar funcionário, tente novamente.');
@@ -182,7 +173,7 @@ export default function NewFuncionario(){
                     </div>
 
                     <div className="title-container">
-                        <h1>{funcionarioId === '0' ? "Cadastrar" : "Atualizar dados do "} Funcionário</h1>
+                        <h1>{funcionarioId === '0' ? "Cadastrar" : "Atualizar Dados do "} Funcionário</h1>
                         
                         {/* Só exibe o estado se for uma edição e se os dados já tiverem carregado */}
                         {funcionarioId !== '0' && id && (
@@ -197,11 +188,13 @@ export default function NewFuncionario(){
                     <p>Preencha as informações do funcionário{funcionarioId === '0' ? "." : `: # ${funcionarioId}`}</p>
                 </section>
 
-                <form onSubmit={saveOrUpdate} onKeyDown={handleFormKeyDown}>
+                <form onSubmit={handleSaveOrUpdateFuncionario} onKeyDown={handleFormKeyDown}>
                     <div className="form-grid">
                         <div className="input-group">
                             <label>Nome</label>
-                            <input value={nome} onChange={e => setNome(e.target.value)} />
+                            <input 
+                            value={nome} 
+                            onChange={e => setNome(e.target.value)} />
                         </div>
                     <div className="input-group">
                         <label>CPF</label>

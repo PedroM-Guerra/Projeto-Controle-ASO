@@ -7,6 +7,7 @@ import api from "../../services/api";
 import './styles.css';
 
 export default function NewAso() {
+    const [id, setId] = useState(null);
     const [crmMedico, setCrmMedico] = useState('');
     const [dataEmissao, setDataEmissao] = useState('');
     const [dataValidade, setDataValidade] = useState('');
@@ -19,7 +20,9 @@ export default function NewAso() {
     const [tiposAso, setTiposAso] = useState([]);
     const [resultadosAso, setResultadosAso] = useState([]);
 
-    const { funcionarioId } = useParams(); // Só precisamos do ID do funcionário para vincular o cadastro
+    const { asoId } = useParams(); 
+    const { funcionarioId } = useParams(); 
+
     const navigate = useNavigate();
 
     // Carrega os Enums do banco para preencher os selects ao abrir a tela
@@ -33,7 +36,33 @@ export default function NewAso() {
         }).catch(err => console.error("Erro ao carregar resultados de ASO", err));
     }, []);
 
-    async function handleCadastrarAso(e) {
+    async function loadAso() {
+        try {
+            const response = await api.get(`api/aso/v1/${asoId}`)
+
+            setId(response.data.id);
+            setCrmMedico(response.data.crmMedico);
+            setDataEmissao(response.data.dataEmissao);
+            setDataValidade(response.data.dataValidade);
+            setDescricaoExame(response.data.descricaoExame);
+            setNomeMedico(response.data.nomeMedico);
+            setResultadoAso(response.data.resultadoAso);
+            setTipoAso(response.data.tipoAso);
+            setUrlDocumentoScan(response.data.urlDocumentoScan);
+
+        } catch (error) {
+            alert('Erro ao carregar ASO, tente novamente.');
+            navigate(`/asos`);
+        }
+    }
+
+    useEffect(() => {
+        if (asoId === '0') {
+            return;
+        }else loadAso();
+    }, [asoId])    
+
+    async function handleSaveOrUpdateAso(e) {
         e.preventDefault();
 
         // Monta o objeto exatamente com as chaves que o Spring Boot espera receber
@@ -46,18 +75,48 @@ export default function NewAso() {
             dataEmissao,
             dataValidade,
             tipoAso,
-            resultadoAso
+            resultadoAso,
+            enabled: true
         };
 
         console.log("DADOS QUE ESTÃO INDO PARA O BACK-END:", data);
 
         try {
-            await api.post('api/aso/v1', data);
-            alert('ASO cadastrado com sucesso!');
-            navigate(`/funcionario/${funcionarioId}/asos`);
+            if (asoId === '0') {
+                await api.post('api/aso/v1', data);
+                alert('ASO cadastrado com sucesso!');
+                navigate(`/funcionario/${funcionarioId}/asos`);
+            } else {
+                data.id = id;
+                await api.put('api/aso/v1', data);
+                navigate(`/funcionario/${funcionarioId}/asos`)
+
+            }
+            
         } catch (err) {
             alert('Erro ao cadastrar o registro de ASO, tente novamente.');
         }
+    }
+
+    async function handleDelete() {
+
+        const mensagem = 
+        "ATENÇÃO!\n\n" +
+        "Você está prestes a apagar este ASO do sistema.\n" +
+        "Esta ação impedirá o acesso à este Atestado.\n\n" +
+        "Deseja continuar com a desativação?";
+
+        const confirmacao = window.confirm(mensagem);
+    
+        if (!confirmacao) return;
+        
+            try {
+                await api.patch(`api/aso/v1/${asoId}`);
+                alert('ASO desativado com sucesso!');
+                navigate(`/funcionario/${funcionarioId}/asos`);
+            } catch (err) {
+                alert('Erro ao desativar ASO, tente novamente.');
+            }
     }
 
     function handleFormKeyDown(e) {
@@ -82,25 +141,40 @@ export default function NewAso() {
                             <FiArrowLeft size={16}/>
                             Voltar
                         </Link>
+                        {asoId !== '0' && (
+                            <button 
+                                className="button-delete-top" 
+                                type="button" 
+                                onClick={handleDelete}
+                            >
+                                Apagar Aso
+                            </button>
+                        )}                        
                     </div>
 
                     <div className="title-container">
-                        <h1>Cadastrar Novo ASO</h1>
+                        <h1>{asoId === '0' ? "Cadastrar Novo" : "Atualizar Dados do "} Aso</h1>
                     </div>
                     
-                    <p>Preencha as informações do atestado médico ocupacional.</p>
+                    <p>Preencha as informações do Atestado de Saúde Ocupacional.</p>
                 </section>
 
-                <form onSubmit={handleCadastrarAso} onKeyDown={handleFormKeyDown}>
+                <form onSubmit={handleSaveOrUpdateAso} onKeyDown={handleFormKeyDown}>
                     <div className="form-grid">
                         <div className="input-group">
                             <label>Nome do Médico</label>
-                            <input value={nomeMedico} onChange={e => setNomeMedico(e.target.value)} />
+                            <input 
+                            value={nomeMedico} 
+                            onChange={e => setNomeMedico(e.target.value)} 
+                            />
                         </div>
 
                         <div className="input-group">
                             <label>CRM do Médico</label>
-                            <input value={crmMedico} onChange={e => setCrmMedico(e.target.value)} />
+                            <input 
+                            value={crmMedico} 
+                            onChange={e => setCrmMedico(e.target.value)} 
+                            />
                         </div>
 
                         <div className="input-group">
@@ -157,8 +231,8 @@ export default function NewAso() {
                     </div>
 
                     <button className="button" type="submit">
-                        Cadastrar
-                    </button>
+                    {asoId === '0' ? 'Cadastrar' : 'Salvar'}
+                    </button>                    
                 </form>
             </div>
         </div>
