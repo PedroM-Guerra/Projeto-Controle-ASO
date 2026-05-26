@@ -18,5 +18,5 @@ public interface FuncionarioRepository extends JpaRepository<Funcionario, Long> 
             "ORDER BY LOCATE(LOWER(:nome), LOWER(f.nome)) ASC, f.nome ASC")
     Page<Funcionario> FindFuncionariosByName(@Param("nome") String nome, Pageable pageable);
 
-    Page<Funcionario> findByEnabledTrue(Pageable pageable);
+    Page<Funcionario> findFuncionariosByEnabledTrue(Pageable pageable);
 }

@@ -61,7 +61,7 @@ public class FuncionarioServices {
     public PagedModel<EntityModel<FuncionarioDTO>> findByEnabledTrue(Pageable pageable){
         logger.info("Finding all active Funcionários (enabled = true)");
 
-        var funcionarios = repository.findByEnabledTrue(pageable);
+        var funcionarios = repository.findFuncionariosByEnabledTrue(pageable);
 
         var funcionariosWithLinks = funcionarios.map(funcionario -> {
             var dto = parseObject(funcionario, FuncionarioDTO.class);

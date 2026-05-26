@@ -2,6 +2,7 @@ package PedroM_Guerra.controle_aso.controllers;
 
 import PedroM_Guerra.controle_aso.controllers.docs.AsoControllerDocs;
 import PedroM_Guerra.controle_aso.data.dto.AsoDTO;
+import PedroM_Guerra.controle_aso.data.dto.FuncionarioDTO;
 import PedroM_Guerra.controle_aso.enums.ResultadoAso;
 import PedroM_Guerra.controle_aso.enums.TipoAso;
 import PedroM_Guerra.controle_aso.services.AsoServices;
@@ -75,6 +76,13 @@ public class AsoController implements AsoControllerDocs {
     @Override
     public AsoDTO update(@RequestBody AsoDTO aso){
         return service.update(aso);
+    }
+
+    @PatchMapping(value = "/{id}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Override
+    public AsoDTO disableAso(@PathVariable("id") Long id) {
+        return service.disableAso(id);
     }
 
     @DeleteMapping(value = "/{id}")

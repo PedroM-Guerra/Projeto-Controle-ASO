@@ -1,6 +1,7 @@
 package PedroM_Guerra.controle_aso.controllers.docs;
 
 import PedroM_Guerra.controle_aso.data.dto.AsoDTO;
+import PedroM_Guerra.controle_aso.data.dto.FuncionarioDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -117,6 +118,23 @@ public interface AsoControllerDocs {
                     @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content)
             })
     AsoDTO update(@RequestBody AsoDTO aso);
+
+    @Operation(summary = "Disable a ASO",
+            description = "Disable a ASO by their ID.",
+            tags = {"ASOs"},
+            responses = {
+                    @ApiResponse(
+                            description = "Success",
+                            responseCode = "200",
+                            content = @Content(schema = @Schema(implementation = FuncionarioDTO.class))
+                    ),
+                    @ApiResponse(description = "No content", responseCode = "204", content = @Content),
+                    @ApiResponse(description = "Bad request", responseCode = "400", content = @Content),
+                    @ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
+                    @ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
+                    @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content)
+            })
+    AsoDTO disableAso(@PathVariable("id") Long id);
 
     @Operation(summary = "Deletes a ASO",
             description = "Delete a ASO by their ID.",

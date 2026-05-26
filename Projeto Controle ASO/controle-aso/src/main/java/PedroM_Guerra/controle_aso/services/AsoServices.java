@@ -1,12 +1,15 @@
 package PedroM_Guerra.controle_aso.services;
 
 import PedroM_Guerra.controle_aso.controllers.AsoController;
+import PedroM_Guerra.controle_aso.controllers.FuncionarioController;
 import PedroM_Guerra.controle_aso.data.dto.AsoDTO;
+import PedroM_Guerra.controle_aso.data.dto.FuncionarioDTO;
 import PedroM_Guerra.controle_aso.exception.RequiredObjectIsNullException;
 import PedroM_Guerra.controle_aso.exception.ResourceNotFoundException;
 import PedroM_Guerra.controle_aso.model.Aso;
 import PedroM_Guerra.controle_aso.repository.AsoRepository;
 import PedroM_Guerra.controle_aso.repository.FuncionarioRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
@@ -141,6 +144,20 @@ public class AsoServices {
         return dto;
     }
 
+    @Transactional
+    public AsoDTO disableAso(Long id){
+        logger.info("Disabling one Aso");
+
+        repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID"));
+        repository.disableAso(id);
+
+        var entity = repository.findById(id).get();
+        var dto = parseObject(entity, AsoDTO.class);
+        addHateoasLinks(dto);
+        return dto;
+    }
+
     public void delete(Long id){
         logger.info("Deleting one ASO");
 
@@ -154,6 +171,7 @@ public class AsoServices {
         dto.add(linkTo(methodOn(AsoController.class).findAll(1, 12, "asc")).withRel("findAll").withType("GET"));
         dto.add(linkTo(methodOn(AsoController.class).create(dto)).withRel("create").withType("POST"));
         dto.add(linkTo(methodOn(AsoController.class).update(dto)).withRel("update").withType("PUT"));
+        dto.add(linkTo(methodOn(AsoController.class).disableAso(dto.getId())).withRel("disable").withType("PATCH"));
         dto.add(linkTo(methodOn(AsoController.class).delete(dto.getId())).withRel("delete").withType("DELETE"));
     }
 }

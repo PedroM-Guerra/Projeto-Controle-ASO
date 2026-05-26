@@ -19,6 +19,9 @@ public class Aso implements Serializable {
     @JoinColumn(name = "funcionario_id", nullable = false)
     private Funcionario funcionario;
 
+    @Column(name = "enabled", nullable = false, columnDefinition = "BIT(1) DEFAULT 1")
+    private Boolean enabled;
+
     @Column(name = "crm_medico", nullable = false, length = 50)
     private String crmMedico;
 
@@ -127,14 +130,22 @@ public class Aso implements Serializable {
         this.resultadoAso = resultadoAso;
     }
 
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Aso aso)) return false;
-        return Objects.equals(getId(), aso.getId()) && Objects.equals(getFuncionario(), aso.getFuncionario()) && Objects.equals(getCrmMedico(), aso.getCrmMedico()) && Objects.equals(getNomeMedico(), aso.getNomeMedico()) && Objects.equals(getDescricaoExame(), aso.getDescricaoExame()) && Objects.equals(getUrlDocumentoScan(), aso.getUrlDocumentoScan()) && Objects.equals(getDataEmissao(), aso.getDataEmissao()) && Objects.equals(getDataValidade(), aso.getDataValidade()) && getTipoAso() == aso.getTipoAso() && getResultadoAso() == aso.getResultadoAso();
+        return Objects.equals(getId(), aso.getId()) && Objects.equals(getFuncionario(), aso.getFuncionario()) && Objects.equals(getEnabled(), aso.getEnabled()) && Objects.equals(getCrmMedico(), aso.getCrmMedico()) && Objects.equals(getNomeMedico(), aso.getNomeMedico()) && Objects.equals(getDescricaoExame(), aso.getDescricaoExame()) && Objects.equals(getUrlDocumentoScan(), aso.getUrlDocumentoScan()) && Objects.equals(getDataEmissao(), aso.getDataEmissao()) && Objects.equals(getDataValidade(), aso.getDataValidade()) && getTipoAso() == aso.getTipoAso() && getResultadoAso() == aso.getResultadoAso();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getFuncionario(), getCrmMedico(), getNomeMedico(), getDescricaoExame(), getUrlDocumentoScan(), getDataEmissao(), getDataValidade(), getTipoAso(), getResultadoAso());
+        return Objects.hash(getId(), getFuncionario(), getEnabled(), getCrmMedico(), getNomeMedico(), getDescricaoExame(), getUrlDocumentoScan(), getDataEmissao(), getDataValidade(), getTipoAso(), getResultadoAso());
     }
 }

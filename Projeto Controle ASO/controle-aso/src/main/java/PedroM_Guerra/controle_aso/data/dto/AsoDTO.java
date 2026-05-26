@@ -18,6 +18,7 @@ public class AsoDTO extends RepresentationModel<AsoDTO> implements Serializable 
     @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private Long id;
     private Long funcionarioId;
+    private Boolean enabled;
     private String crmMedico;
     private String nomeMedico;
     private String descricaoExame;
@@ -111,15 +112,23 @@ public class AsoDTO extends RepresentationModel<AsoDTO> implements Serializable 
         this.resultadoAso = resultadoAso;
     }
 
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof AsoDTO asoDTO)) return false;
         if (!super.equals(o)) return false;
-        return Objects.equals(getId(), asoDTO.getId()) && Objects.equals(getFuncionarioId(), asoDTO.getFuncionarioId()) && Objects.equals(getCrmMedico(), asoDTO.getCrmMedico()) && Objects.equals(getNomeMedico(), asoDTO.getNomeMedico()) && Objects.equals(getDescricaoExame(), asoDTO.getDescricaoExame()) && Objects.equals(getUrlDocumentoScan(), asoDTO.getUrlDocumentoScan()) && Objects.equals(getDataEmissao(), asoDTO.getDataEmissao()) && Objects.equals(getDataValidade(), asoDTO.getDataValidade()) && getTipoAso() == asoDTO.getTipoAso() && getResultadoAso() == asoDTO.getResultadoAso();
+        return Objects.equals(getId(), asoDTO.getId()) && Objects.equals(getFuncionarioId(), asoDTO.getFuncionarioId()) && Objects.equals(getEnabled(), asoDTO.getEnabled()) && Objects.equals(getCrmMedico(), asoDTO.getCrmMedico()) && Objects.equals(getNomeMedico(), asoDTO.getNomeMedico()) && Objects.equals(getDescricaoExame(), asoDTO.getDescricaoExame()) && Objects.equals(getUrlDocumentoScan(), asoDTO.getUrlDocumentoScan()) && Objects.equals(getDataEmissao(), asoDTO.getDataEmissao()) && Objects.equals(getDataValidade(), asoDTO.getDataValidade()) && getTipoAso() == asoDTO.getTipoAso() && getResultadoAso() == asoDTO.getResultadoAso();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getId(), getFuncionarioId(), getCrmMedico(), getNomeMedico(), getDescricaoExame(), getUrlDocumentoScan(), getDataEmissao(), getDataValidade(), getTipoAso(), getResultadoAso());
+        return Objects.hash(super.hashCode(), getId(), getFuncionarioId(), getEnabled(), getCrmMedico(), getNomeMedico(), getDescricaoExame(), getUrlDocumentoScan(), getDataEmissao(), getDataValidade(), getTipoAso(), getResultadoAso());
     }
 }
