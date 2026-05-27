@@ -56,7 +56,7 @@ public class FileController implements FileControllerDocs {
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(contentType))
                 .header(HttpHeaders.CONTENT_DISPOSITION,
-                        "attachment; filename=\"" + resource.getFilename() + "\"")
+                        "inline; filename=\"" + resource.getFilename() + "\"")
                 .body(resource);
     }
 }

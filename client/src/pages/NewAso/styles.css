@@ -6,3 +6,27 @@
     color: #c5221f;
     border: 1px solid #ea4335;
 }
+
+.btn-visualizar {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+    background-color: #e8f0fe;
+    color: #1a73e8;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    transition: background 0.2s;
+}
+
+.btn-visualizar:hover {
+    background-color: #d2e3fc;
+    color: #174ea6;
+}
+
+.sem-documento {
+    color: #9aa0a6;
+    font-size: 13px;
+    font-style: italic;
+}

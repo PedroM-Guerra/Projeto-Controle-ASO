@@ -3,7 +3,6 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import { FiArrowLeft, FiPlus, FiEdit } from "react-icons/fi";
 import api from "../../services/api";
 import './styles.css';
-import logo from '../../assets/logo.png';
 
 export default function Asos() {
     const [asos, setAsos] = useState([]);
@@ -13,10 +12,18 @@ export default function Asos() {
     const [matricula, setMatricula] = useState('');
     const [dataNascimento, setDataNascimento] = useState('');
     const [genero, setGenero] = useState('');
+    const [setor, setSetor] = useState('');
     const [cargo, setCargo] = useState('');
+    const [dataAdmissao, setDataAdmissao] = useState('');
+    const [dataDemissao, setDataDemissao] = useState('');
+
+    const [generos, setGeneros] = useState([]);
+    const [setores, setSetores] = useState([]);
+    const [cargos, setCargos] = useState([]);
 
     const [tiposAso, setTiposAso] = useState([]);
     const [resultadosAso, setResultadosAso] = useState([]);
+
 
     const { funcionarioId } = useParams();
     const navigate = useNavigate();
@@ -29,29 +36,42 @@ export default function Asos() {
         api.get('api/aso/v1/resultados').then(response => {
             setResultadosAso(Array.isArray(response.data) ? response.data : []);
         }).catch(err => console.error("Erro ao carregar resultados de ASO", err));
+
+        api.get('api/funcionario/v1/generos').then(response => {
+            setGeneros(response.data);
+        }).catch(err => console.error("Erro ao carregar gêneros", err));
+
+        api.get('api/funcionario/v1/setores').then(response => {
+            setSetores(response.data);
+        }).catch(err => console.error("Erro ao carregar setores", err));
+
+        api.get('api/funcionario/v1/cargos').then(response => {
+            setCargos(response.data);
+        }).catch(err => console.error("Erro ao carregar cargos", err));
+
     }, []);
 
     function formatarData(dataString) {
         if (!dataString) return "";
         
-        // Divide "AAAA-MM-DD" e organiza em [ano, mes, dia]
         const [ano, mes, dia] = dataString.split('-');
-        
-        // Devolve no padrão brasileiro "DD/MM/AAAA"
         return `${dia}/${mes}/${ano}`;
     }
 
     useEffect(() => {
         async function loadDados() {
             try {
-                // Busca os dados do funcionário para exibir o nome dele no topo
                 const response = await api.get(`/api/funcionario/v1/${funcionarioId}`);
+
                 setNome(response.data.nome);
                 setCpf(response.data.cpf);
                 setMatricula(response.data.matricula);
                 setDataNascimento(response.data.dataNascimento);
                 setGenero(response.data.genero);            
                 setCargo(response.data.cargo); 
+                setSetor(response.data.setor);
+                setDataAdmissao(response.data.dataAdmissao);
+                setDataDemissao(response.data.dataDemissao);
 
             } catch (error) {
                 console.error("Erro ao carregar dados do funcionário", error);
@@ -59,17 +79,16 @@ export default function Asos() {
             }
 
             try {
-                // Busca a lista de ASOs do funcionário
                 const asosRes = await api.get(`/api/aso/v1/findAsoByFuncionarioId/${funcionarioId}`);
-                
-                // CORREÇÃO: Se o _embedded não existir, significa que não há registros,
-                // então salvamos um array vazio [] de forma segura.
+
                 const data = asosRes.data?._embedded?.asos || [];
-                //console.log("Dados que vao pros aso:", data);
+    
+                // Ordena diretamente garantindo que quem não tem data fique no final
+                data.sort((a, b) => (b.dataEmissao || "").localeCompare(a.dataEmissao || ""));
+                
                 setAsos(data);
             } catch (error) {
                 console.error("Erro ao carregar dados de ASO", error);
-                // Se o servidor responder com qualquer status de erro, também limpamos o estado
                 setAsos([]);
             }
         }
@@ -91,11 +110,26 @@ export default function Asos() {
                     <h2>Funcionário: <strong>{nome}</strong></h2>
                     <h2>CPF: <strong>{cpf}</strong></h2>
                     <h2>Matrícula: <strong>{matricula}</strong></h2>
-                    <h2>Gênero: <strong>{genero}</strong></h2>
-                    <h2>Cargo: <strong>{cargo}</strong></h2>
+                    <h2>Gênero: <strong>{generos.find(g => g.codigo === genero)?.descricao || genero}</strong></h2>
                     <h2>Data de Nascimento: <strong>{formatarData(dataNascimento)}</strong></h2>
+                    <h2>Setor: <strong>{setores.find(s => s.codigo === setor)?.descricao || setor}</strong></h2>
+                    <h2>Cargo: <strong>{cargos.find(c => c.codigo === cargo)?.descricao || cargo}</strong></h2>
+                    <h2>Data de Admissão: <strong>{formatarData(dataAdmissao)}</strong></h2>
+                    {dataDemissao && (
+                        <h2>Data de Demissão: <strong>{formatarData(dataDemissao)}</strong></h2>
+                    )}
+                    
+                    {/* Botão de Editar Funcionário posicionado logo abaixo dos dados dele */}
+                <button 
+                    className="btn-editar-funcionario" 
+                    onClick={() => navigate(`/funcionario/new/${funcionarioId}`)}
+                    type="button"
+                >
+                    <FiEdit size={16}/>
+                    Editar Dados do Funcionário
+                </button>
                 </div>
-                {/* Botão que navega para o formulário de novo ASO passando o ID do funcionário */}
+                
                 <Link className="button-add-aso" to={`/funcionario/${funcionarioId}/aso/new/0`}>
                     <FiPlus size={16} /> Cadastrar Novo ASO
                 </Link>
@@ -107,14 +141,15 @@ export default function Asos() {
                 <table className="aso-table">
                     <thead>
                         <tr>
-                            <th>Tipo do ASO</th>
+                            <th>Tipo de ASO</th>
                             <th>Resultado</th>
-                            <th>Médico Examinador</th>
-                            <th>CRM do Médico</th>
-                            <th>Data de Emissão</th>
-                            <th>Data de Validade</th>
-                            <th>Descrição</th>
-                            <th>Ações</th>
+                            <th>Médico</th>
+                            <th>CRM</th>
+                            <th>Emissão</th>
+                            <th>Validade</th>
+                            <th>Exames</th>
+                            <th>Documento</th>
+                            <th>Editar</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -133,6 +168,22 @@ export default function Asos() {
                                 <td>{formatarData(aso.dataEmissao)}</td>
                                 <td>{formatarData(aso.dataValidade)}</td>
                                 <td>{aso.descricaoExame}</td>
+                                
+                                <td>
+                                    {aso.urlDocumentoScan ? (
+                                        <a 
+                                            href={`http://localhost:8080/api/file/v1/downloadFile/${aso.urlDocumentoScan}`} 
+                                            target="_blank" 
+                                            rel="noopener noreferrer"
+                                            className="btn-visualizar"
+                                        >
+                                            Visualizar
+                                        </a>
+                                    ) : (
+                                        <span className="sem-documento">Sem arquivo</span>
+                                    )}
+                                </td>
+
                                 <td>
                                     <button onClick={() => navigate(`/funcionario/${funcionarioId}/aso/new/${aso.id}`)} type="button">
                                         <FiEdit size={18} color="#251fc5"/>

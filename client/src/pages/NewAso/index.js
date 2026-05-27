@@ -15,13 +15,15 @@ export default function NewAso() {
     const [nomeMedico, setNomeMedico] = useState('');
     const [resultadoAso, setResultadoAso] = useState('');
     const [tipoAso, setTipoAso] = useState('');
-    const [urlDocumentoScan, setUrlDocumentoScan] = useState(''); 
 
     const [tiposAso, setTiposAso] = useState([]);
     const [resultadosAso, setResultadosAso] = useState([]);
 
     const { asoId } = useParams(); 
     const { funcionarioId } = useParams(); 
+
+    const [urlDocumentoScan, setUrlDocumentoScan] = useState(''); 
+    const [arquivo, setArquivo] = useState(null);
 
     const navigate = useNavigate();
 
@@ -65,13 +67,38 @@ export default function NewAso() {
     async function handleSaveOrUpdateAso(e) {
         e.preventDefault();
 
-        // Monta o objeto exatamente com as chaves que o Spring Boot espera receber
+        let caminhoArquivoSalvo = urlDocumentoScan; // Mantém o valor atual se for edição e não mudar o arquivo
+
+        // PASSO 1: Se o usuário selecionou um arquivo novo, faz o upload dele primeiro
+        if (arquivo) {
+            const formData = new FormData();
+            formData.append('file', arquivo); 
+
+            try {
+                // Ajuste a rota se necessário (ex: se o seu endpoint de arquivos for 'api/file/v1/uploadFile')
+                const responseUpload = await api.post('api/file/v1/uploadFile', formData, {
+                    headers: { 'Content-Type': 'multipart/form-data' }
+                });
+                
+                // Como o back retorna um objeto, pegamos a propriedade correta aqui:
+                caminhoArquivoSalvo = responseUpload.data.fileName; 
+                
+                // Nota: Se o seu banco preferir salvar o link completo com o localhost, 
+                // mude a linha de cima para: caminhoArquivoSalvo = responseUpload.data.fileDowloadUri;
+                
+            } catch (uploadError) {
+                alert('Erro ao fazer o upload do documento. O cadastro foi interrompido.');
+                return; 
+            }
+        }
+
+        // PASSO 2: Monta o JSON tradicional incluindo o nome do arquivo que o back-end gerou
         const data = {
             funcionarioId,
             crmMedico,
             nomeMedico,
             descricaoExame,
-            urlDocumentoScan,
+            urlDocumentoScan: caminhoArquivoSalvo, 
             dataEmissao,
             dataValidade,
             tipoAso,
@@ -79,8 +106,9 @@ export default function NewAso() {
             enabled: true
         };
 
-        console.log("DADOS QUE ESTÃO INDO PARA O BACK-END:", data);
+        console.log("DADOS ENVIADOS COMO JSON COM O NOME DA IMAGEM:", data);
 
+        // PASSO 3: Envia a requisição normal em JSON para a rota do ASO
         try {
             if (asoId === '0') {
                 await api.post('api/aso/v1', data);
@@ -89,8 +117,7 @@ export default function NewAso() {
             } else {
                 data.id = id;
                 await api.put('api/aso/v1', data);
-                navigate(`/funcionario/${funcionarioId}/asos`)
-
+                navigate(`/funcionario/${funcionarioId}/asos`);
             }
             
         } catch (err) {
@@ -225,8 +252,16 @@ export default function NewAso() {
                         </div>
 
                         <div className="input-group">
-                            <label>URL do Documento (Upload em breve)</label>
-                            <input value={urlDocumentoScan} onChange={e => setUrlDocumentoScan(e.target.value)} placeholder="Caminho do arquivo..." />
+                            <label>Documento do ASO (PDF ou Imagem)</label>
+                            <input 
+                                type="file" 
+                                onChange={e => setArquivo(e.target.files[0])} 
+                            />
+                            {asoId !== '0' && urlDocumentoScan && (
+                                <small style={{ marginTop: '4px', color: '#666' }}>
+                                    Arquivo atual já salvo no sistema.
+                                </small>
+                            )}
                         </div>
                     </div>
 

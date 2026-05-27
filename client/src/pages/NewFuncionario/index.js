@@ -156,7 +156,11 @@ export default function NewFuncionario(){
             <div className="content">
                 <section className="form">
                     <div className="header-actions">
-                        <Link className="button-voltar" to="/funcionarios">
+
+                        <Link 
+                            className="button-voltar" 
+                            to={funcionarioId === '0' ? "/funcionarios" : `/funcionario/${funcionarioId}/asos`}
+                        >
                             <FiArrowLeft size={16}/>
                             Voltar
                         </Link>
