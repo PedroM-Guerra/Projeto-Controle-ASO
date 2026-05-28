@@ -101,39 +101,72 @@ export default function Asos() {
                 <Link className="button-voltar" to="/funcionarios">
                     <FiArrowLeft size={16}/> 
                     Voltar
-                </Link>
-            </header>
-
-            <div className="list-header-aso">
-                <div>
-                    <h1>Histórico de Atestados de Saúde Ocupacional (ASO)</h1>
-                    <h2>Funcionário: <strong>{nome}</strong></h2>
-                    <h2>CPF: <strong>{cpf}</strong></h2>
-                    <h2>Matrícula: <strong>{matricula}</strong></h2>
-                    <h2>Gênero: <strong>{generos.find(g => g.codigo === genero)?.descricao || genero}</strong></h2>
-                    <h2>Data de Nascimento: <strong>{formatarData(dataNascimento)}</strong></h2>
-                    <h2>Setor: <strong>{setores.find(s => s.codigo === setor)?.descricao || setor}</strong></h2>
-                    <h2>Cargo: <strong>{cargos.find(c => c.codigo === cargo)?.descricao || cargo}</strong></h2>
-                    <h2>Data de Admissão: <strong>{formatarData(dataAdmissao)}</strong></h2>
-                    {dataDemissao && (
-                        <h2>Data de Demissão: <strong>{formatarData(dataDemissao)}</strong></h2>
-                    )}
-                    
-                    {/* Botão de Editar Funcionário posicionado logo abaixo dos dados dele */}
-                <button 
-                    className="btn-editar-funcionario" 
-                    onClick={() => navigate(`/funcionario/new/${funcionarioId}`)}
-                    type="button"
-                >
-                    <FiEdit size={16}/>
-                    Editar Dados do Funcionário
-                </button>
-                </div>
-                
+                </Link>              
                 <Link className="button-add-aso" to={`/funcionario/${funcionarioId}/aso/new/0`}>
                     <FiPlus size={16} /> Cadastrar Novo ASO
                 </Link>
+            </header>
+        <div className="list-header-aso">
+            <div className="employee-profile-card">
+                <div className="profile-top-bar">
+                    <div>
+                        <h1>Histórico de Atestados de Saúde Ocupacional (ASO)</h1>
+                        <p className="subtitle">Consulte e gerencie os registros médicos do colaborador</p>
+                    </div>
+                    
+                    <button 
+                        className="btn-editar-funcionario" 
+                        onClick={() => navigate(`/funcionario/new/${funcionarioId}`)}
+                        type="button"
+                    >
+                        <FiEdit size={16}/>
+                        Editar Funcionário
+                    </button>
+                </div>
+
+                <div className="profile-data-grid">
+                    <div className="data-item">
+                        <span className="data-label">Funcionário</span>
+                        <span className="data-value">{nome}</span>
+                    </div>
+                    <div className="data-item">
+                        <span className="data-label">CPF</span>
+                        <span className="data-value">{cpf}</span>
+                    </div>
+                    <div className="data-item">
+                        <span className="data-label">Matrícula</span>
+                        <span className="data-value">{matricula}</span>
+                    </div>
+                    <div className="data-item">
+                        <span className="data-label">Gênero</span>
+                        <span className="data-value">{generos.find(g => g.codigo === genero)?.descricao || genero}</span>
+                    </div>
+                    <div className="data-item">
+                        <span className="data-label">Data de Nascimento</span>
+                        <span className="data-value">{formatarData(dataNascimento)}</span>
+                    </div>
+                    <div className="data-item">
+                        <span className="data-label">Setor</span>
+                        <span className="data-value">{setores.find(s => s.codigo === setor)?.descricao || setor}</span>
+                    </div>
+                    <div className="data-item">
+                        <span className="data-label">Cargo</span>
+                        <span className="data-value">{cargos.find(c => c.codigo === cargo)?.descricao || cargo}</span>
+                    </div>
+                    <div className="data-item">
+                        <span className="data-label">Data de Admissão</span>
+                        <span className="data-value">{formatarData(dataAdmissao)}</span>
+                    </div>
+                    {dataDemissao && (
+                        <div className="data-item status-demitido">
+                            <span className="data-label">Data de Demissão</span>
+                            <span className="data-value">{formatarData(dataDemissao)}</span>
+                        </div>
+                    )}
+                </div>
             </div>
+
+        </div>
 
             {asos.length === 0 ? (
                 <p className="empty-message">Nenhum ASO cadastrado para este funcionário.</p>

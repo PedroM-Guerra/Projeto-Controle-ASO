@@ -6,8 +6,6 @@ import api from "../../services/api";
 
 import './styles.css';
 
-import logo from '../../assets/logo.png'
-
 export default function NewFuncionario(){
 
     const [id, setId] = useState(null);
@@ -45,32 +43,32 @@ export default function NewFuncionario(){
 
     }, []);
 
-    async function loadFuncionario() {
-        try {
-            const response = await api.get(`api/funcionario/v1/${funcionarioId}`)
-
-            setId(response.data.id);
-            setNome(response.data.nome);
-            setCpf(response.data.cpf);
-            setMatricula(response.data.matricula);
-            setDataNascimento(response.data.dataNascimento);
-            setGenero(response.data.genero);            
-            setSetor(response.data.setor);
-            setCargo(response.data.cargo);
-            setDataAdmissao(response.data.dataAdmissao);
-            setDataDemissao(response.data.dataDemissao);
-
-        } catch (error) {
-            alert('Erro ao carregar Funcionário, tente novamente.');
-            navigate(`/funcionarios`);
-        }
-    }
-
     useEffect(() => {
+        async function loadFuncionario() {
+            try {
+                const response = await api.get(`api/funcionario/v1/${funcionarioId}`)
+
+                setId(response.data.id);
+                setNome(response.data.nome);
+                setCpf(response.data.cpf);
+                setMatricula(response.data.matricula);
+                setDataNascimento(response.data.dataNascimento);
+                setGenero(response.data.genero);            
+                setSetor(response.data.setor);
+                setCargo(response.data.cargo);
+                setDataAdmissao(response.data.dataAdmissao);
+                setDataDemissao(response.data.dataDemissao);
+
+            } catch (error) {
+                alert('Erro ao carregar Funcionário, tente novamente.');
+                navigate(`/funcionarios`);
+            }
+        }
+
         if (funcionarioId === '0') {
             return;
         }else loadFuncionario();
-    }, [funcionarioId])    
+    }, [funcionarioId, navigate])    
 
     async function handleSaveOrUpdateFuncionario(e) {
         e.preventDefault();

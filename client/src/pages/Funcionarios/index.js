@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { FiPower, FiEdit, FiSearch, FiChevronLeft, FiChevronRight, FiCheckCircle, FiXCircle, FiClipboard } from "react-icons/fi";
+import { FiEdit, FiSearch, FiChevronLeft, FiChevronRight, FiCheckCircle, FiXCircle, FiClipboard } from "react-icons/fi";
 
 import api from "../../services/api";
 
@@ -9,10 +9,15 @@ import logo from '../../assets/logo.png'
 
 export default function Funcionario(){
 
+    // Inicializa os estados lendo direto do localStorage se houver histórico
+    const [page, setPage] = useState(() => {
+        return Number(localStorage.getItem('func_page')) || 0;
+    });
+    const [searchTerm, setSearchTerm] = useState(() => {
+        return localStorage.getItem('func_search') || '';
+    });
     const [funcionarios, setFuncionarios] = useState([]);
-    const [page, setPage] = useState(0);
-    const [totalPages, setTotalPages] = useState(0); 
-    const [searchTerm, setSearchTerm] = useState('');
+    const [totalPages, setTotalPages] = useState(0);
 
     const navigate = useNavigate();
 
@@ -63,6 +68,10 @@ export default function Funcionario(){
             setFuncionarios(data);
             setPage(searchPage);
             setTotalPages(pageInfo.totalPages);
+
+            // SALVA O ESTADO ATUAL NO LOCALSTORAGE
+            localStorage.setItem('func_page', searchPage);
+            localStorage.setItem('func_search', searchTerm);
         } catch (error) {
             alert("Erro ao buscar funcionários.");
         }
@@ -74,7 +83,9 @@ export default function Funcionario(){
     }
 
     useEffect(() => {
-        fetchFuncionarios(0);
+        // Pega os valores direto do estado inicial que definimos acima
+        const paginaSalva = Number(localStorage.getItem('func_page')) || 0;
+        fetchFuncionarios(paginaSalva);
     }, []);
 
     // Função auxiliar para renderizar os botões numéricos dinamicamente
@@ -143,11 +154,8 @@ export default function Funcionario(){
         <div className="funcionario-container">
             <header>
                 <img src={logo} alt="SGAMO"/>
-                <span>Bem Vindo, <strong>Usuário</strong>!</span>
+                <span><strong>SGAMO</strong></span>
                 <Link className="button" to="/funcionario/new/0">Adicionar Novo Funcionário</Link>
-                <button type="button">
-                    <FiPower size={18} color="#251FC5"></FiPower>
-                </button>
             </header>
 
             <div className="list-header">
@@ -165,31 +173,24 @@ export default function Funcionario(){
                     </button>
                 </form>
             </div>
-
             <ul>
                 {funcionarios.map(funcionario => (
-                    <li key={funcionario.id}>
-                        <div className="funcionario-header">
-                            <strong>{funcionario.nome}</strong>
-                            {!funcionario.dataDemissao ? (
-                                <span className="status-badge ativo">Contratado</span>
-                            ) : (
-                                <span className="status-badge inativo">Demitido</span>
-                            )}
-                        </div>
-
-                        <p>{funcionario.cpf}</p>
-
-                        {/* Container para organizar os botões de ação verticalmente ou lado a lado */}
-                        <div className="actions-container" style={{ display: 'flex', flexDirection: 'column', gap: '12px', position: 'absolute', right: '24px', top: '24px' }}>
-                            <button onClick={() => editFuncionario(funcionario.id)} type="button" title="Editar Funcionário">
-                                <FiEdit size={20} color="#251fc5"/>
-                            </button>
-
-                            <button onClick={() => gerenciarAsos(funcionario.id)} type="button" title="Gerenciar ASOs">
-                                <FiClipboard size={20} color="#251fc5"/>
-                            </button>
-                        </div>
+                    <li key={funcionario.id} className="funcionario-item">
+                        {/* O CARD INTEIRO AGORA É UM LINK PARA OS ASOS */}
+                        <Link to={`/funcionario/${funcionario.id}/asos`} className="funcionario-link">
+                            <div className="funcionario-header">
+                                <strong>{funcionario.nome}</strong>
+                                {!funcionario.dataDemissao ? (
+                                    <span className="status-badge ativo">Contrato Ativo</span>
+                                ) : (
+                                    <span className="status-badge inativo">Demitido</span>
+                                )}
+                            </div>
+                            <div className="funcionario-dados-linha">
+                                <p><strong>CPF:</strong> {funcionario.cpf}</p>
+                                <p><strong>Matrícula:</strong> {funcionario.matricula}</p>
+                            </div>
+                        </Link>
                     </li>
                 ))}
             </ul>

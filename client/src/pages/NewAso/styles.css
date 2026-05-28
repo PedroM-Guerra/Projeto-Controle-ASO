@@ -30,3 +30,66 @@
     font-size: 13px;
     font-style: italic;
 }
+
+/* Remove o input nativo feio da tela */
+.hidden-file-input {
+    display: none !important;
+}
+
+/* Container do grupo de upload */
+.file-upload-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Mantém o label de cima correto */
+.file-upload-label {
+    font-size: 14px;
+    color: #41414d;
+    font-weight: 600;
+}
+
+/* O novo botão customizado */
+.custom-file-upload-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    height: 48px;
+    padding: 0 20px;
+    background: #ffffff;
+    border: 2px dashed #dcdce6;
+    border-radius: 8px;
+    color: #41414d;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Efeito de passar o mouse no botão */
+.custom-file-upload-btn:hover {
+    border-color: #251fc5;
+    color: #251fc5;
+    background: #f8f9fa;
+}
+
+/* Ícone dentro do botão ganha destaque sutil */
+.custom-file-upload-btn svg {
+    color: #737380;
+    transition: color 0.2s;
+}
+
+.custom-file-upload-btn:hover svg {
+    color: #251fc5;
+}
+
+/* Texto de alerta cinza menor */
+.file-saved-alert {
+    margin-top: 4px;
+    color: #737380;
+    font-size: 13px;
+}

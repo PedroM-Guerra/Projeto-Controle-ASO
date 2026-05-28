@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link, useParams } from "react-router-dom";
-import { FiArrowLeft } from "react-icons/fi";
+import { FiArrowLeft, FiUpload } from "react-icons/fi";
 
 import api from "../../services/api";
 
@@ -38,31 +38,31 @@ export default function NewAso() {
         }).catch(err => console.error("Erro ao carregar resultados de ASO", err));
     }, []);
 
-    async function loadAso() {
-        try {
-            const response = await api.get(`api/aso/v1/${asoId}`)
-
-            setId(response.data.id);
-            setCrmMedico(response.data.crmMedico);
-            setDataEmissao(response.data.dataEmissao);
-            setDataValidade(response.data.dataValidade);
-            setDescricaoExame(response.data.descricaoExame);
-            setNomeMedico(response.data.nomeMedico);
-            setResultadoAso(response.data.resultadoAso);
-            setTipoAso(response.data.tipoAso);
-            setUrlDocumentoScan(response.data.urlDocumentoScan);
-
-        } catch (error) {
-            alert('Erro ao carregar ASO, tente novamente.');
-            navigate(`/asos`);
-        }
-    }
-
     useEffect(() => {
+        async function loadAso() {
+            try {
+                const response = await api.get(`api/aso/v1/${asoId}`)
+
+                setId(response.data.id);
+                setCrmMedico(response.data.crmMedico);
+                setDataEmissao(response.data.dataEmissao);
+                setDataValidade(response.data.dataValidade);
+                setDescricaoExame(response.data.descricaoExame);
+                setNomeMedico(response.data.nomeMedico);
+                setResultadoAso(response.data.resultadoAso);
+                setTipoAso(response.data.tipoAso);
+                setUrlDocumentoScan(response.data.urlDocumentoScan);
+
+            } catch (error) {
+                alert('Erro ao carregar ASO, tente novamente.');
+                navigate(`/asos`);
+            }
+        }
+
         if (asoId === '0') {
             return;
         }else loadAso();
-    }, [asoId])    
+    }, [asoId, navigate])    
 
     async function handleSaveOrUpdateAso(e) {
         e.preventDefault();
@@ -251,14 +251,23 @@ export default function NewAso() {
                             <input value={descricaoExame} onChange={e => setDescricaoExame(e.target.value)} />
                         </div>
 
-                        <div className="input-group">
-                            <label>Documento do ASO (PDF ou Imagem)</label>
+                        <div className="input-group file-upload-group">
+                            <label className="file-upload-label">Documento do ASO (PDF ou Imagem)</label>
+                            
+                            <label htmlFor="file-input-aso" className="custom-file-upload-btn">
+                                <FiUpload size={18} />
+                                {arquivo ? arquivo.name : "Selecionar arquivo..."}
+                            </label>
+                            
                             <input 
+                                id="file-input-aso"
                                 type="file" 
                                 onChange={e => setArquivo(e.target.files[0])} 
+                                className="hidden-file-input"
                             />
-                            {asoId !== '0' && urlDocumentoScan && (
-                                <small style={{ marginTop: '4px', color: '#666' }}>
+                            
+                            {asoId !== '0' && urlDocumentoScan && !arquivo && (
+                                <small className="file-saved-alert">
                                     Arquivo atual já salvo no sistema.
                                 </small>
                             )}

@@ -1,14 +1,18 @@
 .funcionario-container {
     width: 100%;
-    max-width: 1180px;
-    padding: 0 30px;
-    margin: 32px auto;
+    margin: 40px auto;
+    padding: 0 24px;
     color: #000;
+    box-sizing: border-box;
 }
 
-.funcionario-container header{
+.funcionario-container header {
     display: flex;
     align-items: center;
+    background: #ffffff; /* Fundo totalmente branco */
+    padding: 16px 24px; /* Espaçamento interno para os elementos não colarem nas bordas */
+    border-radius: 8px; /* Mantém os cantos levemente arredondados combinando com o sistema */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Sombra suave e moderna abaixo */
 }
 
 .funcionario-container header span{
@@ -307,4 +311,78 @@
 .actions-container button:hover, .actions-container a:hover {
     opacity: 0.8;
     transform: scale(1.25); /* Dá um leve efeito de crescimento ao passar o mouse */
+}
+
+/* Torna o item da lista um container absoluto para o botão de editar */
+.funcionario-container ul li.funcionario-item {
+    background: #ffffff;
+    padding: 0; /* Removemos o padding daqui para dar o efeito de clique na caixa toda */
+    border-radius: 8px;
+    position: relative;
+    border: 1px solid #e6e6f0;
+    transition: all 0.2s ease-in-out;
+}
+
+/* Nova estilização do link que preenche o card inteiro */
+.funcionario-link {
+    display: block;
+    padding: 24px; /* O padding agora fica no link interno */
+    text-decoration: none; /* Remove o sublinhado padrão de links */
+    color: inherit;
+    width: 100%;
+    height: 100%;
+}
+
+/* Efeito visual ao passar o mouse em qualquer parte do card */
+.funcionario-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(37, 31, 197, 0.08);
+    border-color: #251fc5;
+}
+
+/* Garante que os títulos "CPF:" e "Matrícula:" tenham o peso correto */
+.funcionario-link p strong {
+    color: #41414d;
+    font-weight: 600;
+    display: inline; /* Mantém o texto inline com o dado */
+    margin-right: 4px;
+}
+
+.funcionario-link p {
+    color: #737380;
+    line-height: 24px;
+    font-size: 16px;
+    margin-top: 4px;
+}
+
+/* Reposiciona o botão de editar acima do link do card */
+.actions-container {
+    position: absolute;
+    right: 24px;
+    top: 24px;
+    z-index: 2; /* Garante que o botão fique em cima da área clicável do card */
+}
+
+/* Coloca o CPF e a Matrícula na mesma linha horizontal */
+.funcionario-dados-linha {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px; /* Controla a distância horizontal entre o CPF e a Matrícula */
+    margin-top: 4px;
+}
+
+/* Garante que a margem superior antiga não quebre o alinhamento vertical */
+.funcionario-dados-linha p {
+    margin-top: 0;
+    line-height: 24px;
+    font-size: 16px;
+    color: #737380;
+}
+
+/* Mantém o rótulo em negrito e com um pequeno espaço para o número */
+.funcionario-dados-linha p strong {
+    color: #41414d;
+    font-weight: 600;
+    display: inline;
+    margin-right: 4px;
 }
