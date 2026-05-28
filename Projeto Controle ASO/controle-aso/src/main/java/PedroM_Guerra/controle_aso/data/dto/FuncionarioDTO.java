@@ -1,13 +1,11 @@
 package PedroM_Guerra.controle_aso.data.dto;
 
+import PedroM_Guerra.controle_aso.data.dto.validation.CpfCustomizado;
 import PedroM_Guerra.controle_aso.enums.CargoFuncionario;
 import PedroM_Guerra.controle_aso.enums.GeneroFuncionario;
 import PedroM_Guerra.controle_aso.enums.SetorFuncionario;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Past;
-import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.*;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
 
@@ -29,6 +27,8 @@ public class FuncionarioDTO extends RepresentationModel<FuncionarioDTO> implemen
     private Boolean enabled;
 
     @NotBlank(message = "O CPF é obrigatório.")
+    @Pattern(regexp = "\\d{11}", message = "O CPF deve conter exatamente 11 dígitos numéricos.")
+    @CpfCustomizado
     private String cpf;
 
     @NotBlank(message = "A matriícula é obrigatória.")

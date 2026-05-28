@@ -3,6 +3,7 @@ package PedroM_Guerra.controle_aso.services;
 import PedroM_Guerra.controle_aso.controllers.FuncionarioController;
 import PedroM_Guerra.controle_aso.data.dto.FuncionarioDTO;
 import PedroM_Guerra.controle_aso.exception.BadRequestException;
+import PedroM_Guerra.controle_aso.exception.DataIntegrityViolationException;
 import PedroM_Guerra.controle_aso.exception.RequiredObjectIsNullException;
 import PedroM_Guerra.controle_aso.exception.ResourceNotFoundException;
 import static PedroM_Guerra.controle_aso.mapper.ObjectMapper.parseObject;
@@ -22,6 +23,7 @@ import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.logging.Logger;
 
 @Service
@@ -116,6 +118,13 @@ public PagedModel<EntityModel<FuncionarioDTO>> findByName(String nome, Pageable 
 
         if (funcionario == null) throw new RequiredObjectIsNullException();
 
+        // 1. Busca se já existe alguém com esse CPF no banco
+        Optional<Funcionario> funcionarioComMesmoCpf = repository.findByCpf(funcionario.getCpf());
+
+        if (repository.findByCpf(funcionario.getCpf()).isPresent()) {
+            throw new DataIntegrityViolationException("Este CPF já está cadastrado para outro funcionário.");
+        }
+
         logger.info("Creating one Funcionário");
 
         var entity = parseObject(funcionario, Funcionario.class);
@@ -128,6 +137,14 @@ public PagedModel<EntityModel<FuncionarioDTO>> findByName(String nome, Pageable 
     public FuncionarioDTO update(FuncionarioDTO funcionario){
 
         if (funcionario == null) throw new RequiredObjectIsNullException();
+
+        // 1. Busca se já existe alguém com esse CPF no banco
+        Optional<Funcionario> funcionarioComMesmoCpf = repository.findByCpf(funcionario.getCpf());
+
+        // 2. Se existir e não for o próprio funcionário que está sendo editado, barra!
+        if (funcionarioComMesmoCpf.isPresent() && !funcionarioComMesmoCpf.get().getId().equals(funcionario.getId())) {
+            throw new DataIntegrityViolationException("Este CPF já está cadastrado para outro funcionário.");
+        }
 
         logger.info("Updating one Funcionário");
 

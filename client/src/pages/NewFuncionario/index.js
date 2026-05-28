@@ -75,7 +75,7 @@ export default function NewFuncionario(){
 
         const data = {
             nome,
-            cpf,
+            cpf: cpf ? cpf.replace(/\D/g, "") : null,
             matricula,
             dataNascimento,
             genero: genero === "" ? null : genero,
@@ -103,17 +103,22 @@ export default function NewFuncionario(){
             }
 
         } catch (err) {
-            // 1. Verifica se o servidor enviou uma resposta de erro (Status 400)
+            // 1. Verifica se o servidor enviou uma resposta de erro estruturada
             if (err.response && err.response.data) {
-                const errosDoBack = err.response.data;
+                const erroBack = err.response.data;
 
-                // 2. Transforma o objeto de erros em uma lista de mensagens de texto
-                // Se o back devolveu { nome: "O nome é...", cpf: "O CPF é..." }, pegamos apenas os textos
-                const mensagensDeAviso = Object.values(errosDoBack).join('\n');
-
-                alert(`Erro ao salvar, corrija os campos:\n\n${mensagensDeAviso}`);
+                // Se o erro possuir a propriedade 'message' (caso da duplicidade do CPF / status 409)
+                if (erroBack.message) {
+                    alert(`Erro ao salvar:\n\n${erroBack.message}`);
+                } 
+                // Se for um mapa de validação de campos (caso dos campos vazios ou inválidos / status 400)
+                else {
+                    // Transforma o objeto de erros em uma lista de mensagens separadas por linha
+                    const mensagensDeAviso = Object.values(erroBack).join('\n');
+                    alert(`Erro ao salvar, corrija os campos:\n\n${mensagensDeAviso}`);
+                }
             } else {
-                // 3. Tratamento para caso o servidor do Spring Boot esteja desligado
+                // 2. Tratamento para caso o servidor do Spring Boot esteja desligado ou inacessível
                 alert("Não foi possível conectar ao servidor. Tente novamente mais tarde.");
             }
         }
@@ -159,6 +164,15 @@ export default function NewFuncionario(){
                 lista[indiceAtual + 1].focus();
             }
         }
+    }
+
+    function formatarCPF(value) {
+        return value
+            .replace(/\D/g, "") // Remove tudo o que não for número
+            .replace(/(\d{3})(\d)/, "$1.$2") // Coloca ponto após os 3 primeiros dígitos
+            .replace(/(\d{3})(\d)/, "$1.$2") // Coloca ponto após os 6 primeiros dígitos
+            .replace(/(\d{3})(\d{1,2})$/, "$1-$2") // Coloca hífen antes dos 2 últimos dígitos
+            .slice(0, 14); // Limita o tamanho máximo do campo formatado
     }
 
     return(
@@ -210,13 +224,15 @@ export default function NewFuncionario(){
                             value={nome} 
                             onChange={e => setNome(e.target.value)} />
                         </div>
-                    <div className="input-group">
-                        <label>CPF</label>
-                        <input
-                            value={cpf}
-                            onChange={e => setCpf(e.target.value)}
-                        />
-                    </div>
+                        <div className="input-group">
+                            <label>CPF</label>
+                            <input 
+                                type="text"
+                                placeholder="000.000.000-00"
+                                value={cpf || ""} 
+                                onChange={e => setCpf(formatarCPF(e.target.value))} 
+                            />
+                        </div>
                     <div className="input-group">
                         <label>Matrícula</label>
                         <input

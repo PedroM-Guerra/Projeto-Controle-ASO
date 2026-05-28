@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
+
 public interface FuncionarioRepository extends JpaRepository<Funcionario, Long> {
 
     @Modifying(clearAutomatically = true)
@@ -19,4 +21,6 @@ public interface FuncionarioRepository extends JpaRepository<Funcionario, Long> 
     Page<Funcionario> FindFuncionariosByName(@Param("nome") String nome, Pageable pageable);
 
     Page<Funcionario> findFuncionariosByEnabledTrue(Pageable pageable);
+
+    Optional<Funcionario> findByCpf(String cpf);
 }
