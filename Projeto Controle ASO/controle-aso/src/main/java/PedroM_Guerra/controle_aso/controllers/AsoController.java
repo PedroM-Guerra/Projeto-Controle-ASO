@@ -2,11 +2,11 @@ package PedroM_Guerra.controle_aso.controllers;
 
 import PedroM_Guerra.controle_aso.controllers.docs.AsoControllerDocs;
 import PedroM_Guerra.controle_aso.data.dto.AsoDTO;
-import PedroM_Guerra.controle_aso.data.dto.FuncionarioDTO;
 import PedroM_Guerra.controle_aso.enums.ResultadoAso;
 import PedroM_Guerra.controle_aso.enums.TipoAso;
 import PedroM_Guerra.controle_aso.services.AsoServices;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -67,14 +67,14 @@ public class AsoController implements AsoControllerDocs {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Override
-    public AsoDTO create(@RequestBody AsoDTO aso){
+    public AsoDTO create(@Valid @RequestBody AsoDTO aso){
         return service.create(aso);
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Override
-    public AsoDTO update(@RequestBody AsoDTO aso){
+    public AsoDTO update(@Valid @RequestBody AsoDTO aso){
         return service.update(aso);
     }
 

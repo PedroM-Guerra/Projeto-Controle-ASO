@@ -7,7 +7,7 @@ import api from "../../services/api";
 import './styles.css';
 
 export default function NewAso() {
-    const [id, setId] = useState(null);
+    const [id, setId] = useState('');
     const [crmMedico, setCrmMedico] = useState('');
     const [dataEmissao, setDataEmissao] = useState('');
     const [dataValidade, setDataValidade] = useState('');
@@ -44,30 +44,43 @@ export default function NewAso() {
                 const response = await api.get(`api/aso/v1/${asoId}`)
 
                 setId(response.data.id);
-                setCrmMedico(response.data.crmMedico);
-                setDataEmissao(response.data.dataEmissao);
-                setDataValidade(response.data.dataValidade);
-                setDescricaoExame(response.data.descricaoExame);
-                setNomeMedico(response.data.nomeMedico);
-                setResultadoAso(response.data.resultadoAso);
-                setTipoAso(response.data.tipoAso);
-                setUrlDocumentoScan(response.data.urlDocumentoScan);
+                setCrmMedico(response.data.crmMedico || '');
+                setDataEmissao(response.data.dataEmissao || '');
+                setDataValidade(response.data.dataValidade || '');
+                setDescricaoExame(response.data.descricaoExame || '');
+                setNomeMedico(response.data.nomeMedico || '');
+                setResultadoAso(response.data.resultadoAso || '');
+                setTipoAso(response.data.tipoAso || '');
+                setUrlDocumentoScan(response.data.urlDocumentoScan || '');
 
             } catch (error) {
                 alert('Erro ao carregar ASO, tente novamente.');
-                navigate(`/asos`);
+                navigate(`/funcionario/${funcionarioId}/asos`);
             }
         }
 
         if (asoId === '0') {
+            // Garante reset completo dos estados ao entrar em modo de cadastro novo
+            setId('');
+            setCrmMedico('');
+            setDataEmissao('');
+            setDataValidade('');
+            setDescricaoExame('');
+            setNomeMedico('');
+            setResultadoAso('');
+            setTipoAso('');
+            setUrlDocumentoScan('');
+            setArquivo(null);
             return;
-        }else loadAso();
-    }, [asoId, navigate])    
+        } else {
+            loadAso();
+        }
+    }, [asoId, funcionarioId, navigate])    
 
     async function handleSaveOrUpdateAso(e) {
         e.preventDefault();
 
-        let caminhoArquivoSalvo = urlDocumentoScan; // Mantém o valor atual se for edição e não mudar o arquivo
+        let caminhoArquivoSalvo = urlDocumentoScan;
 
         // PASSO 1: Se o usuário selecionou um arquivo novo, faz o upload dele primeiro
         if (arquivo) {
@@ -75,16 +88,11 @@ export default function NewAso() {
             formData.append('file', arquivo); 
 
             try {
-                // Ajuste a rota se necessário (ex: se o seu endpoint de arquivos for 'api/file/v1/uploadFile')
                 const responseUpload = await api.post('api/file/v1/uploadFile', formData, {
                     headers: { 'Content-Type': 'multipart/form-data' }
                 });
                 
-                // Como o back retorna um objeto, pegamos a propriedade correta aqui:
                 caminhoArquivoSalvo = responseUpload.data.fileName; 
-                
-                // Nota: Se o seu banco preferir salvar o link completo com o localhost, 
-                // mude a linha de cima para: caminhoArquivoSalvo = responseUpload.data.fileDowloadUri;
                 
             } catch (uploadError) {
                 alert('Erro ao fazer o upload do documento. O cadastro foi interrompido.');
@@ -92,23 +100,23 @@ export default function NewAso() {
             }
         }
 
-        // PASSO 2: Monta o JSON tradicional incluindo o nome do arquivo que o back-end gerou
+        // PASSO 2: Monta o JSON convertendo strings vazias em null para os Enums e Datas
         const data = {
             funcionarioId,
             crmMedico,
             nomeMedico,
             descricaoExame,
-            urlDocumentoScan: caminhoArquivoSalvo, 
-            dataEmissao,
-            dataValidade,
-            tipoAso,
-            resultadoAso,
+            urlDocumentoScan: caminhoArquivoSalvo || null, 
+            dataEmissao: dataEmissao === "" ? null : dataEmissao,
+            dataValidade: dataValidade === "" ? null : dataValidade,
+            tipoAso: tipoAso === "" ? null : tipoAso,
+            resultadoAso: resultadoAso === "" ? null : resultadoAso,
             enabled: true
         };
 
         console.log("DADOS ENVIADOS COMO JSON COM O NOME DA IMAGEM:", data);
 
-        // PASSO 3: Envia a requisição normal em JSON para a rota do ASO
+        // PASSO 3: Envia a requisição e intercepta mensagens do ExceptionHandler
         try {
             if (asoId === '0') {
                 await api.post('api/aso/v1', data);
@@ -117,16 +125,25 @@ export default function NewAso() {
             } else {
                 data.id = id;
                 await api.put('api/aso/v1', data);
+                alert('ASO atualizado com sucesso!');
                 navigate(`/funcionario/${funcionarioId}/asos`);
             }
             
         } catch (err) {
-            alert('Erro ao cadastrar o registro de ASO, tente novamente.');
+            if (err.response && err.response.data) {
+                const errosDoBack = err.response.data;
+
+                // Une todas as mensagens retornadas pelo Bean Validation separadas por linha
+                const mensagensDeAviso = Object.values(errosDoBack).join('\n');
+
+                alert(`Por favor, corrija os seguintes campos:\n\n${mensagensDeAviso}`);
+            } else {
+                alert('Erro ao processar o registro de ASO. Verifique a conexão com o servidor.');
+            }
         }
     }
 
     async function handleDelete() {
-
         const mensagem = 
         "ATENÇÃO!\n\n" +
         "Você está prestes a apagar este ASO do sistema.\n" +
@@ -137,13 +154,13 @@ export default function NewAso() {
     
         if (!confirmacao) return;
         
-            try {
-                await api.patch(`api/aso/v1/${asoId}`);
-                alert('ASO desativado com sucesso!');
-                navigate(`/funcionario/${funcionarioId}/asos`);
-            } catch (err) {
-                alert('Erro ao desativar ASO, tente novamente.');
-            }
+        try {
+            await api.patch(`api/aso/v1/${asoId}`);
+            alert('ASO desativado com sucesso!');
+            navigate(`/funcionario/${funcionarioId}/asos`);
+        } catch (err) {
+            alert('Erro ao desativar ASO, tente novamente.');
+        }
     }
 
     function handleFormKeyDown(e) {
@@ -191,16 +208,16 @@ export default function NewAso() {
                         <div className="input-group">
                             <label>Nome do Médico</label>
                             <input 
-                            value={nomeMedico} 
-                            onChange={e => setNomeMedico(e.target.value)} 
+                                value={nomeMedico || ""} 
+                                onChange={e => setNomeMedico(e.target.value)} 
                             />
                         </div>
 
                         <div className="input-group">
                             <label>CRM do Médico</label>
                             <input 
-                            value={crmMedico} 
-                            onChange={e => setCrmMedico(e.target.value)} 
+                                value={crmMedico || ""} 
+                                onChange={e => setCrmMedico(e.target.value)} 
                             />
                         </div>
 
@@ -208,7 +225,7 @@ export default function NewAso() {
                             <label htmlFor="tipoAso">Tipo de ASO</label>
                             <select 
                                 id="tipoAso" 
-                                value={tipoAso} 
+                                value={tipoAso || ""} 
                                 onChange={e => setTipoAso(e.target.value)}
                             >
                                 <option value="">Selecione o tipo</option>
@@ -224,7 +241,7 @@ export default function NewAso() {
                             <label htmlFor="resultadoAso">Resultado do ASO</label>
                             <select 
                                 id="resultadoAso" 
-                                value={resultadoAso} 
+                                value={resultadoAso || ""} 
                                 onChange={e => setResultadoAso(e.target.value)}
                             >
                                 <option value="">Selecione o resultado</option>
@@ -238,17 +255,28 @@ export default function NewAso() {
 
                         <div className="input-group">
                             <label>Data de Emissão</label>
-                            <input type="date" value={dataEmissao} onChange={e => setDataEmissao(e.target.value)} />
+                            <input 
+                                type="date" 
+                                value={dataEmissao || ""} 
+                                onChange={e => setDataEmissao(e.target.value)} 
+                            />
                         </div>
 
                         <div className="input-group">
                             <label>Data de Validade</label>
-                            <input type="date" value={dataValidade} onChange={e => setDataValidade(e.target.value)} />
+                            <input 
+                                type="date" 
+                                value={dataValidade || ""} 
+                                onChange={e => setDataValidade(e.target.value)} 
+                            />
                         </div>
 
                         <div className="input-group">
                             <label>Descrição dos Exames</label>
-                            <input value={descricaoExame} onChange={e => setDescricaoExame(e.target.value)} />
+                            <input 
+                                value={descricaoExame || ""} 
+                                onChange={e => setDescricaoExame(e.target.value)} 
+                            />
                         </div>
 
                         <div className="input-group file-upload-group">
@@ -275,7 +303,7 @@ export default function NewAso() {
                     </div>
 
                     <button className="button" type="submit">
-                    {asoId === '0' ? 'Cadastrar' : 'Salvar'}
+                        {asoId === '0' ? 'Cadastrar' : 'Salvar'}
                     </button>                    
                 </form>
             </div>

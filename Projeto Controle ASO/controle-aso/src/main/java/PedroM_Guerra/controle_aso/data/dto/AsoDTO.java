@@ -3,6 +3,9 @@ package PedroM_Guerra.controle_aso.data.dto;
 import PedroM_Guerra.controle_aso.enums.ResultadoAso;
 import PedroM_Guerra.controle_aso.enums.TipoAso;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
 
@@ -19,13 +22,29 @@ public class AsoDTO extends RepresentationModel<AsoDTO> implements Serializable 
     private Long id;
     private Long funcionarioId;
     private Boolean enabled;
+
+    @NotBlank(message = "O CRM do médico é obrigatório.")
     private String crmMedico;
+
+    @NotBlank(message = "O nome do médico é obrigatório.")
     private String nomeMedico;
+
     private String descricaoExame;
+
+    @NotBlank(message = "O Upload do arquivo do Atestado Médico Ocupacional é obrigatório.")
     private String urlDocumentoScan;
+
+    @NotNull(message = "A data de emissão é obrigatória.")
+    @PastOrPresent(message = "A data de adimissão não pode ser uma data futura.")
     private LocalDate dataEmissao;
+
+    @NotNull(message = "A data de validade é obrigatória.")
     private LocalDate dataValidade;
+
+    @NotNull(message = "O tipo do ASO é obrigatório.")
     private TipoAso tipoAso;
+
+    @NotNull(message = "O resultado do ASO é obrigatório.")
     private ResultadoAso resultadoAso;
     //criar cadastradoPor usuario futuramente
 

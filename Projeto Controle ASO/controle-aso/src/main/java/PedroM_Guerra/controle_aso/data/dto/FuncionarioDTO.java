@@ -4,6 +4,10 @@ import PedroM_Guerra.controle_aso.enums.CargoFuncionario;
 import PedroM_Guerra.controle_aso.enums.GeneroFuncionario;
 import PedroM_Guerra.controle_aso.enums.SetorFuncionario;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.PastOrPresent;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
 
@@ -18,15 +22,35 @@ public class FuncionarioDTO extends RepresentationModel<FuncionarioDTO> implemen
 
     @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private Long id;
+
+    @NotBlank(message = "O nome é obrigatório.")
     private String nome;
+
     private Boolean enabled;
+
+    @NotBlank(message = "O CPF é obrigatório.")
     private String cpf;
+
+    @NotBlank(message = "A matriícula é obrigatória.")
     private String matricula;
+
+    @NotNull(message = "A data de nascimento é obrigatória.")
+    @Past(message = "A data de nascimento deve ser uma data passada.")
     private LocalDate dataNascimento;
+
+    @NotNull(message = "O gênero é obrigatório.")
     private GeneroFuncionario genero;
+
+    @NotNull(message = "O setor é obrigatório.")
     private SetorFuncionario setor;
+
+    @NotNull(message = "O cargo é obrigatório.")
     private CargoFuncionario cargo;
+
+    @NotNull(message = "A data de adimissão é obrigatória.")
+    @PastOrPresent(message = "A data de adimissão não pode ser uma data futura.")
     private LocalDate dataAdmissao;
+
     private LocalDate dataDemissao;
 
 //    private Usuario cadastradoPor;

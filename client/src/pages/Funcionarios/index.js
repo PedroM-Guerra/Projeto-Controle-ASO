@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from "react";
-import { useNavigate, Link } from "react-router-dom";
-import { FiEdit, FiSearch, FiChevronLeft, FiChevronRight, FiCheckCircle, FiXCircle, FiClipboard } from "react-icons/fi";
+import React, { useState, useEffect, useCallback } from "react"; // Importe o useCallback
+import { Link } from "react-router-dom";
+import { FiSearch, FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
 import api from "../../services/api";
 
@@ -9,7 +9,6 @@ import logo from '../../assets/logo.png'
 
 export default function Funcionario(){
 
-    // Inicializa os estados lendo direto do localStorage se houver histórico
     const [page, setPage] = useState(() => {
         return Number(localStorage.getItem('func_page')) || 0;
     });
@@ -19,25 +18,8 @@ export default function Funcionario(){
     const [funcionarios, setFuncionarios] = useState([]);
     const [totalPages, setTotalPages] = useState(0);
 
-    const navigate = useNavigate();
-
-    async function editFuncionario(id) {
-        try {
-            navigate(`/funcionario/new/${id}`)
-        } catch (error) {
-            alert("Edição de Funcionário falhou, tente novamente.")
-        }
-    }
-
-    async function gerenciarAsos(id) {
-        try {
-            navigate(`/funcionario/${id}/asos`)
-        } catch (error) {
-            alert("Acesso ao gerenciamento de ASOs falhou, tente novamente.")
-        }
-    }
-
-    async function fetchFuncionarios(searchPage = 0) {
+    // 1. Moveu a função para fora e encapsulou com useCallback para evitar loops
+    const fetchFuncionarios = useCallback(async (searchPage = 0) => {
         try {
             let response;
             
@@ -59,96 +41,85 @@ export default function Funcionario(){
                 });
             }
 
-            // Captura os funcionários retornados
             const data = response.data._embedded?.funcionarios || [];
-            
-            // ATENÇÃO: Captura as informações de paginação que o Spring Boot envia no JSON
             const pageInfo = response.data.page || { totalPages: 0 };
 
             setFuncionarios(data);
             setPage(searchPage);
             setTotalPages(pageInfo.totalPages);
 
-            // SALVA O ESTADO ATUAL NO LOCALSTORAGE
             localStorage.setItem('func_page', searchPage);
             localStorage.setItem('func_search', searchTerm);
         } catch (error) {
             alert("Erro ao buscar funcionários.");
         }
-    }
+    }, [searchTerm]); // Vigia o termo de busca para reconstruir a função se ele mudar
 
     function handleSearch(e) {
         e.preventDefault();
-        fetchFuncionarios(0); // Reseta para a primeira página na busca
+        fetchFuncionarios(0); 
     }
 
+    // 2. O useEffect agora apenas chama a função memorizada no carregamento inicial
     useEffect(() => {
-        // Pega os valores direto do estado inicial que definimos acima
         const paginaSalva = Number(localStorage.getItem('func_page')) || 0;
         fetchFuncionarios(paginaSalva);
-    }, []);
+    }, [fetchFuncionarios]); // Inclui a dependência de forma segura exigida pelo Linter
 
-    // Função auxiliar para renderizar os botões numéricos dinamicamente
     function renderPaginationButtons() {
-    const buttons = [];
-    const maxVisibleButtons = 2; // Quantidade de páginas vizinhas que aparecem ao redor da atual
+        const buttons = [];
+        const maxVisibleButtons = 2;
 
-    // Sempre adiciona a primeira página
-    buttons.push(
-        <button 
-            key={0} 
-            className={`page-number ${page === 0 ? 'active' : ''}`}
-            onClick={() => fetchFuncionarios(0)}
-            type="button"
-        >
-            1
-        </button>
-    );
-
-    // Coloca reticências se a página atual estiver muito longe do começo
-    if (page > maxVisibleButtons + 1) {
-        buttons.push(<span key="ellipsis-start" className="pagination-ellipsis">...</span>);
-    }
-
-    // Calcula os limites de páginas que vão aparecer ao redor da página atual
-    let startPage = Math.max(1, page - maxVisibleButtons);
-    let endPage = Math.min(totalPages - 2, page + maxVisibleButtons);
-
-    // Renderiza as páginas intermediárias vizinhas
-    for (let i = startPage; i <= endPage; i++) {
         buttons.push(
             <button 
-                key={i} 
-                className={`page-number ${page === i ? 'active' : ''}`}
-                onClick={() => fetchFuncionarios(i)}
+                key={0} 
+                className={`page-number ${page === 0 ? 'active' : ''}`}
+                onClick={() => fetchFuncionarios(0)}
                 type="button"
             >
-                {i + 1}
+                1
             </button>
         );
-    }
 
-    // Coloca reticências se a página atual estiver muito longe do fim
-    if (page < totalPages - maxVisibleButtons - 2) {
-        buttons.push(<span key="ellipsis-end" className="pagination-ellipsis">...</span>);
-    }
+        if (page > maxVisibleButtons + 1) {
+            buttons.push(<span key="ellipsis-start" className="pagination-ellipsis">...</span>);
+        }
 
-    // Sempre adiciona a última página (se houver mais de uma página no total)
-    if (totalPages > 1) {
-        buttons.push(
-            <button 
-                key={totalPages - 1} 
-                className={`page-number ${page === totalPages - 1 ? 'active' : ''}`}
-                onClick={() => fetchFuncionarios(totalPages - 1)}
-                type="button"
-            >
-                {totalPages}
-            </button>
-        );
-    }
+        let startPage = Math.max(1, page - maxVisibleButtons);
+        let endPage = Math.min(totalPages - 2, page + maxVisibleButtons);
 
-    return buttons;
-}
+        for (let i = startPage; i <= endPage; i++) {
+            buttons.push(
+                <button 
+                    key={i} 
+                    className={`page-number ${page === i ? 'active' : ''}`}
+                    onClick={() => fetchFuncionarios(i)}
+                    type="button"
+                >
+                    {i + 1}
+                </button>
+            );
+        }
+
+        if (page < totalPages - maxVisibleButtons - 2) {
+            buttons.push(<span key="ellipsis-end" className="pagination-ellipsis">...</span>);
+        }
+
+        if (totalPages > 1) {
+            buttons.push(
+                <button 
+                    key={totalPages - 1} 
+                    className={`page-number ${page === totalPages - 1 ? 'active' : ''}`}
+                    onClick={() => fetchFuncionarios(totalPages - 1)}
+                    type="button"
+                >
+                    {totalPages}
+                </button>
+            );
+        }
+
+        return buttons;
+    }
 
     return (
         <div className="funcionario-container">
@@ -176,7 +147,6 @@ export default function Funcionario(){
             <ul>
                 {funcionarios.map(funcionario => (
                     <li key={funcionario.id} className="funcionario-item">
-                        {/* O CARD INTEIRO AGORA É UM LINK PARA OS ASOS */}
                         <Link to={`/funcionario/${funcionario.id}/asos`} className="funcionario-link">
                             <div className="funcionario-header">
                                 <strong>{funcionario.nome}</strong>
@@ -195,7 +165,6 @@ export default function Funcionario(){
                 ))}
             </ul>
 
-            {/* Nova barra de paginação numerada */}
             {totalPages > 1 && (
                 <div className="pagination-container">
                     <button 

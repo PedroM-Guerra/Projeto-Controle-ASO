@@ -8,7 +8,7 @@ import './styles.css';
 
 export default function NewFuncionario(){
 
-    const [id, setId] = useState(null);
+    const [id, setId] = useState('');
     const [nome, setNome] = useState('');
     const [cpf, setCpf] = useState('');
     const [matricula, setMatricula] = useState('');
@@ -78,11 +78,11 @@ export default function NewFuncionario(){
             cpf,
             matricula,
             dataNascimento,
-            genero,
-            setor,
-            cargo,
+            genero: genero === "" ? null : genero,
+            setor: setor === "" ? null : setor,
+            cargo: cargo === "" ? null : cargo,
             dataAdmissao,
-            dataDemissao,
+            dataDemissao: dataDemissao === "" ? null : dataDemissao,
             enabled: true
         }
 
@@ -103,7 +103,19 @@ export default function NewFuncionario(){
             }
 
         } catch (err) {
-            alert('Erro ao salvar Funcionário, tente novamente.')
+            // 1. Verifica se o servidor enviou uma resposta de erro (Status 400)
+            if (err.response && err.response.data) {
+                const errosDoBack = err.response.data;
+
+                // 2. Transforma o objeto de erros em uma lista de mensagens de texto
+                // Se o back devolveu { nome: "O nome é...", cpf: "O CPF é..." }, pegamos apenas os textos
+                const mensagensDeAviso = Object.values(errosDoBack).join('\n');
+
+                alert(`Erro ao salvar, corrija os campos:\n\n${mensagensDeAviso}`);
+            } else {
+                // 3. Tratamento para caso o servidor do Spring Boot esteja desligado
+                alert("Não foi possível conectar ao servidor. Tente novamente mais tarde.");
+            }
         }
     }
 
@@ -247,7 +259,7 @@ export default function NewFuncionario(){
                         <label>Data de Demissão</label>
                         <input
                             type="date"
-                            value={dataDemissao}
+                            value={dataDemissao || ""}
                             onChange={e => setDataDemissao(e.target.value)}
                         />
                     </div>

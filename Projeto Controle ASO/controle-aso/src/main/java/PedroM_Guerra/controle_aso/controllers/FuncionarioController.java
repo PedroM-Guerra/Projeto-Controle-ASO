@@ -7,6 +7,7 @@ import PedroM_Guerra.controle_aso.enums.GeneroFuncionario;
 import PedroM_Guerra.controle_aso.enums.SetorFuncionario;
 import PedroM_Guerra.controle_aso.services.FuncionarioServices;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -69,14 +70,14 @@ public class FuncionarioController implements FuncionarioControllerDocs {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Override
-    public FuncionarioDTO create(@RequestBody FuncionarioDTO funcionario){
+    public FuncionarioDTO create(@Valid @RequestBody FuncionarioDTO funcionario){
         return service.create(funcionario);
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Override
-    public FuncionarioDTO update(@RequestBody FuncionarioDTO funcionario){
+    public FuncionarioDTO update(@Valid @RequestBody FuncionarioDTO funcionario){
         return service.update(funcionario);
     }
 
