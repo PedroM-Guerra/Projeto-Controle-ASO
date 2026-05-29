@@ -60,6 +60,8 @@ public class MockFuncionario {
             funcionario.setDataDemissao(null);
         }
 
+        funcionario.setEnabled((number % 2) == 0);
+
         return funcionario;
     }
 
@@ -84,6 +86,8 @@ public class MockFuncionario {
         } else {
             funcionario.setDataDemissao(null);
         }
+
+        funcionario.setEnabled((number % 2) == 0);
 
         return funcionario;
     }

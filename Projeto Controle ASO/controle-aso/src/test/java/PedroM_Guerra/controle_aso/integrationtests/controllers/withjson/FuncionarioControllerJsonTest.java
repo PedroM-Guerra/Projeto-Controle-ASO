@@ -22,6 +22,7 @@ import org.springframework.http.MediaType;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.*;
@@ -76,7 +77,7 @@ class FuncionarioControllerJsonTest {
         assertTrue(createdFuncionario.getId() > 0);
 
         assertEquals("Marcielly Gislayne", createdFuncionario.getNome());
-        assertEquals("12212312987", createdFuncionario.getCpf());
+        assertEquals("02334378518", createdFuncionario.getCpf());
         assertEquals("54454", createdFuncionario.getMatricula());
         assertEquals(LocalDate.of(1999, 2, 2), createdFuncionario.getDataNascimento());
         assertEquals(GeneroFuncionario.FEMININO, createdFuncionario.getGenero());
@@ -111,7 +112,7 @@ class FuncionarioControllerJsonTest {
         assertTrue(createdFuncionario.getId() > 0);
 
         assertEquals("Marciely Gislaine", createdFuncionario.getNome());
-        assertEquals("12212312987", createdFuncionario.getCpf());
+        assertEquals("02334378518", createdFuncionario.getCpf());
         assertEquals("54454", createdFuncionario.getMatricula());
         assertEquals(LocalDate.of(1999, 2, 2), createdFuncionario.getDataNascimento());
         assertEquals(GeneroFuncionario.FEMININO, createdFuncionario.getGenero());
@@ -145,7 +146,7 @@ class FuncionarioControllerJsonTest {
         assertTrue(createdFuncionario.getId() > 0);
 
         assertEquals("Marciely Gislaine", createdFuncionario.getNome());
-        assertEquals("12212312987", createdFuncionario.getCpf());
+        assertEquals("02334378518", createdFuncionario.getCpf());
         assertEquals("54454", createdFuncionario.getMatricula());
         assertEquals(LocalDate.of(1999, 2, 2), createdFuncionario.getDataNascimento());
         assertEquals(GeneroFuncionario.FEMININO, createdFuncionario.getGenero());
@@ -179,7 +180,7 @@ class FuncionarioControllerJsonTest {
         assertTrue(createdFuncionario.getId() > 0);
 
         assertEquals("Marciely Gislaine", createdFuncionario.getNome());
-        assertEquals("12212312987", createdFuncionario.getCpf());
+        assertEquals("02334378518", createdFuncionario.getCpf());
         assertEquals("54454", createdFuncionario.getMatricula());
         assertEquals(LocalDate.of(1999, 2, 2), createdFuncionario.getDataNascimento());
         assertEquals(GeneroFuncionario.FEMININO, createdFuncionario.getGenero());
@@ -227,32 +228,32 @@ class FuncionarioControllerJsonTest {
         assertNotNull(funcionarioOne.getId());
         assertTrue(funcionarioOne.getId() > 0);
 
-        assertEquals("Alys Ryles", funcionarioOne.getNome());
-        assertEquals("00000285084", funcionarioOne.getCpf());
-        assertEquals("85084", funcionarioOne.getMatricula());
-        assertEquals(LocalDate.of(2008, 10, 14), funcionarioOne.getDataNascimento());
+        assertEquals("Antônio Tavares", funcionarioOne.getNome());
+        assertEquals("00002470728", funcionarioOne.getCpf());
+        assertEquals("70728", funcionarioOne.getMatricula());
+        assertEquals(LocalDate.of(1970, 1, 8), funcionarioOne.getDataNascimento());
         assertEquals(GeneroFuncionario.MASCULINO, funcionarioOne.getGenero());
-        assertEquals(SetorFuncionario.OPERACIONAL, funcionarioOne.getSetor());
-        assertEquals(CargoFuncionario.ESTAGIARIO, funcionarioOne.getCargo());
-        assertEquals(LocalDate.of(2022, 4, 17), funcionarioOne.getDataAdmissao());
-        assertEquals(LocalDate.of(2025, 3, 3), funcionarioOne.getDataDemissao());
-        assertFalse(funcionarioOne.getEnabled());
+        assertEquals(SetorFuncionario.ENGENHARIA, funcionarioOne.getSetor());
+        assertEquals(CargoFuncionario.MEDICO, funcionarioOne.getCargo());
+        assertEquals(LocalDate.of(2010, 9, 4), funcionarioOne.getDataAdmissao());
+        assertEquals(LocalDate.of(2025, 2, 2), funcionarioOne.getDataDemissao());
+        assertTrue(funcionarioOne.getEnabled());
 
         FuncionarioDTO funcionarioFour = funcionarios.get(4);
 
         assertNotNull(funcionarioFour.getId());
         assertTrue(funcionarioFour.getId() > 0);
 
-        assertEquals("Amandi O'Fallowne", funcionarioFour.getNome());
-        assertEquals("00000443464", funcionarioFour.getCpf());
-        assertEquals("43464", funcionarioFour.getMatricula());
-        assertEquals(LocalDate.of(2007, 4, 9), funcionarioFour.getDataNascimento());
+        assertEquals("Arthur Miranda", funcionarioFour.getNome());
+        assertEquals("00007459698", funcionarioFour.getCpf());
+        assertEquals("59698", funcionarioFour.getMatricula());
+        assertEquals(LocalDate.of(1958, 12, 3), funcionarioFour.getDataNascimento());
         assertEquals(GeneroFuncionario.MASCULINO, funcionarioFour.getGenero());
-        assertEquals(SetorFuncionario.RECURSOS_HUMANOS, funcionarioFour.getSetor());
-        assertEquals(CargoFuncionario.DIRETOR, funcionarioFour.getCargo());
-        assertEquals(LocalDate.of(2004, 9, 16), funcionarioFour.getDataAdmissao());
-        assertEquals(LocalDate.of(2026, 3, 28), funcionarioFour.getDataDemissao());
-        assertFalse(funcionarioFour.getEnabled());
+        assertEquals(SetorFuncionario.SAUDE_TRABALHO, funcionarioFour.getSetor());
+        assertEquals(CargoFuncionario.OPERARIO, funcionarioFour.getCargo());
+        assertEquals(LocalDate.of(1995, 10, 27), funcionarioFour.getDataAdmissao());
+        assertNull(funcionarioFour.getDataDemissao());
+        assertTrue(funcionarioFour.getEnabled());
     }
 
     @Test
@@ -280,37 +281,142 @@ class FuncionarioControllerJsonTest {
         assertNotNull(funcionarioOne.getId());
         assertTrue(funcionarioOne.getId() > 0);
 
-        assertEquals("Aldo Mandel", funcionarioOne.getNome());
-        assertEquals("00005527462", funcionarioOne.getCpf());
-        assertEquals("27462", funcionarioOne.getMatricula());
-        assertEquals(LocalDate.of(1951, 3, 25), funcionarioOne.getDataNascimento());
-        assertEquals(GeneroFuncionario.FEMININO, funcionarioOne.getGenero());
-        assertEquals(SetorFuncionario.TECNOLOGIA_INFORMACAO, funcionarioOne.getSetor());
-        assertEquals(CargoFuncionario.SECRETARIO, funcionarioOne.getCargo());
-        assertEquals(LocalDate.of(2018, 7, 16), funcionarioOne.getDataAdmissao());
-        assertEquals(LocalDate.of(2026, 3, 23), funcionarioOne.getDataDemissao());
-        assertFalse(funcionarioOne.getEnabled());
+        assertEquals("André Aguiar", funcionarioOne.getNome());
+        assertEquals("00001282878", funcionarioOne.getCpf());
+        assertEquals("82878", funcionarioOne.getMatricula());
+        assertEquals(LocalDate.of(1965, 3, 2), funcionarioOne.getDataNascimento());
+        assertEquals(GeneroFuncionario.MASCULINO, funcionarioOne.getGenero());
+        assertEquals(SetorFuncionario.ARQUITETURA, funcionarioOne.getSetor());
+        assertEquals(CargoFuncionario.DIRETOR, funcionarioOne.getCargo());
+        assertEquals(LocalDate.of(1989, 11, 2), funcionarioOne.getDataAdmissao());
+        assertNull(funcionarioOne.getDataDemissao());
+        assertTrue(funcionarioOne.getEnabled());
 
         FuncionarioDTO funcionarioFour = funcionarios.get(4);
 
         assertNotNull(funcionarioFour.getId());
         assertTrue(funcionarioFour.getId() > 0);
 
-        assertEquals("Amandi O'Fallowne", funcionarioFour.getNome());
-        assertEquals("00000443464", funcionarioFour.getCpf());
-        assertEquals("43464", funcionarioFour.getMatricula());
-        assertEquals(LocalDate.of(2007, 4, 9), funcionarioFour.getDataNascimento());
+        assertEquals("André Miranda", funcionarioFour.getNome());
+        assertEquals("00005155269", funcionarioFour.getCpf());
+        assertEquals("55269", funcionarioFour.getMatricula());
+        assertEquals(LocalDate.of(1957, 3, 1), funcionarioFour.getDataNascimento());
         assertEquals(GeneroFuncionario.MASCULINO, funcionarioFour.getGenero());
-        assertEquals(SetorFuncionario.RECURSOS_HUMANOS, funcionarioFour.getSetor());
-        assertEquals(CargoFuncionario.DIRETOR, funcionarioFour.getCargo());
-        assertEquals(LocalDate.of(2004, 9, 16), funcionarioFour.getDataAdmissao());
-        assertEquals(LocalDate.of(2026, 3, 28), funcionarioFour.getDataDemissao());
-        assertFalse(funcionarioFour.getEnabled());
+        assertEquals(SetorFuncionario.OPERACIONAL, funcionarioFour.getSetor());
+        assertEquals(CargoFuncionario.ARQUITETO, funcionarioFour.getCargo());
+        assertEquals(LocalDate.of(2006, 5, 14), funcionarioFour.getDataAdmissao());
+        assertEquals(LocalDate.of(2025, 8, 15), funcionarioFour.getDataDemissao());
+        assertTrue(funcionarioFour.getEnabled());
+    }
+
+    @Test
+    @Order(8)
+    void getGenerosTest() throws JsonProcessingException {
+
+        var content = given(specification)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when()
+                .get("generos")
+                .then()
+                .statusCode(200)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .extract()
+                .body()
+                .asString();
+
+        List<Map<String, String>> generos = objectMapper.readValue(
+                content,
+                new TypeReference<List<Map<String, String>>>() {}
+        );
+
+        assertNotNull(generos);
+        assertEquals(GeneroFuncionario.values().length, generos.size());
+
+        for (GeneroFuncionario generoFuncionario : GeneroFuncionario.values()) {
+            Map<String, String> generoEncontrado = generos.stream()
+                    .filter(genero -> generoFuncionario.getCodigo().equals(genero.get("codigo")))
+                    .findFirst()
+                    .orElse(null);
+
+            assertNotNull(generoEncontrado);
+            assertEquals(generoFuncionario.getCodigo(), generoEncontrado.get("codigo"));
+            assertEquals(generoFuncionario.getDescricao(), generoEncontrado.get("descricao"));
+        }
+    }
+
+    @Test
+    @Order(9)
+    void getSetoresTest() throws JsonProcessingException {
+
+        var content = given(specification)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when()
+                .get("setores")
+                .then()
+                .statusCode(200)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .extract()
+                .body()
+                .asString();
+
+        List<Map<String, String>> setores = objectMapper.readValue(
+                content,
+                new TypeReference<List<Map<String, String>>>() {}
+        );
+
+        assertNotNull(setores);
+        assertEquals(SetorFuncionario.values().length, setores.size());
+
+        for (SetorFuncionario setorFuncionario : SetorFuncionario.values()) {
+            Map<String, String> setorEncontrado = setores.stream()
+                    .filter(setor -> setorFuncionario.getCodigo().equals(setor.get("codigo")))
+                    .findFirst()
+                    .orElse(null);
+
+            assertNotNull(setorEncontrado);
+            assertEquals(setorFuncionario.getCodigo(), setorEncontrado.get("codigo"));
+            assertEquals(setorFuncionario.getDescricao(), setorEncontrado.get("descricao"));
+        }
+    }
+
+    @Test
+    @Order(10)
+    void getCargosTest() throws JsonProcessingException {
+
+        var content = given(specification)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when()
+                .get("cargos")
+                .then()
+                .statusCode(200)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .extract()
+                .body()
+                .asString();
+
+        List<Map<String, String>> cargos = objectMapper.readValue(
+                content,
+                new TypeReference<List<Map<String, String>>>() {}
+        );
+
+        assertNotNull(cargos);
+        assertEquals(CargoFuncionario.values().length, cargos.size());
+
+        for (CargoFuncionario cargoFuncionario : CargoFuncionario.values()) {
+            Map<String, String> cargoEncontrado = cargos.stream()
+                    .filter(cargo -> cargoFuncionario.getCodigo().equals(cargo.get("codigo")))
+                    .findFirst()
+                    .orElse(null);
+
+            assertNotNull(cargoEncontrado);
+            assertEquals(cargoFuncionario.getCodigo(), cargoEncontrado.get("codigo"));
+            assertEquals(cargoFuncionario.getDescricao(), cargoEncontrado.get("descricao"));
+        }
     }
 
     private void mockFuncionario() {
         funcionario.setNome("Marcielly Gislayne");
-        funcionario.setCpf("12212312987");
+        funcionario.setCpf("02334378518");
         funcionario.setMatricula("54454");
         funcionario.setDataNascimento(LocalDate.of(1999, 2, 2));
         funcionario.setGenero(GeneroFuncionario.FEMININO);

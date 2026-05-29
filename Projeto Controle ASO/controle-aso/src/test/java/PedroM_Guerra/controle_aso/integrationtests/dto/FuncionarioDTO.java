@@ -1,29 +1,56 @@
 package PedroM_Guerra.controle_aso.integrationtests.dto;
 
+import PedroM_Guerra.controle_aso.data.dto.validation.CpfCustomizado;
 import PedroM_Guerra.controle_aso.enums.CargoFuncionario;
 import PedroM_Guerra.controle_aso.enums.GeneroFuncionario;
 import PedroM_Guerra.controle_aso.enums.SetorFuncionario;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.*;
+import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class FuncionarioDTO implements Serializable {
+@Relation(collectionRelation = "funcionarios")
+public class FuncionarioDTO extends RepresentationModel<FuncionarioDTO> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private Long id;
+
+    @NotBlank(message = "O nome é obrigatório.")
     private String nome;
+
     private Boolean enabled;
+
+    @NotBlank(message = "O CPF é obrigatório.")
+    @Pattern(regexp = "\\d{11}", message = "O CPF deve conter exatamente 11 dígitos numéricos.")
+    @CpfCustomizado
     private String cpf;
-    private GeneroFuncionario genero;
-    private LocalDate dataNascimento;
+
+    @NotBlank(message = "A matriícula é obrigatória.")
     private String matricula;
+
+    @NotNull(message = "A data de nascimento é obrigatória.")
+    @Past(message = "A data de nascimento deve ser uma data passada.")
+    private LocalDate dataNascimento;
+
+    @NotNull(message = "O gênero é obrigatório.")
+    private GeneroFuncionario genero;
+
+    @NotNull(message = "O setor é obrigatório.")
     private SetorFuncionario setor;
+
+    @NotNull(message = "O cargo é obrigatório.")
     private CargoFuncionario cargo;
+
+    @NotNull(message = "A data de adimissão é obrigatória.")
+    @PastOrPresent(message = "A data de adimissão não pode ser uma data futura.")
     private LocalDate dataAdmissao;
+
     private LocalDate dataDemissao;
 
 //    private Usuario cadastradoPor;
@@ -121,12 +148,13 @@ public class FuncionarioDTO implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof FuncionarioDTO that)) return false;
-        return Objects.equals(getId(), that.getId()) && Objects.equals(getNome(), that.getNome()) && Objects.equals(getEnabled(), that.getEnabled()) && Objects.equals(getCpf(), that.getCpf()) && getGenero() == that.getGenero() && Objects.equals(getDataNascimento(), that.getDataNascimento()) && Objects.equals(getMatricula(), that.getMatricula()) && getSetor() == that.getSetor() && getCargo() == that.getCargo() && Objects.equals(getDataAdmissao(), that.getDataAdmissao()) && Objects.equals(getDataDemissao(), that.getDataDemissao());
+        if (!(o instanceof PedroM_Guerra.controle_aso.data.dto.FuncionarioDTO that)) return false;
+        if (!super.equals(o)) return false;
+        return Objects.equals(getId(), that.getId()) && Objects.equals(getNome(), that.getNome()) && Objects.equals(getCpf(), that.getCpf()) && Objects.equals(getMatricula(), that.getMatricula()) && Objects.equals(getDataNascimento(), that.getDataNascimento()) && getGenero() == that.getGenero() && getSetor() == that.getSetor() && getCargo() == that.getCargo() && Objects.equals(getDataAdmissao(), that.getDataAdmissao()) && Objects.equals(getDataDemissao(), that.getDataDemissao()) && Objects.equals(getEnabled(), that.getEnabled());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getNome(), getEnabled(), getCpf(), getGenero(), getDataNascimento(), getMatricula(), getSetor(), getCargo(), getDataAdmissao(), getDataDemissao());
+        return Objects.hash(super.hashCode(), getId(), getNome(), getCpf(), getMatricula(), getDataNascimento(), getGenero(), getSetor(), getCargo(), getDataAdmissao(), getDataDemissao(), getEnabled());
     }
 }

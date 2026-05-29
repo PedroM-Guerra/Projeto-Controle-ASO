@@ -82,7 +82,7 @@ class FuncionarioControllerCorsTest {
         assertTrue(createdFuncionario.getId() > 0);
 
         assertEquals("Júlio da Silva", createdFuncionario.getNome());
-        assertEquals("12212312417", createdFuncionario.getCpf());
+        assertEquals("02334378518", createdFuncionario.getCpf());
         assertEquals("54323", createdFuncionario.getMatricula());
         assertEquals(LocalDate.of(1981, 2, 2), createdFuncionario.getDataNascimento());
         assertEquals(GeneroFuncionario.MASCULINO, createdFuncionario.getGenero());
@@ -159,7 +159,7 @@ class FuncionarioControllerCorsTest {
         assertTrue(createdFuncionario.getId() > 0);
 
         assertEquals("Júlio da Silva", createdFuncionario.getNome());
-        assertEquals("12212312417", createdFuncionario.getCpf());
+        assertEquals("02334378518", createdFuncionario.getCpf());
         assertEquals("54323", createdFuncionario.getMatricula());
         assertEquals(LocalDate.of(1981, 2, 2), createdFuncionario.getDataNascimento());
         assertEquals(GeneroFuncionario.MASCULINO, createdFuncionario.getGenero());
@@ -215,7 +215,7 @@ class FuncionarioControllerCorsTest {
 
     private void mockFuncionario() {
         funcionario.setNome("Júlio da Silva");
-        funcionario.setCpf("12212312417");
+        funcionario.setCpf("02334378518");
         funcionario.setMatricula("54323");
         funcionario.setDataNascimento(LocalDate.of(1981, 2, 2));
         funcionario.setGenero(GeneroFuncionario.MASCULINO);

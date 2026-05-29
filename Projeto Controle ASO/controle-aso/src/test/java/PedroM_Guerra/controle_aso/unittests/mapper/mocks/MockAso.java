@@ -8,20 +8,18 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class MockAso {
-
 
     public Aso mockEntity() {
         return mockEntity(0);
     }
-    
+
     public AsoDTO mockDTO() {
         return mockDTO(0);
     }
 
     private MockFuncionario mockFuncionario = new MockFuncionario();
-    
+
     public List<Aso> mockEntityList() {
         List<Aso> asos = new ArrayList<Aso>();
         for (int i = 0; i < 14; i++) {
@@ -37,7 +35,7 @@ public class MockAso {
         }
         return asos;
     }
-    
+
     public Aso mockEntity(Integer number) {
         Aso aso = new Aso();
         TipoAso[] tipoAsos = TipoAso.values();
@@ -55,6 +53,9 @@ public class MockAso {
 
         aso.setTipoAso(tipoAsos[number % tipoAsos.length]);
         aso.setResultadoAso(((number % 2)==0) ? ResultadoAso.APTO : ResultadoAso.INAPTO);
+
+        // Configuração do enabled (Par = true, Ímpar = false)
+        aso.setEnabled((number % 2) == 0);
 
         return aso;
     }
@@ -77,7 +78,9 @@ public class MockAso {
         aso.setTipoAso(tipoAsos[number % tipoAsos.length]);
         aso.setResultadoAso(((number % 2)==0) ? ResultadoAso.APTO : ResultadoAso.INAPTO);
 
+        // Configuração do enabled (Par = true, Ímpar = false)
+        aso.setEnabled((number % 2) == 0);
+
         return aso;
     }
-
 }

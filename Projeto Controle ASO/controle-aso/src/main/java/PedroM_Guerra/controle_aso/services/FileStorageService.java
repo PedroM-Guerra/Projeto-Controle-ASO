@@ -31,7 +31,7 @@ public class FileStorageService {
 
         this.fileStorageLocation = path;
         try {
-            logger.error("Creating Directories");
+            logger.info("Creating Directories");
             Files.createDirectories(this.fileStorageLocation);
         } catch (Exception e){
             logger.error("Could not create the directory where files will be stored!");
@@ -52,7 +52,7 @@ public class FileStorageService {
             //Cria um nome único baseado no tempo atual em milissegundos para evitar duplicidade
             String uniqueFileName = System.currentTimeMillis() + "-" + originalFileName;
 
-            logger.error("Saving file in Disk");
+            logger.info("Saving file in Disk");
             Path targetLocation = this.fileStorageLocation.resolve(uniqueFileName);
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
             return uniqueFileName;

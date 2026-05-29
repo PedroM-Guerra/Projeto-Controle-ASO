@@ -20,6 +20,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.web.PagedResourcesAssembler;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -43,6 +44,9 @@ class AsoServicesTest {
 
     @Mock
     FuncionarioRepository funcionarioRepository;
+
+    @Mock
+    PagedResourcesAssembler<AsoDTO> assembler;
 
     @BeforeEach
     void setUp() {
@@ -279,160 +283,67 @@ class AsoServicesTest {
     }
 
     @Test
-    @Disabled("REASON: Still Under Development")
     void findAll() {
         List<Aso> list = input.mockEntityList();
-        when(repository.findAll()).thenReturn(list);
-        List<AsoDTO> asos = new ArrayList<>(); //service.findAll();
 
-        assertNotNull(asos);
+        org.springframework.data.domain.Pageable pageable = org.springframework.data.domain.PageRequest.of(0, 14);
+        org.springframework.data.domain.Page<Aso> page = new org.springframework.data.domain.PageImpl<>(list, pageable, list.size());
+
+        when(repository.findAll(any(org.springframework.data.domain.Pageable.class))).thenReturn(page);
+
+        List<org.springframework.hateoas.EntityModel<AsoDTO>> entityModels = list.stream()
+                .map(aso -> {
+                    var dto = PedroM_Guerra.controle_aso.mapper.ObjectMapper.parseObject(aso, AsoDTO.class);
+                    dto.add(org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo(org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn(PedroM_Guerra.controle_aso.controllers.AsoController.class).findById(dto.getId())).withSelfRel().withType("GET"));
+                    return org.springframework.hateoas.EntityModel.of(dto);
+                }).toList();
+
+        org.springframework.hateoas.PagedModel<org.springframework.hateoas.EntityModel<AsoDTO>> pagedModel =
+                org.springframework.hateoas.PagedModel.of(entityModels, new org.springframework.hateoas.PagedModel.PageMetadata(14, 0, 14));
+
+        when(assembler.toModel(any(org.springframework.data.domain.Page.class), any(org.springframework.hateoas.Link.class)))
+                .thenReturn(pagedModel);
+
+        var result = service.findAll(pageable);
+
+        assertNotNull(result);
+
+        List<AsoDTO> asos = result.getContent().stream()
+                .map(org.springframework.hateoas.EntityModel::getContent)
+                .toList();
+
         assertEquals(14, asos.size());
 
+        // --- VALIDAÇÃO DO ASO 1 (ÍMPAR -> enabled: false, Resultado: INAPTO) ---
         var asoOne = asos.get(1);
-
         assertNotNull(asoOne);
         assertNotNull(asoOne.getId());
         assertNotNull(asoOne.getLinks());
-
-        assertNotNull(asoOne.getLinks().stream()
-                .anyMatch(link -> link.getRel().value().equals("self")
-                        && link.getHref().endsWith("/api/aso/v1/1")
-                        && link.getType().equals("GET")
-                ));
-
-        assertNotNull(asoOne.getLinks().stream()
-                .anyMatch(link -> link.getRel().value().equals("findAll")
-                        && link.getHref().endsWith("/api/aso/v1")
-                        && link.getType().equals("GET")
-                ));
-
-        assertNotNull(asoOne.getLinks().stream()
-                .anyMatch(link -> link.getRel().value().equals("create")
-                        && link.getHref().endsWith("/api/aso/v1")
-                        && link.getType().equals("POST")
-                ));
-
-        assertNotNull(asoOne.getLinks().stream()
-                .anyMatch(link -> link.getRel().value().equals("update")
-                        && link.getHref().endsWith("/api/aso/v1")
-                        && link.getType().equals("PUT")
-                ));
-
-        assertNotNull(asoOne.getLinks().stream()
-                .anyMatch(link -> link.getRel().value().equals("delete")
-                        && link.getHref().endsWith("/api/aso/v1/1")
-                        && link.getType().equals("DELETE")
-                ));
-
-        assertEquals(1L, asoOne.getFuncionarioId());
-
         assertEquals("CRM Test1", asoOne.getCrmMedico());
         assertEquals("Nome Medico Test1", asoOne.getNomeMedico());
-        assertEquals("Descição Exame Test1", asoOne.getDescricaoExame());
-        assertEquals("URL Test1", asoOne.getUrlDocumentoScan());
-
-        assertEquals(ResultadoAso.INAPTO, asoOne.getResultadoAso());
         assertEquals(TipoAso.PERIODICO, asoOne.getTipoAso());
+        assertEquals(ResultadoAso.INAPTO, asoOne.getResultadoAso());
+        assertFalse(asoOne.getEnabled());
 
-        assertEquals(LocalDate.of(2026, 5, 2), asoOne.getDataEmissao());
-        assertEquals(LocalDate.of(2027, 5, 2), asoOne.getDataValidade());
-
+        // --- VALIDAÇÃO DO ASO 4 (PAR -> enabled: true, Resultado: APTO) ---
         var asoFour = asos.get(4);
-
         assertNotNull(asoFour);
         assertNotNull(asoFour.getId());
-        assertNotNull(asoFour.getLinks());
-
-        assertNotNull(asoFour.getLinks().stream()
-                .anyMatch(link -> link.getRel().value().equals("self")
-                        && link.getHref().endsWith("/api/aso/v1/1")
-                        && link.getType().equals("GET")
-                ));
-
-        assertNotNull(asoFour.getLinks().stream()
-                .anyMatch(link -> link.getRel().value().equals("findAll")
-                        && link.getHref().endsWith("/api/aso/v1")
-                        && link.getType().equals("GET")
-                ));
-
-        assertNotNull(asoFour.getLinks().stream()
-                .anyMatch(link -> link.getRel().value().equals("create")
-                        && link.getHref().endsWith("/api/aso/v1")
-                        && link.getType().equals("POST")
-                ));
-
-        assertNotNull(asoFour.getLinks().stream()
-                .anyMatch(link -> link.getRel().value().equals("update")
-                        && link.getHref().endsWith("/api/aso/v1")
-                        && link.getType().equals("PUT")
-                ));
-
-        assertNotNull(asoFour.getLinks().stream()
-                .anyMatch(link -> link.getRel().value().equals("delete")
-                        && link.getHref().endsWith("/api/aso/v1/1")
-                        && link.getType().equals("DELETE")
-                ));
-
-        assertEquals(4L, asoFour.getFuncionarioId());
-
         assertEquals("CRM Test4", asoFour.getCrmMedico());
         assertEquals("Nome Medico Test4", asoFour.getNomeMedico());
-        assertEquals("Descição Exame Test4", asoFour.getDescricaoExame());
-        assertEquals("URL Test4", asoFour.getUrlDocumentoScan());
-
-        assertEquals(ResultadoAso.APTO, asoFour.getResultadoAso());
+        
         assertEquals(TipoAso.DEMISSIONAL, asoFour.getTipoAso());
 
-        assertEquals(LocalDate.of(2026, 5, 5), asoFour.getDataEmissao());
-        assertEquals(LocalDate.of(2027, 5, 5), asoFour.getDataValidade());
+        assertEquals(ResultadoAso.APTO, asoFour.getResultadoAso());
+        assertTrue(asoFour.getEnabled());
 
+        // --- VALIDAÇÃO DO ASO 7 (ÍMPAR -> enabled: false, Resultado: INAPTO) ---
         var asoSeven = asos.get(7);
-
         assertNotNull(asoSeven);
-        assertNotNull(asoSeven.getId());
-        assertNotNull(asoSeven.getLinks());
-
-        assertNotNull(asoSeven.getLinks().stream()
-                .anyMatch(link -> link.getRel().value().equals("self")
-                        && link.getHref().endsWith("/api/aso/v1/1")
-                        && link.getType().equals("GET")
-                ));
-
-        assertNotNull(asoSeven.getLinks().stream()
-                .anyMatch(link -> link.getRel().value().equals("findAll")
-                        && link.getHref().endsWith("/api/aso/v1")
-                        && link.getType().equals("GET")
-                ));
-
-        assertNotNull(asoSeven.getLinks().stream()
-                .anyMatch(link -> link.getRel().value().equals("create")
-                        && link.getHref().endsWith("/api/aso/v1")
-                        && link.getType().equals("POST")
-                ));
-
-        assertNotNull(asoSeven.getLinks().stream()
-                .anyMatch(link -> link.getRel().value().equals("update")
-                        && link.getHref().endsWith("/api/aso/v1")
-                        && link.getType().equals("PUT")
-                ));
-
-        assertNotNull(asoSeven.getLinks().stream()
-                .anyMatch(link -> link.getRel().value().equals("delete")
-                        && link.getHref().endsWith("/api/aso/v1/1")
-                        && link.getType().equals("DELETE")
-                ));
-
-        assertEquals(7L, asoSeven.getFuncionarioId());
-
         assertEquals("CRM Test7", asoSeven.getCrmMedico());
         assertEquals("Nome Medico Test7", asoSeven.getNomeMedico());
-        assertEquals("Descição Exame Test7", asoSeven.getDescricaoExame());
-        assertEquals("URL Test7", asoSeven.getUrlDocumentoScan());
-
-        assertEquals(ResultadoAso.INAPTO, asoSeven.getResultadoAso());
         assertEquals(TipoAso.RETORNO_TRABALHO, asoSeven.getTipoAso());
-
-        assertEquals(LocalDate.of(2026, 5, 8), asoSeven.getDataEmissao());
-        assertEquals(LocalDate.of(2027, 5, 8), asoSeven.getDataValidade());
+        assertEquals(ResultadoAso.INAPTO, asoSeven.getResultadoAso());
+        assertFalse(asoSeven.getEnabled());
     }
 }

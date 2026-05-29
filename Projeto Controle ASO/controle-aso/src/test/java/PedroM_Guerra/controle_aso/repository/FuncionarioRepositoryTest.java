@@ -47,15 +47,15 @@ class FuncionarioRepositoryTest {
 
         assertNotNull(funcionario);
         assertNotNull(funcionario.getId());
-        assertEquals("Larissa Santos", funcionario.getNome());
-        assertEquals("1236661385", funcionario.getCpf());
-        assertEquals("15649", funcionario.getMatricula());
-        assertEquals(LocalDate.of(1982, 6, 7), funcionario.getDataNascimento());
-        assertEquals(GeneroFuncionario.FEMININO, funcionario.getGenero());
-        assertEquals(SetorFuncionario.ARQUITETURA, funcionario.getSetor());
+        assertEquals("Igor Santana", funcionario.getNome());
+        assertEquals("00003896148", funcionario.getCpf());
+        assertEquals("96148", funcionario.getMatricula());
+        assertEquals(LocalDate.of(1974, 10, 24), funcionario.getDataNascimento());
+        assertEquals(GeneroFuncionario.MASCULINO, funcionario.getGenero());
+        assertEquals(SetorFuncionario.SAUDE_TRABALHO, funcionario.getSetor());
         assertEquals(CargoFuncionario.ARQUITETO, funcionario.getCargo());
-        assertEquals(LocalDate.of(2009, 12, 5), funcionario.getDataAdmissao());
-        assertEquals(LocalDate.of(2026, 3, 11), funcionario.getDataDemissao());
+        assertEquals(LocalDate.of(2010, 2, 17), funcionario.getDataAdmissao());
+        assertEquals(LocalDate.of(2026, 3, 10), funcionario.getDataDemissao());
         assertTrue(funcionario.getEnabled());
     }
 
@@ -71,15 +71,78 @@ class FuncionarioRepositoryTest {
 
         assertNotNull(funcionario);
         assertNotNull(funcionario.getId());
-        assertEquals("Larissa Santos", funcionario.getNome());
-        assertEquals("1236661385", funcionario.getCpf());
-        assertEquals("15649", funcionario.getMatricula());
-        assertEquals(LocalDate.of(1982, 6, 7), funcionario.getDataNascimento());
-        assertEquals(GeneroFuncionario.FEMININO, funcionario.getGenero());
-        assertEquals(SetorFuncionario.ARQUITETURA, funcionario.getSetor());
+        assertEquals("Igor Santana", funcionario.getNome());
+        assertEquals("00003896148", funcionario.getCpf());
+        assertEquals("96148", funcionario.getMatricula());
+        assertEquals(LocalDate.of(1974, 10, 24), funcionario.getDataNascimento());
+        assertEquals(GeneroFuncionario.MASCULINO, funcionario.getGenero());
+        assertEquals(SetorFuncionario.SAUDE_TRABALHO, funcionario.getSetor());
         assertEquals(CargoFuncionario.ARQUITETO, funcionario.getCargo());
-        assertEquals(LocalDate.of(2009, 12, 5), funcionario.getDataAdmissao());
-        assertEquals(LocalDate.of(2026, 3, 11), funcionario.getDataDemissao());
+        assertEquals(LocalDate.of(2010, 2, 17), funcionario.getDataAdmissao());
+        assertEquals(LocalDate.of(2026, 3, 10), funcionario.getDataDemissao());
         assertFalse(funcionario.getEnabled());
+    }
+
+    @Test
+    @Order(3)
+    void findFuncionariosByEnabledTrue() {
+        Pageable pageable = PageRequest.of(
+                0,
+                12,
+                Sort.by(Sort.Direction.ASC, "nome"));
+
+        var page = repository.findFuncionariosByEnabledTrue(pageable);
+        var funcionarios = page.getContent();
+
+        assertNotNull(page);
+        assertFalse(funcionarios.isEmpty());
+
+        funcionarios.forEach(funcionario -> {
+            assertNotNull(funcionario);
+            assertNotNull(funcionario.getId());
+            assertNotNull(funcionario.getNome());
+            assertNotNull(funcionario.getCpf());
+            assertNotNull(funcionario.getMatricula());
+            assertNotNull(funcionario.getDataNascimento());
+            assertNotNull(funcionario.getGenero());
+            assertNotNull(funcionario.getSetor());
+            assertNotNull(funcionario.getCargo());
+            assertNotNull(funcionario.getDataAdmissao());
+            assertTrue(funcionario.getEnabled());
+        });
+    }
+
+    @Test
+    @Order(4)
+    void findByCpf() {
+        Pageable pageable = PageRequest.of(
+                0,
+                1,
+                Sort.by(Sort.Direction.ASC, "nome"));
+
+        var funcionarioSalvo = repository.findFuncionariosByEnabledTrue(pageable)
+                .getContent()
+                .get(0);
+
+        var result = repository.findByCpf(funcionarioSalvo.getCpf());
+
+        assertTrue(result.isPresent());
+
+        var funcionarioEncontrado = result.get();
+
+        assertNotNull(funcionarioEncontrado);
+        assertNotNull(funcionarioEncontrado.getId());
+
+        assertEquals(funcionarioSalvo.getId(), funcionarioEncontrado.getId());
+        assertEquals(funcionarioSalvo.getNome(), funcionarioEncontrado.getNome());
+        assertEquals(funcionarioSalvo.getCpf(), funcionarioEncontrado.getCpf());
+        assertEquals(funcionarioSalvo.getMatricula(), funcionarioEncontrado.getMatricula());
+        assertEquals(funcionarioSalvo.getDataNascimento(), funcionarioEncontrado.getDataNascimento());
+        assertEquals(funcionarioSalvo.getGenero(), funcionarioEncontrado.getGenero());
+        assertEquals(funcionarioSalvo.getSetor(), funcionarioEncontrado.getSetor());
+        assertEquals(funcionarioSalvo.getCargo(), funcionarioEncontrado.getCargo());
+        assertEquals(funcionarioSalvo.getDataAdmissao(), funcionarioEncontrado.getDataAdmissao());
+        assertEquals(funcionarioSalvo.getDataDemissao(), funcionarioEncontrado.getDataDemissao());
+        assertEquals(funcionarioSalvo.getEnabled(), funcionarioEncontrado.getEnabled());
     }
 }

@@ -5,6 +5,7 @@ import PedroM_Guerra.controle_aso.enums.*;
 import PedroM_Guerra.controle_aso.integrationtests.dto.AsoDTO;
 import PedroM_Guerra.controle_aso.integrationtests.dto.wrappers.WrapperAsoDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -19,6 +20,8 @@ import org.springframework.http.MediaType;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
+
 
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.*;
@@ -156,44 +159,44 @@ class AsoControllerJsonTest {
         assertEquals(LocalDate.of(2026, 5, 2), createdASO.getDataValidade());
     }
 
-//    @Test
-//    @Order(4)
-//    void disableTest() throws JsonProcessingException {
-//
-//        var content = given(specification)
-//                .contentType(MediaType.APPLICATION_JSON_VALUE)
-//                .pathParam("id", aso.getId())
-//                .when()
-//                .patch("{id}")
-//                .then()
-//                .statusCode(200)
-//                .contentType(MediaType.APPLICATION_JSON_VALUE)
-//                .extract()
-//                .body()
-//                .asString();
-//
-//        AsoDTO createdASO = objectMapper.readValue(content, AsoDTO.class);
-//        aso = createdASO;
-//
-//        assertNotNull(createdASO.getId());
-//        assertTrue(createdASO.getId() > 0);
-//
-//        assertEquals(1L, createdASO.getFuncionarioId());
-//        assertEquals("56781", createdASO.getCrmMedico());
-//        assertEquals("Dra. Marciely Gislaine", createdASO.getNomeMedico());
-//        assertEquals("Exame clinico hemograma e glicemia", createdASO.getDescricaoExame());
-//        assertEquals("documentos/aso/funcionario-teste1-admissional.pdf", createdASO.getUrlDocumentoScan());
-//
-//        assertEquals(ResultadoAso.APTO, createdASO.getResultadoAso());
-//        assertEquals(TipoAso.RETORNO_TRABALHO, createdASO.getTipoAso());
-//
-//        assertEquals(LocalDate.of(2025, 5, 2), createdASO.getDataEmissao());
-//        assertEquals(LocalDate.of(2026, 5, 2), createdASO.getDataValidade());
-//        assertFalse(createdASO.getEnabled());
-//    }
-
     @Test
     @Order(4)
+    void disableTest() throws JsonProcessingException {
+
+        var content = given(specification)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .pathParam("id", aso.getId())
+                .when()
+                .patch("{id}")
+                .then()
+                .statusCode(200)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .extract()
+                .body()
+                .asString();
+
+        AsoDTO createdASO = objectMapper.readValue(content, AsoDTO.class);
+        aso = createdASO;
+
+        assertNotNull(createdASO.getId());
+        assertTrue(createdASO.getId() > 0);
+
+        assertEquals(1L, createdASO.getFuncionarioId());
+        assertEquals("56781", createdASO.getCrmMedico());
+        assertEquals("Dra. Marciely Gislaine", createdASO.getNomeMedico());
+        assertEquals("Exame clinico hemograma e glicemia", createdASO.getDescricaoExame());
+        assertEquals("documentos/aso/funcionario-teste1-admissional.pdf", createdASO.getUrlDocumentoScan());
+
+        assertEquals(ResultadoAso.APTO, createdASO.getResultadoAso());
+        assertEquals(TipoAso.RETORNO_TRABALHO, createdASO.getTipoAso());
+
+        assertEquals(LocalDate.of(2025, 5, 2), createdASO.getDataEmissao());
+        assertEquals(LocalDate.of(2026, 5, 2), createdASO.getDataValidade());
+        assertFalse(createdASO.getEnabled());
+    }
+
+    @Test
+    @Order(5)
     void deleteTest() throws JsonProcessingException {
 
         given(specification)
@@ -206,7 +209,7 @@ class AsoControllerJsonTest {
     }
 
     @Test
-    @Order(5)
+    @Order(6)
     void findAllTest() throws JsonProcessingException {
 
         var content = given(specification)
@@ -234,7 +237,7 @@ class AsoControllerJsonTest {
         assertEquals("34561", asoOne.getCrmMedico());
         assertEquals("Dr. Felipe Nogueira", asoOne.getNomeMedico());
         assertEquals("Avaliacao medica ocupacional", asoOne.getDescricaoExame());
-        assertEquals("documentos/aso/funcionario-350-mudanca_funcao.pdf", asoOne.getUrlDocumentoScan());
+        assertEquals("1779994573324-ASOFicticio.pdf", asoOne.getUrlDocumentoScan());
 
         assertEquals(ResultadoAso.APTO, asoOne.getResultadoAso());
         assertEquals(TipoAso.MUDANCA_FUNCAO, asoOne.getTipoAso());
@@ -251,7 +254,7 @@ class AsoControllerJsonTest {
         assertEquals("34562", asoFour.getCrmMedico());
         assertEquals("Dra. Helena Ribeiro", asoFour.getNomeMedico());
         assertEquals("Exame periodico ocupacional", asoFour.getDescricaoExame());
-        assertEquals("documentos/aso/funcionario-614-demissional.pdf", asoFour.getUrlDocumentoScan());
+        assertEquals("1779994573324-ASOFicticio.pdf", asoFour.getUrlDocumentoScan());
 
         assertEquals(ResultadoAso.APTO, asoFour.getResultadoAso());
         assertEquals(TipoAso.DEMISSIONAL, asoFour.getTipoAso());
@@ -261,7 +264,7 @@ class AsoControllerJsonTest {
     }
 
     @Test
-    @Order(6)
+    @Order(7)
     void findAsosByFuncionarioId() throws JsonProcessingException {
         //{{baseUrl}}/api/aso/v1/findAsoByFuncionarioId/1?page=0&size=12&direction=asc
         var content = given(specification)
@@ -307,7 +310,7 @@ class AsoControllerJsonTest {
         assertEquals("12346", asoTwo.getCrmMedico());
         assertEquals("Dra. Joana Andrade", asoTwo.getNomeMedico());
         assertEquals("Exame de audiometria", asoTwo.getDescricaoExame());
-        assertEquals("documentos/aso/funcionario-1-admissional.pdf", asoTwo.getUrlDocumentoScan());
+        assertEquals("1779994573324-ASOFicticio.pdf", asoTwo.getUrlDocumentoScan());
 
         assertEquals(ResultadoAso.APTO, asoTwo.getResultadoAso());
         assertEquals(TipoAso.ADMISSIONAL, asoTwo.getTipoAso());
@@ -316,6 +319,77 @@ class AsoControllerJsonTest {
         assertEquals(LocalDate.of(2025, 1, 13), asoTwo.getDataValidade());
     }
 
+    @Test
+    @Order(8)
+    void getTiposAsoTest() throws JsonProcessingException {
+
+        var content = given(specification)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when()
+                .get("tipos")
+                .then()
+                .statusCode(200)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .extract()
+                .body()
+                .asString();
+
+        List<Map<String, String>> tipos = objectMapper.readValue(
+                content,
+                new TypeReference<List<Map<String, String>>>() {}
+        );
+
+        assertNotNull(tipos);
+        assertEquals(TipoAso.values().length, tipos.size());
+
+        for (TipoAso tipoAso : TipoAso.values()) {
+            Map<String, String> tipoEncontrado = tipos.stream()
+                    .filter(tipo -> tipoAso.getCodigo().equals(tipo.get("codigo")))
+                    .findFirst()
+                    .orElse(null);
+
+            assertNotNull(tipoEncontrado);
+            assertEquals(tipoAso.getCodigo(), tipoEncontrado.get("codigo"));
+            assertEquals(tipoAso.getDescricao(), tipoEncontrado.get("descricao"));
+        }
+    }
+
+    @Test
+    @Order(9)
+    void getResultadosAsoTest() throws JsonProcessingException {
+
+        var content = given(specification)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when()
+                .get("resultados")
+                .then()
+                .statusCode(200)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .extract()
+                .body()
+                .asString();
+
+        List<Map<String, String>> resultados = objectMapper.readValue(
+                content,
+                new TypeReference<List<Map<String, String>>>() {}
+        );
+
+        assertNotNull(resultados);
+        assertEquals(ResultadoAso.values().length, resultados.size());
+
+        for (ResultadoAso resultadoAso : ResultadoAso.values()) {
+            Map<String, String> resultadoEncontrado = resultados.stream()
+                    .filter(resultado -> resultadoAso.getCodigo().equals(resultado.get("codigo")))
+                    .findFirst()
+                    .orElse(null);
+
+            assertNotNull(resultadoEncontrado);
+            assertEquals(resultadoAso.getCodigo(), resultadoEncontrado.get("codigo"));
+            assertEquals(resultadoAso.getDescricao(), resultadoEncontrado.get("descricao"));
+        }
+    }
+    
+    
     private void mockASO() {
         aso.setFuncionarioId(1L);
         aso.setCrmMedico("56781");
@@ -328,5 +402,7 @@ class AsoControllerJsonTest {
 
         aso.setDataEmissao(LocalDate.of(2025, 5, 2));
         aso.setDataValidade(LocalDate.of(2026, 5, 2));
+
+        aso.setEnabled(true);
     }
 }
