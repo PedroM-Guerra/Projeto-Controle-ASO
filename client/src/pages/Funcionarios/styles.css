@@ -386,3 +386,129 @@
     display: inline;
     margin-right: 4px;
 }
+
+.filter-container {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    margin-right: 24px; /* Dá um espaçamento elegante entre o filtro e o formulário de busca */
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    color: #41414d;
+    font-weight: 600;
+    cursor: pointer;
+    user-select: none;
+}
+
+.checkbox-label input {
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+    accent-color: #251fc5; /* Deixa o checkbox na cor roxa/azul padrão do seu sistema */
+}
+
+.checkbox-label input:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.filter-container {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    margin-right: 24px;
+}
+
+.select-label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 13px;
+    color: #737380;
+    font-weight: 600;
+    user-select: none;
+}
+
+.select-label select {
+    height: 44px;
+    width: 260px;
+    padding: 0 12px;
+    border-radius: 4px;
+    border: 1px solid #dcdce6;
+    background: #fff;
+    color: #333;
+    font-size: 15px;
+    font-weight: normal;
+    cursor: pointer;
+    transition: border-color 0.3s;
+}
+
+/* Destaca a borda do select com a cor padrão do sistema ao focar */
+.select-label select:focus {
+    border-color: #251fc5;
+    outline: none;
+}
+
+/* Aparência visual quando o campo de busca por texto estiver ativo */
+.select-label select:disabled {
+    cursor: not-allowed;
+    background: #f8f8fc;
+    color: #a8a8b3;
+    border-color: #e6e6f0;
+}
+
+.list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Garante o alinhamento vertical de todos os blocos principais */
+    margin: 40px 0 24px 0;
+}
+
+.filter-container {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    margin-right: 24px;
+    height: 44px; /* Mesma altura da barra de pesquisa */
+}
+
+.select-label {
+    display: flex;
+    align-items: center; /* Mudou de column para center para alinhar em linha */
+    gap: 12px; /* Espaço entre o texto e o select */
+    font-size: 15px;
+    color: #41414d;
+    font-weight: 600;
+    user-select: none;
+}
+
+.select-label select {
+    height: 44px;
+    width: 260px;
+    padding: 0 12px;
+    border-radius: 4px;
+    border: 1px solid #dcdce6;
+    background: #fff;
+    color: #333;
+    font-size: 15px;
+    font-weight: normal;
+    cursor: pointer;
+    transition: border-color 0.3s;
+}
+
+.select-label select:focus {
+    border-color: #251fc5;
+    outline: none;
+}
+
+.select-label select:disabled {
+    cursor: not-allowed;
+    background: #f8f8fc;
+    color: #a8a8b3;
+    border-color: #e6e6f0;
+}

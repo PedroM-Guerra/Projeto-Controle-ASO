@@ -23,6 +23,7 @@ import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -82,7 +83,7 @@ public class FuncionarioServices {
         return assembler.toModel(funcionariosWithLinks, findAllLink);
     }
 
-public PagedModel<EntityModel<FuncionarioDTO>> findByName(String nome, Pageable pageable){
+    public PagedModel<EntityModel<FuncionarioDTO>> findByName(String nome, Pageable pageable){
         logger.info("Finding Funcionários by Name!");
 
         var funcionarios = repository.FindFuncionariosByName(nome, pageable);
@@ -190,6 +191,56 @@ public PagedModel<EntityModel<FuncionarioDTO>> findByName(String nome, Pageable 
             throw new BadRequestException("Não é possível deletar um funcionário que possui ASOs cadastrados.");
         }
         repository.delete(entity);
+    }
+
+    public PagedModel<EntityModel<FuncionarioDTO>> findFuncionariosComAsoMaisRecenteVencido(Pageable pageable) {
+        logger.info("Finding all active Funcionários with expired most recent ASO");
+
+        LocalDate hoje = LocalDate.now();
+
+        var funcionarios = repository.findFuncionariosComAsoMaisRecenteVencido(hoje, pageable);
+
+        var funcionariosWithLinks = funcionarios.map(funcionario -> {
+            var dto = parseObject(funcionario, FuncionarioDTO.class);
+            addHateoasLinks(dto);
+            return dto;
+        });
+
+
+        Link selfLink = WebMvcLinkBuilder.linkTo(
+                        WebMvcLinkBuilder.methodOn(FuncionarioController.class)
+                                .listarComAsoVencido(
+                                        pageable.getPageNumber(),
+                                        pageable.getPageSize(),
+                                        String.valueOf(pageable.getSort())))
+                .withSelfRel();
+
+        return assembler.toModel(funcionariosWithLinks, selfLink);
+    }
+
+    public PagedModel<EntityModel<FuncionarioDTO>> findFuncionariosComAsoPertoDeVencer(Pageable pageable) {
+        logger.info("Finding all active Funcionários with ASO expiring soon");
+
+        LocalDate amanha = LocalDate.now().plusDays(1);
+        LocalDate dataLimite = LocalDate.now().plusDays(30); // Define o alerta para 30 dias
+
+        var funcionarios = repository.findFuncionariosComAsoPertoDeVencer(amanha, dataLimite, pageable);
+
+        var funcionariosWithLinks = funcionarios.map(funcionario -> {
+            var dto = parseObject(funcionario, FuncionarioDTO.class);
+            addHateoasLinks(dto);
+            return dto;
+        });
+
+        Link selfLink = WebMvcLinkBuilder.linkTo(
+                        WebMvcLinkBuilder.methodOn(FuncionarioController.class)
+                                .listarPertoDeVencer(
+                                        pageable.getPageNumber(),
+                                        pageable.getPageSize(),
+                                        String.valueOf(pageable.getSort())))
+                .withSelfRel();
+
+        return assembler.toModel(funcionariosWithLinks, selfLink);
     }
 
     private void addHateoasLinks(FuncionarioDTO dto) {

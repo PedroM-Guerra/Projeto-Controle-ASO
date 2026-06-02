@@ -17,27 +17,30 @@ export default function Funcionario(){
     });
     const [funcionarios, setFuncionarios] = useState([]);
     const [totalPages, setTotalPages] = useState(0);
+    const [filtroStatus, setFiltroStatus] = useState(() => {
+        return localStorage.getItem('func_filtro_status') || 'todos';
+    });
 
-    // 1. Moveu a função para fora e encapsulou com useCallback para evitar loops
-    const fetchFuncionarios = useCallback(async (searchPage = 0) => {
+    const fetchFuncionarios = useCallback(async (searchPage = 0, statusAtual = 'todos', currentSearch = '') => {
         try {
             let response;
             
-            if (searchTerm.trim() !== '') {
-                response = await api.get(`/api/funcionario/v1/findFuncionarioByName/${searchTerm}`, {
-                    params: {
-                        page: searchPage,
-                        limit: 4,
-                        direction: 'asc'
-                    }
+            if (currentSearch.trim() !== '') {
+                response = await api.get(`/api/funcionario/v1/findFuncionarioByName/${currentSearch}`, {
+                    params: { page: searchPage, limit: 4, direction: 'asc' }
+                });
+            } else if (statusAtual === 'vencidos') {
+                response = await api.get('/api/funcionario/v1/comAsoVencido', {
+                    params: { page: searchPage, limit: 4, direction: 'asc' }
+                });
+            } else if (statusAtual === 'alerta') {
+                // Nova rota integrada
+                response = await api.get('/api/funcionario/v1/comAsoVencendo', {
+                    params: { page: searchPage, limit: 4, direction: 'asc' }
                 });
             } else {
                 response = await api.get('/api/funcionario/v1', {
-                    params: {
-                        page: searchPage,
-                        limit: 4,
-                        direction: 'asc'
-                    }
+                    params: { page: searchPage, limit: 4, direction: 'asc' }
                 });
             }
 
@@ -49,22 +52,24 @@ export default function Funcionario(){
             setTotalPages(pageInfo.totalPages);
 
             localStorage.setItem('func_page', searchPage);
-            localStorage.setItem('func_search', searchTerm);
+            localStorage.setItem('func_search', currentSearch);
+            localStorage.setItem('func_filtro_status', statusAtual);
         } catch (error) {
             alert("Erro ao buscar funcionários.");
         }
-    }, [searchTerm]); // Vigia o termo de busca para reconstruir a função se ele mudar
+    }, []);
 
     function handleSearch(e) {
         e.preventDefault();
         fetchFuncionarios(0); 
     }
 
-    // 2. O useEffect agora apenas chama a função memorizada no carregamento inicial
     useEffect(() => {
-        const paginaSalva = Number(localStorage.getItem('func_page')) || 0;
-        fetchFuncionarios(paginaSalva);
-    }, [fetchFuncionarios]); // Inclui a dependência de forma segura exigida pelo Linter
+        const filtroSalvo = localStorage.getItem('func_filtro_status') || 'todos';
+        const buscaSalva = localStorage.getItem('func_search') || '';
+        
+        fetchFuncionarios(page, filtroSalvo, buscaSalva);
+    }, [fetchFuncionarios, page]);
 
     function renderPaginationButtons() {
         const buttons = [];
@@ -132,18 +137,37 @@ export default function Funcionario(){
             <div className="list-header">
                 <h1>Listagem de Funcionários</h1>
                 
-                <form onSubmit={handleSearch} className="search-form">
-                    <input 
-                        type="text" 
-                        placeholder="Pesquisar por nome..." 
-                        value={searchTerm}
-                        onChange={e => setSearchTerm(e.target.value)}
-                    />
-                    <button type="submit">
-                        <FiSearch size={16} />
-                    </button>
-                </form>
-            </div>
+                <div className="filter-container">
+                    <label className="select-label">
+                        
+                        <select 
+                            value={filtroStatus} 
+                            onChange={e => {
+                                const novoStatus = e.target.value;
+                                setFiltroStatus(novoStatus);
+                                fetchFuncionarios(0, novoStatus, searchTerm);
+                            }}
+                            disabled={searchTerm.trim() !== ''}
+                        >
+                            <option value="todos">Todos os funcionários</option>
+                            <option value="vencidos">Apenas com ASO vencido</option>
+                            <option value="alerta">Com ASO perto de vencer (30 dias)</option>
+                        </select>
+                    </label>
+                </div>
+    
+                    <form onSubmit={handleSearch} className="search-form">
+                        <input 
+                            type="text" 
+                            placeholder="Pesquisar por nome..." 
+                            value={searchTerm}
+                            onChange={e => setSearchTerm(e.target.value)}
+                        />
+                        <button type="submit">
+                            <FiSearch size={16} />
+                        </button>
+                    </form>
+                </div>
             <ul>
                 {funcionarios.map(funcionario => (
                     <li key={funcionario.id} className="funcionario-item">

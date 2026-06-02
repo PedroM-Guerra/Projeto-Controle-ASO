@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 public interface FuncionarioRepository extends JpaRepository<Funcionario, Long> {
@@ -23,4 +24,23 @@ public interface FuncionarioRepository extends JpaRepository<Funcionario, Long> 
     Page<Funcionario> findFuncionariosByEnabledTrue(Pageable pageable);
 
     Optional<Funcionario> findByCpf(String cpf);
+
+    @Query("SELECT f FROM Funcionario f WHERE f.enabled = true AND f.id IN (" +
+            "  SELECT a.funcionario.id FROM Aso a " +
+            "  WHERE a.enabled = true " +
+            "  GROUP BY a.funcionario.id " +
+            "  HAVING MAX(a.dataValidade) < :hoje" +
+            ")")
+    Page<Funcionario> findFuncionariosComAsoMaisRecenteVencido(@Param("hoje") LocalDate hoje, Pageable pageable);
+
+    @Query("SELECT f FROM Funcionario f WHERE f.enabled = true AND f.id IN (" +
+            "  SELECT a.funcionario.id FROM Aso a " +
+            "  WHERE a.enabled = true " +
+            "  GROUP BY a.funcionario.id " +
+            "  HAVING MAX(a.dataValidade) >= :amanha AND MAX(a.dataValidade) <= :dataLimite" +
+            ")")
+    Page<Funcionario> findFuncionariosComAsoPertoDeVencer(
+            @Param("amanha") LocalDate amanha,
+            @Param("dataLimite") LocalDate dataLimite,
+            Pageable pageable);
 }

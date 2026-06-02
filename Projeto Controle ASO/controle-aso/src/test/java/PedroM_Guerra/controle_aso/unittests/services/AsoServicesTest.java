@@ -331,7 +331,7 @@ class AsoServicesTest {
         assertNotNull(asoFour.getId());
         assertEquals("CRM Test4", asoFour.getCrmMedico());
         assertEquals("Nome Medico Test4", asoFour.getNomeMedico());
-        
+
         assertEquals(TipoAso.DEMISSIONAL, asoFour.getTipoAso());
 
         assertEquals(ResultadoAso.APTO, asoFour.getResultadoAso());

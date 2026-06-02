@@ -95,6 +95,30 @@ public class FuncionarioController implements FuncionarioControllerDocs {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping(value = "/comAsoVencido",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<PagedModel<EntityModel<FuncionarioDTO>>> listarComAsoVencido(
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "size", defaultValue = "12") Integer size,
+            @RequestParam(value = "direction", defaultValue = "asc") String direction
+    ){
+        var sortDirection = "desc".equalsIgnoreCase(direction) ? Direction.DESC : Direction.ASC;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, "nome"));
+        return ResponseEntity.ok(service.findFuncionariosComAsoMaisRecenteVencido(pageable));
+    }
+
+    @GetMapping(value = "/comAsoVencendo",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<PagedModel<EntityModel<FuncionarioDTO>>> listarPertoDeVencer(
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "size", defaultValue = "12") Integer size,
+            @RequestParam(value = "direction", defaultValue = "asc") String direction
+    ){
+        var sortDirection = "desc".equalsIgnoreCase(direction) ? Direction.DESC : Direction.ASC;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, "nome"));
+        return ResponseEntity.ok(service.findFuncionariosComAsoPertoDeVencer(pageable));
+    }
+
     @GetMapping("/generos")
     public List<Map<String, String>> getGeneros() {
         return Arrays.stream(GeneroFuncionario.values()).map(g -> {
