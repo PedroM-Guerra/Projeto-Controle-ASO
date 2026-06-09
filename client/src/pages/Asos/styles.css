@@ -6,21 +6,18 @@
     color: #000;
 }
 
-/* Cabeçalho da página de ASOS */
-.aso-container header {
+/* Cabeçalho da página */
+.aso-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: #ffffff; /* Fundo totalmente branco */
+    background: #ffffff;
     padding: 16px 24px;
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Sombra suave e moderna abaixo */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
-.aso-container header img {
-    height: 64px;
-}
-
+/* Botões estruturais */
 .button-voltar {
     display: flex;
     align-items: center;
@@ -35,7 +32,6 @@
     text-decoration: none;
     transition: all 0.2s;
     gap: 8px; 
-    margin-bottom: 10px;
 }
 
 .button-voltar:hover {
@@ -43,32 +39,7 @@
     color: #fff;
 }
 
-.list-header-aso {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin: 40px 0 24px 0;
-    border-bottom: 1px solid #dcdce6;
-    padding-bottom: 16px;
-}
-
-.list-header-aso h1 {
-    font-size: 28px;
-    margin-bottom: 8px;
-}
-
-.list-header-aso h2 {
-    font-size: 16px;
-    color: #737380;
-    font-weight: normal;
-    margin-bottom: 4px;
-}
-
-.list-header-aso h2 strong {
-    color: #251fc5;
-}
-
-.button-add-aso {
+.button-add-aso, .btn-editar-funcionario {
     background: #251fc5;
     color: #fff;
     padding: 12px 20px;
@@ -78,11 +49,83 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
+    border: none;
+    cursor: pointer;
     transition: filter 0.2s;
 }
 
-.button-add-aso:hover {
+.button-add-aso:hover, .btn-editar-funcionario:hover {
     filter: brightness(0.8);
+}
+
+/* Layout Estrutural do Perfil */
+.list-header-aso {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin: 40px 0 24px 0;
+    gap: 24px;
+}
+
+.employee-profile-card {
+    background: #ffffff;
+    border: 1px solid #e6e6f0;
+    border-radius: 8px;
+    padding: 24px;
+    flex: 1;
+    width: 100%;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.profile-top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px solid #f0f0f5;
+    padding-bottom: 16px;
+    margin-bottom: 20px;
+}
+
+.profile-top-bar h1 {
+    font-size: 22px;
+    color: #41414d;
+    margin-bottom: 4px;
+}
+
+.profile-top-bar .subtitle {
+    font-size: 14px;
+    color: #737380;
+}
+
+/* Data Grid */
+.profile-data-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px 24px;
+}
+
+.data-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.data-label {
+    font-size: 12px;
+    color: #737380;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.data-value {
+    font-size: 15px;
+    color: #251fc5;
+    font-weight: 600;
+}
+
+.data-item.status-demitido .data-value {
+    color: #c5221f;
 }
 
 .empty-message {
@@ -92,7 +135,7 @@
     margin-top: 40px;
 }
 
-/* Estilização da Tabela de Dados */
+/* Tabela de ASOS */
 .aso-table {
     width: 100%;
     border-collapse: collapse;
@@ -114,21 +157,38 @@
     font-weight: bold;
 }
 
-.aso-table tr {
+.aso-table tbody tr {
+    background: #fff;
     border-bottom: 1px solid #e6e6f0;
+    transition: background 0.15s ease-in-out;
+}
+
+.aso-table tbody tr:nth-child(even) {
+    background: #f8f9fa; 
+}
+
+.aso-table tbody tr:last-child {
+    border-bottom: none;
 }
 
 .aso-table tbody tr:hover {
-    background: #fbfbfe;
+    background: #f1f3f9;
 }
 
 .aso-table td button {
     background: transparent;
     border: 0;
     cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
 }
 
-/* Status Apto / Inapto */
+.aso-table th:last-child, .aso-table td:last-child {
+    text-align: center;
+}
+
+/* Status estruturais do exame */
 .aso-status {
     padding: 4px 8px;
     border-radius: 12px;
@@ -146,145 +206,13 @@
     color: #c5221f;
 }
 
-/* Linhas normais (ímpares) ganham um fundo totalmente branco */
-.aso-table tbody tr {
-    background: #fff;
-    border-bottom: 1px solid #e6e6f0;
-    transition: background 0.15s ease-in-out;
-}
-
-/* Linhas pares (alternadas) ganham um tom cinza bem suave */
-.aso-table tbody tr:nth-child(even) {
-    background: #f8f9fa; 
-}
-
-/* Remove a borda da última linha para manter o acabamento arredondado */
-.aso-table tbody tr:last-child {
-    border-bottom: none;
-}
-
-/* O efeito de hover agora fica mais limpo, apenas destacando a linha atual */
-.aso-table tbody tr:hover {
-    background: #f1f3f9;
-}
-
-/* Botão de Editar Funcionário no cabeçalho */
-.btn-editar-funcionario {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    height: 40px;
-    border: 2px solid #251fc5; 
-    text-decoration: none;
-    gap: 8px; 
-    margin-top: 16px;
-    cursor: pointer;
-    background: #251fc5;
-    color: #fff;
-    padding: 12px 20px;
-    border-radius: 4px;
-    font-weight: bold;
-    transition: filter 0.2s;
-}
-
-.btn-editar-funcionario:hover {
-    filter: brightness(0.8);
-}
-
-/* Centraliza o texto do cabeçalho "Editar" */
-.aso-table th:last-child {
-    text-align: center;
-}
-
-/* Centraliza o botão e o ícone de editar na célula */
-.aso-table td:last-child {
-    text-align: center;
-}
-
-.aso-table td:last-child button {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0 auto;
-}
-
-/* Container do painel de dados do funcionário */
-.employee-profile-card {
-    background: #ffffff;
-    border: 1px solid #e6e6f0;
-    border-radius: 8px;
-    padding: 24px;
-    flex: 1; /* Faz o card crescer e ocupar todo o espaço restante à esquerda */
-    width: 100%; /* Garante uso total da largura disponível */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
-}
-
-/* Alinha o título principal e o botão de editar na mesma linha */
-.profile-top-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    border-bottom: 1px solid #f0f0f5;
-    padding-bottom: 16px;
-    margin-bottom: 20px;
-}
-
-.profile-top-bar h1 {
-    font-size: 22px;
-    color: #41414d;
-    margin-bottom: 4px;
-}
-
-.profile-top-bar .subtitle {
-    font-size: 14px;
-    color: #737380;
-}
-
-/* Força o botão de editar do cabeçalho a não herdar margens antigas */
-.profile-top-bar .btn-editar-funcionario {
-    margin-top: 0;
-    white-space: nowrap;
-}
-
-/* Organização dos dados em malha (Grid de 3 colunas) */
-.profile-data-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px 24px;
-}
-
-/* Bloco individual de cada informação */
-.data-item {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-/* Rótulo cinza menor em cima */
-.data-label {
-    font-size: 12px;
-    color: #737380;
-    text-transform: uppercase;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-}
-
-/* Valor destacado em roxo embaixo */
-.data-value {
-    font-size: 15px;
+.btn-visualizar {
     color: #251fc5;
-    font-weight: 600;
+    font-weight: bold;
+    text-decoration: underline;
 }
 
-/* Destaque visual caso o funcionário possua data de demissão */
-.data-item.status-demitido .data-value {
-    color: #c5221f;
-}
-
-/* Ajuste fino no container pai para alinhar com o novo card */
-.list-header-aso {
-    align-items: flex-start;
-    gap: 24px;
-    border-bottom: none; /* Remove a borda antiga já que o card tem sua própria estrutura */
-    padding-bottom: 0;
+.sem-documento {
+    color: #737380;
+    font-style: italic;
 }

@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link, useParams } from "react-router-dom";
 import { FiArrowLeft, FiUpload } from "react-icons/fi";
-
 import api from "../../services/api";
-
 import './styles.css';
 
 export default function NewAso() {
+    const { asoId, funcionarioId } = useParams();
+    const navigate = useNavigate();
+
+    // Estados dos campos do formulário
     const [id, setId] = useState('');
     const [crmMedico, setCrmMedico] = useState('');
     const [dataEmissao, setDataEmissao] = useState('');
@@ -16,32 +18,30 @@ export default function NewAso() {
     const [resultadoAso, setResultadoAso] = useState('');
     const [tipoAso, setTipoAso] = useState('');
 
+    // Estados dos componentes de seleção (Enums)
     const [tiposAso, setTiposAso] = useState([]);
     const [resultadosAso, setResultadosAso] = useState([]);
 
-    const { asoId } = useParams(); 
-    const { funcionarioId } = useParams(); 
-
+    // Estados para persistência de arquivos e anexos
     const [urlDocumentoScan, setUrlDocumentoScan] = useState(''); 
     const [arquivo, setArquivo] = useState(null);
 
-    const navigate = useNavigate();
-
-    // Carrega os Enums do banco para preencher os selects ao abrir a tela
+    // Busca os enums de parametrização ao carregar a página
     useEffect(() => {
-        api.get('api/aso/v1/tipos').then(response => {
-            setTiposAso(Array.isArray(response.data) ? response.data : []);
-        }).catch(err => console.error("Erro ao carregar tipos de ASO", err));
+        api.get('api/aso/v1/tipos')
+            .then(response => setTiposAso(Array.isArray(response.data) ? response.data : []))
+            .catch(err => console.error("Erro ao carregar tipos de ASO", err));
 
-        api.get('api/aso/v1/resultados').then(response => {
-            setResultadosAso(Array.isArray(response.data) ? response.data : []);
-        }).catch(err => console.error("Erro ao carregar resultados de ASO", err));
+        api.get('api/aso/v1/resultados')
+            .then(response => setResultadosAso(Array.isArray(response.data) ? response.data : []))
+            .catch(err => console.error("Erro ao carregar resultados de ASO", err));
     }, []);
 
+    // Monitora o ciclo de vida da página para alternar entre Edição ou Novo Cadastro
     useEffect(() => {
         async function loadAso() {
             try {
-                const response = await api.get(`api/aso/v1/${asoId}`)
+                const response = await api.get(`api/aso/v1/${asoId}`);
 
                 setId(response.data.id);
                 setCrmMedico(response.data.crmMedico || '');
@@ -52,7 +52,6 @@ export default function NewAso() {
                 setResultadoAso(response.data.resultadoAso || '');
                 setTipoAso(response.data.tipoAso || '');
                 setUrlDocumentoScan(response.data.urlDocumentoScan || '');
-
             } catch (error) {
                 alert('Erro ao carregar ASO, tente novamente.');
                 navigate(`/funcionario/${funcionarioId}/asos`);
@@ -60,7 +59,6 @@ export default function NewAso() {
         }
 
         if (asoId === '0') {
-            // Garante reset completo dos estados ao entrar em modo de cadastro novo
             setId('');
             setCrmMedico('');
             setDataEmissao('');
@@ -71,18 +69,16 @@ export default function NewAso() {
             setTipoAso('');
             setUrlDocumentoScan('');
             setArquivo(null);
-            return;
         } else {
             loadAso();
         }
-    }, [asoId, funcionarioId, navigate])    
+    }, [asoId, funcionarioId, navigate]);
 
+    // Submissão unificada para criação e atualização de registros com upload de anexos
     async function handleSaveOrUpdateAso(e) {
         e.preventDefault();
-
         let caminhoArquivoSalvo = urlDocumentoScan;
 
-        // PASSO 1: Se o usuário selecionou um arquivo novo, faz o upload dele primeiro
         if (arquivo) {
             const formData = new FormData();
             formData.append('file', arquivo); 
@@ -91,16 +87,13 @@ export default function NewAso() {
                 const responseUpload = await api.post('api/file/v1/uploadFile', formData, {
                     headers: { 'Content-Type': 'multipart/form-data' }
                 });
-                
                 caminhoArquivoSalvo = responseUpload.data.fileName; 
-                
             } catch (uploadError) {
                 alert('Erro ao fazer o upload do documento. O cadastro foi interrompido.');
                 return; 
             }
         }
 
-        // PASSO 2: Monta o JSON convertendo strings vazias em null para os Enums e Datas
         const data = {
             funcionarioId,
             crmMedico,
@@ -114,28 +107,19 @@ export default function NewAso() {
             enabled: true
         };
 
-        console.log("DADOS ENVIADOS COMO JSON COM O NOME DA IMAGEM:", data);
-
-        // PASSO 3: Envia a requisição e intercepta mensagens do ExceptionHandler
         try {
             if (asoId === '0') {
                 await api.post('api/aso/v1', data);
                 alert('ASO cadastrado com sucesso!');
-                navigate(`/funcionario/${funcionarioId}/asos`);
             } else {
                 data.id = id;
                 await api.put('api/aso/v1', data);
                 alert('ASO atualizado com sucesso!');
-                navigate(`/funcionario/${funcionarioId}/asos`);
             }
-            
+            navigate(`/funcionario/${funcionarioId}/asos`);
         } catch (err) {
             if (err.response && err.response.data) {
-                const errosDoBack = err.response.data;
-
-                // Une todas as mensagens retornadas pelo Bean Validation separadas por linha
-                const mensagensDeAviso = Object.values(errosDoBack).join('\n');
-
+                const mensagensDeAviso = Object.values(err.response.data).join('\n');
                 alert(`Por favor, corrija os seguintes campos:\n\n${mensagensDeAviso}`);
             } else {
                 alert('Erro ao processar o registro de ASO. Verifique a conexão com o servidor.');
@@ -143,16 +127,15 @@ export default function NewAso() {
         }
     }
 
+    // Exclusão lógica (desativação) do ASO
     async function handleDelete() {
         const mensagem = 
-        "ATENÇÃO!\n\n" +
-        "Você está prestes a apagar este ASO do sistema.\n" +
-        "Esta ação impedirá o acesso à este Atestado.\n\n" +
-        "Deseja continuar com a desativação?";
+            "ATENÇÃO!\n\n" +
+            "Você está prestes a apagar este ASO do sistema.\n" +
+            "Esta ação impedirá o acesso a este Atestado.\n\n" +
+            "Deseja continuar com a desativação?";
 
-        const confirmacao = window.confirm(mensagem);
-    
-        if (!confirmacao) return;
+        if (!window.confirm(mensagem)) return;
         
         try {
             await api.patch(`api/aso/v1/${asoId}`);
@@ -163,6 +146,7 @@ export default function NewAso() {
         }
     }
 
+    // Acessibilidade e navegação no formulário via tecla Enter
     function handleFormKeyDown(e) {
         if (e.key === 'Enter') {
             e.preventDefault();
@@ -182,24 +166,18 @@ export default function NewAso() {
                 <section className="form">
                     <div className="header-actions">
                         <Link className="button-voltar" to={`/funcionario/${funcionarioId}/asos`}>
-                            <FiArrowLeft size={16}/>
-                            Voltar
+                            <FiArrowLeft size={16}/> Voltar
                         </Link>
                         {asoId !== '0' && (
-                            <button 
-                                className="button-delete-top" 
-                                type="button" 
-                                onClick={handleDelete}
-                            >
+                            <button className="button-delete-top" type="button" onClick={handleDelete}>
                                 Apagar Aso
                             </button>
                         )}                        
                     </div>
 
                     <div className="title-container">
-                        <h1>{asoId === '0' ? "Cadastrar Novo" : "Atualizar Dados do "} Aso</h1>
+                        <h1>{asoId === '0' ? "Cadastrar Novo" : "Atualizar Dados do"} ASO</h1>
                     </div>
-                    
                     <p>Preencha as informações do Atestado de Saúde Ocupacional.</p>
                 </section>
 
@@ -207,93 +185,61 @@ export default function NewAso() {
                     <div className="form-grid">
                         <div className="input-group">
                             <label>Nome do Médico</label>
-                            <input 
-                                value={nomeMedico || ""} 
-                                onChange={e => setNomeMedico(e.target.value)} 
-                            />
+                            <input value={nomeMedico} onChange={e => setNomeMedico(e.target.value)} />
                         </div>
 
                         <div className="input-group">
                             <label>CRM do Médico</label>
-                            <input 
-                                value={crmMedico || ""} 
-                                onChange={e => setCrmMedico(e.target.value)} 
-                            />
+                            <input value={crmMedico} onChange={e => setCrmMedico(e.target.value)} />
                         </div>
 
                         <div className="input-group">
                             <label htmlFor="tipoAso">Tipo de ASO</label>
-                            <select 
-                                id="tipoAso" 
-                                value={tipoAso || ""} 
-                                onChange={e => setTipoAso(e.target.value)}
-                            >
+                            <select id="tipoAso" value={tipoAso} onChange={e => setTipoAso(e.target.value)}>
                                 <option value="">Selecione o tipo</option>
                                 {tiposAso.map(t => (
-                                    <option key={t.codigo} value={t.codigo}>
-                                        {t.descricao}
-                                    </option>
+                                    <option key={t.codigo} value={t.codigo}>{t.descricao}</option>
                                 ))}
                             </select>
                         </div>
 
                         <div className="input-group">
                             <label htmlFor="resultadoAso">Resultado do ASO</label>
-                            <select 
-                                id="resultadoAso" 
-                                value={resultadoAso || ""} 
-                                onChange={e => setResultadoAso(e.target.value)}
-                            >
+                            <select id="resultadoAso" value={resultadoAso} onChange={e => setResultadoAso(e.target.value)}>
                                 <option value="">Selecione o resultado</option>
                                 {resultadosAso.map(r => (
-                                    <option key={r.codigo} value={r.codigo}>
-                                        {r.descricao}
-                                    </option>
+                                    <option key={r.codigo} value={r.codigo}>{r.descricao}</option>
                                 ))}
                             </select>
                         </div>
 
                         <div className="input-group">
                             <label>Data de Emissão</label>
-                            <input 
-                                type="date" 
-                                value={dataEmissao || ""} 
-                                onChange={e => setDataEmissao(e.target.value)} 
-                            />
+                            <input type="date" value={dataEmissao} onChange={e => setDataEmissao(e.target.value)} />
                         </div>
 
                         <div className="input-group">
                             <label>Data de Validade</label>
-                            <input 
-                                type="date" 
-                                value={dataValidade || ""} 
-                                onChange={e => setDataValidade(e.target.value)} 
-                            />
+                            <input type="date" value={dataValidade} onChange={e => setDataValidade(e.target.value)} />
                         </div>
 
                         <div className="input-group">
                             <label>Descrição dos Exames</label>
-                            <input 
-                                value={descricaoExame || ""} 
-                                onChange={e => setDescricaoExame(e.target.value)} 
-                            />
+                            <input value={descricaoExame} onChange={e => setDescricaoExame(e.target.value)} />
                         </div>
 
                         <div className="input-group file-upload-group">
                             <label className="file-upload-label">Documento do ASO (PDF ou Imagem)</label>
-                            
                             <label htmlFor="file-input-aso" className="custom-file-upload-btn">
                                 <FiUpload size={18} />
                                 {arquivo ? arquivo.name : "Selecionar arquivo..."}
                             </label>
-                            
                             <input 
                                 id="file-input-aso"
                                 type="file" 
                                 onChange={e => setArquivo(e.target.files[0])} 
                                 className="hidden-file-input"
                             />
-                            
                             {asoId !== '0' && urlDocumentoScan && !arquivo && (
                                 <small className="file-saved-alert">
                                     Arquivo atual já salvo no sistema.

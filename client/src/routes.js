@@ -10,6 +10,7 @@ export default function AppRoutes(){
     return (
         <BrowserRouter>
             <Routes>
+                <Route path="/" element={<Funcionarios />} />
                 <Route path="/funcionario/:funcionarioId/aso/new/:asoId" element={<NewAso/>}></Route>
                 <Route path="/funcionarios" element={<Funcionarios/>}></Route>
                 <Route path="/funcionario/new/:funcionarioId" element={<NewFuncionario/>}></Route>

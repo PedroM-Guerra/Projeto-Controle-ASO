@@ -46,7 +46,7 @@ public class FuncionarioController implements FuncionarioControllerDocs {
         return ResponseEntity.ok(service.findByEnabledTrue(pageable));
     }
 
-    @GetMapping(value = "/findFuncionarioByName/{nome}",
+    @GetMapping(value = "/findByName/{nome}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Override
     public ResponseEntity<PagedModel<EntityModel<FuncionarioDTO>>> findByName(

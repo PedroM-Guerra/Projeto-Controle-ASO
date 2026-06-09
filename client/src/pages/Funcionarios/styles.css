@@ -6,135 +6,57 @@
     box-sizing: border-box;
 }
 
-.funcionario-container header {
+/* Header principal */
+.funcionario-container .main-header {
     display: flex;
     align-items: center;
-    background: #ffffff; /* Fundo totalmente branco */
-    padding: 16px 24px; /* Espaçamento interno para os elementos não colarem nas bordas */
-    border-radius: 8px; /* Mantém os cantos levemente arredondados combinando com o sistema */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Sombra suave e moderna abaixo */
+    justify-content: space-between;
+    background: #ffffff;
+    padding: 16px 24px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
-.funcionario-container header span{
+.brand-logo {
+    display: flex;
+    align-items: center;
+}
+
+.funcionario-container .main-header span {
     font-size: 20px;
     margin-left: 24px;
 }
 
-.funcionario-container header span strong{
+.funcionario-container .main-header span strong {
     color: #251fc5;
 }
 
-.funcionario-container header img{
+.funcionario-container .main-header img {
     height: 64px;
 }
 
-.funcionario-container header a{
+.button-add-employee {
     width: 260px;
-    margin-top: 0;
-    margin-left: auto;
-}
-
-.funcionario-container header button{
-    height: 60px;
-    width: 60px;
-    border-radius: 4px;
-    border: 1px solid #dcdce6;
-    background: transparent;
-    margin-left: 16px;
-    transition: border-color 0.5s;
-}
-
-.funcionario-container header button:hover{
-    border-color: #251fc5;
-}
-
-.funcionario-container h1{
-    margin-top: 80px;
-    margin-bottom: 14px;
-}
-
-.funcionario-container ul{
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap: 24px;
-    list-style: none;
-}
-
-.funcionario-container ul li{
-    background: #ffffff;
-    padding: 24px;
-    border-radius: 8px;
-    position: relative;
-}
-
-
-.funcionario-container ul li strong{
-    display: block;
-    margin-bottom: 16px;
-    color: #414d;
-}
-
-.funcionario-container ul li p + strong{
-    margin-top: 32px;
-}
-
-.funcionario-container ul li p{
-    color: #737380;
-    line-height: 21px;
-    font-size: 16px;
-}
-
-.list-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 40px 0 24px 0;
-}
-
-.list-header h1 {
-    margin: 0; /* Remove as margens antigas que desalinhavam o topo */
-}
-
-.search-form {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.search-form input {
     height: 44px;
-    width: 280px;
-    padding: 0 16px;
-    border-radius: 4px;
-    border: 1px solid #dcdce6;
-    color: #333;
-    font-size: 15px;
-    transition: border-color 0.3s;
-}
-
-.search-form input:focus {
-    border-color: #251fc5;
-    outline: none;
-}
-
-.search-form button {
-    height: 44px;
-    width: 44px;
     background: #251fc5;
     color: #fff;
-    border: 0;
     border-radius: 4px;
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
+    text-decoration: none;
+    box-sizing: border-box;
+    padding: 0 16px;
+    font-weight: bold;
     transition: filter 0.2s;
+    gap: 8px;
 }
 
-.search-form button:hover {
+.button-add-employee:hover {
     filter: brightness(0.9);
 }
 
+/* Listagem Estrutura e Cabeçalho */
 .list-header {
     display: flex;
     justify-content: space-between;
@@ -144,8 +66,61 @@
 
 .list-header h1 {
     margin: 0;
+    font-size: 28px;
+    color: #333;
 }
 
+/* Filtro Select */
+.filter-container {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    margin-right: 24px;
+}
+
+.select-label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 13px;
+    color: #737380;
+    font-weight: 600;
+    user-select: none;
+}
+
+.select-label select {
+    height: 44px;
+    width: 300px;
+    padding: 0 36px 0 12px;
+    border-radius: 4px;
+    border: 1px solid #dcdce6;
+    background: #fff;
+    color: #333;
+    font-size: 15px;
+    cursor: pointer;
+    transition: border-color 0.3s;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23333333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+}
+
+.select-label select:focus {
+    border-color: #251fc5;
+    outline: none;
+}
+
+.select-label select:disabled {
+    cursor: not-allowed;
+    background: #f8f8fc;
+    color: #a8a8b3;
+    border-color: #e6e6f0;
+}
+
+/* Formulário de Busca */
 .search-form {
     display: flex;
     align-items: center;
@@ -158,12 +133,10 @@
     transition: border-color 0.3s;
 }
 
-/* Quando o usuário clica para digitar, a caixinha inteira muda de cor */
 .search-form:focus-within {
     border-color: #251fc5;
 }
 
-/* O input perde as bordas próprias para não duplicar visualmente */
 .search-form input {
     flex: 1;
     height: 100%;
@@ -178,7 +151,6 @@
     outline: none;
 }
 
-/* O botão vira apenas o ícone cinza que muda de cor ao passar o mouse */
 .search-form button {
     height: 32px;
     width: 32px;
@@ -196,6 +168,129 @@
     color: #251fc5;
 }
 
+/* Grid de Funcionários */
+.employees-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 24px;
+    list-style: none;
+    padding: 0;
+}
+
+.funcionario-container ul li.funcionario-item {
+    background: #ffffff;
+    padding: 0;
+    border-radius: 8px;
+    position: relative;
+    border: 1px solid #e6e6f0;
+    transition: all 0.2s ease-in-out;
+    overflow: hidden; 
+    border-left-width: 6px; 
+}
+
+.funcionario-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(37, 31, 197, 0.08);
+    border-color: #251fc5;
+}
+
+.funcionario-item.borda-ativo {
+    border-left-color: #137333 !important;
+}
+
+.funcionario-item.borda-inativo {
+    border-left-color: #c5221f !important;
+}
+
+.funcionario-link {
+    display: block;
+    padding: 24px;
+    text-decoration: none;
+    color: inherit;
+    width: 100%;
+    height: 100%;
+}
+
+/* Header interno do Card */
+.funcionario-header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.funcionario-header strong {
+    font-size: 18px;
+    color: #41414d;
+}
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 12px;
+    user-select: none;
+}
+
+.status-badge.ativo {
+    background: #e6f4ea;
+    color: #137333;
+}
+
+.status-badge.inativo {
+    background: #fce8e6;
+    color: #c5221f;
+}
+
+/* Dados em Linha do Card */
+.funcionario-dados-linha {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 48px;
+    margin-top: 12px;
+}
+
+.dado-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.icon-wrapper {
+    background: #f0f4ff;
+    color: #251fc5;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dado-texto {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.dado-texto strong {
+    font-size: 12px;
+    color: #a8a8b3 !important;
+    font-weight: 600;
+    margin: 0 !important;
+}
+
+.dado-texto span {
+    font-size: 15px;
+    color: #333333;
+    font-weight: 500;
+}
+
+/* Paginação */
 .pagination-container {
     display: flex;
     justify-content: center;
@@ -232,7 +327,6 @@
     color: #251fc5;
 }
 
-/* Estilo do botão da página atual */
 .page-number.active {
     background: #251fc5;
     color: #fff;
@@ -246,269 +340,4 @@
     font-weight: bold;
     font-size: 16px;
     user-select: none;
-}
-
-/* Container para alinhar o nome e o status na mesma linha */
-.funcionario-header {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 12px;
-    margin-bottom: 16px;
-}
-
-/* Remove a margem antiga do strong para não quebrar o novo alinhamento */
-.funcionario-container ul li strong {
-    margin-bottom: 0; 
-}
-
-/* Estilização geral da tag de status */
-.status-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 12px;
-    font-weight: bold;
-    padding: 4px 8px;
-    border-radius: 12px;
-    user-select: none;
-}
-
-/* Cores para o funcionário Ativo (Verde) */
-.status-badge.ativo {
-    background: #e6f4ea;
-    color: #137333;
-}
-
-/* Cores para o funcionário Inativo (Vermelho) */
-.status-badge.inativo {
-    background: #fce8e6;
-    color: #c5221f;
-}
-
-.actions-container {
-    position: absolute;
-    right: 24px;
-    top: 24px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px; /* Espaçamento vertical entre o botão de editar e o de ASO */
-}
-
-/* Remove a borda antiga que estava quebrando o alinhamento */
-.actions-container button, .actions-container a {
-    border: 0; 
-    background: transparent;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 24px;
-    width: 24px;
-    transition: transform 0.2s;
-}
-
-.actions-container button:hover, .actions-container a:hover {
-    opacity: 0.8;
-    transform: scale(1.25); /* Dá um leve efeito de crescimento ao passar o mouse */
-}
-
-/* Torna o item da lista um container absoluto para o botão de editar */
-.funcionario-container ul li.funcionario-item {
-    background: #ffffff;
-    padding: 0; /* Removemos o padding daqui para dar o efeito de clique na caixa toda */
-    border-radius: 8px;
-    position: relative;
-    border: 1px solid #e6e6f0;
-    transition: all 0.2s ease-in-out;
-}
-
-/* Nova estilização do link que preenche o card inteiro */
-.funcionario-link {
-    display: block;
-    padding: 24px; /* O padding agora fica no link interno */
-    text-decoration: none; /* Remove o sublinhado padrão de links */
-    color: inherit;
-    width: 100%;
-    height: 100%;
-}
-
-/* Efeito visual ao passar o mouse em qualquer parte do card */
-.funcionario-item:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(37, 31, 197, 0.08);
-    border-color: #251fc5;
-}
-
-/* Garante que os títulos "CPF:" e "Matrícula:" tenham o peso correto */
-.funcionario-link p strong {
-    color: #41414d;
-    font-weight: 600;
-    display: inline; /* Mantém o texto inline com o dado */
-    margin-right: 4px;
-}
-
-.funcionario-link p {
-    color: #737380;
-    line-height: 24px;
-    font-size: 16px;
-    margin-top: 4px;
-}
-
-/* Reposiciona o botão de editar acima do link do card */
-.actions-container {
-    position: absolute;
-    right: 24px;
-    top: 24px;
-    z-index: 2; /* Garante que o botão fique em cima da área clicável do card */
-}
-
-/* Coloca o CPF e a Matrícula na mesma linha horizontal */
-.funcionario-dados-linha {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 32px; /* Controla a distância horizontal entre o CPF e a Matrícula */
-    margin-top: 4px;
-}
-
-/* Garante que a margem superior antiga não quebre o alinhamento vertical */
-.funcionario-dados-linha p {
-    margin-top: 0;
-    line-height: 24px;
-    font-size: 16px;
-    color: #737380;
-}
-
-/* Mantém o rótulo em negrito e com um pequeno espaço para o número */
-.funcionario-dados-linha p strong {
-    color: #41414d;
-    font-weight: 600;
-    display: inline;
-    margin-right: 4px;
-}
-
-.filter-container {
-    display: flex;
-    align-items: center;
-    margin-left: auto;
-    margin-right: 24px; /* Dá um espaçamento elegante entre o filtro e o formulário de busca */
-}
-
-.checkbox-label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 15px;
-    color: #41414d;
-    font-weight: 600;
-    cursor: pointer;
-    user-select: none;
-}
-
-.checkbox-label input {
-    cursor: pointer;
-    width: 18px;
-    height: 18px;
-    accent-color: #251fc5; /* Deixa o checkbox na cor roxa/azul padrão do seu sistema */
-}
-
-.checkbox-label input:disabled {
-    cursor: not-allowed;
-    opacity: 0.5;
-}
-
-.filter-container {
-    display: flex;
-    align-items: center;
-    margin-left: auto;
-    margin-right: 24px;
-}
-
-.select-label {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    font-size: 13px;
-    color: #737380;
-    font-weight: 600;
-    user-select: none;
-}
-
-.select-label select {
-    height: 44px;
-    width: 260px;
-    padding: 0 12px;
-    border-radius: 4px;
-    border: 1px solid #dcdce6;
-    background: #fff;
-    color: #333;
-    font-size: 15px;
-    font-weight: normal;
-    cursor: pointer;
-    transition: border-color 0.3s;
-}
-
-/* Destaca a borda do select com a cor padrão do sistema ao focar */
-.select-label select:focus {
-    border-color: #251fc5;
-    outline: none;
-}
-
-/* Aparência visual quando o campo de busca por texto estiver ativo */
-.select-label select:disabled {
-    cursor: not-allowed;
-    background: #f8f8fc;
-    color: #a8a8b3;
-    border-color: #e6e6f0;
-}
-
-.list-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center; /* Garante o alinhamento vertical de todos os blocos principais */
-    margin: 40px 0 24px 0;
-}
-
-.filter-container {
-    display: flex;
-    align-items: center;
-    margin-left: auto;
-    margin-right: 24px;
-    height: 44px; /* Mesma altura da barra de pesquisa */
-}
-
-.select-label {
-    display: flex;
-    align-items: center; /* Mudou de column para center para alinhar em linha */
-    gap: 12px; /* Espaço entre o texto e o select */
-    font-size: 15px;
-    color: #41414d;
-    font-weight: 600;
-    user-select: none;
-}
-
-.select-label select {
-    height: 44px;
-    width: 260px;
-    padding: 0 12px;
-    border-radius: 4px;
-    border: 1px solid #dcdce6;
-    background: #fff;
-    color: #333;
-    font-size: 15px;
-    font-weight: normal;
-    cursor: pointer;
-    transition: border-color 0.3s;
-}
-
-.select-label select:focus {
-    border-color: #251fc5;
-    outline: none;
-}
-
-.select-label select:disabled {
-    cursor: not-allowed;
-    background: #f8f8fc;
-    color: #a8a8b3;
-    border-color: #e6e6f0;
 }
